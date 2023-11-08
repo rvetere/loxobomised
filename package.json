@@ -1,0 +1,23 @@
+{
+  "name": "loxobomised",
+  "version": "1.0.0",
+  "description": "A super stupid puppeteer remote control for Loxone smart home systems",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rvetere/loxobomised.git"
+  },
+  "author": "remo.vetere@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rvetere/loxobomised/issues"
+  },
+  "homepage": "https://github.com/rvetere/loxobomised#readme",
+  "dependencies": {
+    "puppeteer": "^21.4.1"
+  }
+}
