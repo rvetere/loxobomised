@@ -1,4 +1,4 @@
-const { clickButtonByText, sleep } = require("../lib");
+const { clickButtonByText, sleep } = require("../../lib");
 
 const run = async (page) => {
   await clickButtonByText(page, "Kategorien");
