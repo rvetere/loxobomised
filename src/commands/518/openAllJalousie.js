@@ -1,19 +1,34 @@
-const { clickButtonByText } = require("../../lib");
+const { clickButtonByText, sleep } = require("../../lib");
 
 const run = async (page) => {
-  await clickButtonByText(page, "Kategorien");
-  await clickButtonByText(page, "Beschattung");
+  await openJalousieInRoom(page, "Küche");
+  await openJalousieInRoom(page, "Zimmer 1");
+  await openJalousieInRoom(page, "Wohnzimmer");
+
+  await sleep(500);
+  await page.screenshot({ path: "example.png" });
+};
+
+const openJalousieInRoom = async (page, room) => {
+  // navigate to room
+  await clickButtonByText(page, "Räume");
+  await clickButtonByText(page, room);
+
+  // it can happen that the app starts "loading scripts" again if you navigate trough more than one room in one command run
+  // -> so we wait until the name of our apartment is visible again in the UI, this tells us the scripts are loaded
+  await page.waitForFunction(
+    'document.querySelector("body").innerText.includes("WOHNUNG 05.18")'
+  );
 
   // get all buttons of current page
   const elements = await page.$$("div[role=button]");
 
-  // close all rollos
-  await elements[44].click(); // Küche
-  await elements[75].click(); // Zimmer 1
+  // close jalousie
+  await elements[31].click();
 
-  await elements[55].click(); // Wohnzimmer ALLE
+  await sleep(100);
 
-  await page.screenshot({ path: "example.png" });
+  return elements;
 };
 
 module.exports = {
