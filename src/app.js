@@ -52,6 +52,10 @@ async function initPage() {
 
   const browser = await puppeteer.launch({ headless: "new" });
   page = await browser.newPage();
+
+  // mobile viewport for easy navigation
+  await page.setViewport({ width: 500, height: 800 });
+
   // store in localstorage the loxone config with "ambientOnboardingShown":true
   await page.evaluateOnNewDocument((settingStr) => {
     localStorage.setItem("LoxSettings.json", settingStr);

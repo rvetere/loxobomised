@@ -9,7 +9,9 @@ Add a `.env` file in project root with the following structure:
 ```javascript
 MINI_SERVER_ID=<id-of-your-server-grabbed-from-webinterface>
 LOGIN=Mieter
-PASSWORD=
+PASSWORD=Password
+APARTMENT=05.18
+PORT=3000
 ```
 
 The project will start an express server and a singleton puppeteer instance logged-in to the loxone web interface.
