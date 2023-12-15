@@ -20,9 +20,6 @@ const clickActionOfCategory = async (
   // open overlay controls
   elements[0].click();
   await sleep(300);
-  if (action === "Fully In" || action === "Fully Out") {
-    await page.screenshot({ path: "example.png" });
-  }
 
   // click action
   await clickOnParent(page, action);
