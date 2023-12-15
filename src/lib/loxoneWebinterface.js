@@ -52,7 +52,7 @@ class LoxoneWebinterface {
     await navigateToRoom(this.page, this.room);
     this.initialized = true;
 
-    this.interval = setInterval(this.refreshLogin, 300000);
+    this.interval = setInterval(this.refreshLogin.bind(this), 300000);
     console.log(`✅ Login successful in room "${this.room}"!`);
   }
 
