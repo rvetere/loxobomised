@@ -4,68 +4,89 @@ const { sleep } = require("./sleep");
 const apartment = process.env.APARTMENT || "05.18";
 
 const navigateToRoom = async (page, room) => {
-  console.log(`Navigating to room ${room}`);
+  // console.log(`Navigating to room ${room}`);
 
-  const texts = await page.$$eval("body", (bodies) =>
-    bodies.map((body) => body.innerText)
-  );
-  const bodyText = texts.join("\n");
-  if (bodyText.includes("Loading information for the App")) {
-    await sleep(1000);
-  }
-  if (
-    bodyText.includes(`WOHNUNG ${apartment}`) &&
-    bodyText.includes(room.toUpperCase())
-  ) {
-    console.log("Already in room");
-    return;
-  }
+  // const texts = await page.$$eval("body", (bodies) =>
+  //   bodies.map((body) => body.innerText)
+  // );
+  // const bodyText = texts.join("\n");
+  // if (bodyText.includes("Loading information for the App")) {
+  //   await sleep(1000);
+  // }
+  // if (
+  //   bodyText.includes(`WOHNUNG ${apartment}`) &&
+  //   bodyText.includes(room.toUpperCase())
+  // ) {
+  //   console.log("Already in room");
+  //   return;
+  // }
 
   // navigate to room
-  await goThere(page, "Räume");
+  try {
+    await goTo(page, "Räume");
+  } catch (_e) {
+    await clickButtonByText(page, "Räume");
+    await sleep(500);
+  }
 
-  await clickButtonByText(page, room);
-  await sleep(100);
-  await page.waitForFunction(
-    `document.querySelector("body").innerText.includes("${room.toUpperCase()}")`
-  );
+  try {
+    await goTo(page, room);
+  } catch (_e) {
+    await clickButtonByText(page, room);
+    await sleep(500);
+  }
 
   // it can happen that the app starts "loading scripts" again if you navigate trough more than one room in one command run
   // -> so we wait until the name of our apartment is visible again in the UI, this tells us the scripts are loaded
   await page.waitForFunction(
     `document.querySelector("body").innerText.includes("WOHNUNG ${apartment}")`
   );
-  await sleep(200);
-  await page.screenshot({ path: "room-navigation.png" });
-  console.log("👍 Navigated to room");
+  await sleep(500);
+  // console.log("Navigated to room");
 };
 
-const goThere = async (page, text) => {
-  await clickButtonByText(page, text);
-
+const goTo = async (page, text) => {
   let foundInTime = false;
-  page
-    .waitForFunction(
-      `document.querySelector("body").innerText.includes("RÄUME")`
-    )
-    .then(() => {
-      foundInTime = true;
-    });
-
   let counter = 0;
-  const poller = setInterval(async () => {
-    if (foundInTime) {
-      clearInterval(poller);
-    } else {
-      console.log("not found yet");
-      counter++;
-    }
 
-    if (counter > 10) {
-      clearInterval(poller);
-      await clickButtonByText(page, text);
+  while (counter < 5 && !foundInTime) {
+    await clickButtonByText(page, text);
+
+    page
+      .waitForFunction(
+        `document.querySelector("body").innerText.includes("${text.toUpperCase()}")`
+      )
+      .then(() => {
+        foundInTime = true;
+      });
+
+    const poller = setInterval(async () => {
+      if (foundInTime) {
+        clearInterval(poller);
+        return;
+      } else {
+        console.log("not found yet");
+        counter++;
+      }
+
+      if (counter >= 5) {
+        console.log("not found, maximum attempts reached!");
+        clearInterval(poller);
+      }
+    }, 250);
+
+    if (!foundInTime) {
+      await new Promise((resolve) => setTimeout(resolve, 250));
     }
-  }, 100);
+  }
+
+  return new Promise((resolve, reject) => {
+    if (foundInTime) {
+      resolve();
+    } else {
+      reject("timeout in finding nav result!");
+    }
+  });
 };
 
 module.exports = {

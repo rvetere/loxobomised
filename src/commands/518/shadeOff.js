@@ -1,19 +1,33 @@
-const { clickActionOfCategory, navigateToRoom, sleep } = require("../../lib");
+const { clickActionOfCategory, getPageInPool } = require("../../lib");
 
-const run = async (page) => {
-  await navigateToRoom(page, "Küche");
-  await clickActionOfCategory(page, "Beschattung", 1, "Fully Up");
+const run = async (pool) => {
+  await shadeOffLivingRoom(pool);
+  await shadeOffKitchen(pool);
+  await shadeOffBedroom(pool);
+  await shadeOffLoggia(pool);
+};
 
-  await navigateToRoom(page, "Zimmer 1");
-  await clickActionOfCategory(page, "Beschattung", 1, "Fully Up");
-
-  await navigateToRoom(page, "Wohnzimmer");
+const shadeOffLivingRoom = async (pool) => {
+  const page = await getPageInPool(pool, "Wohnzimmer");
   await clickActionOfCategory(page, "Beschattung", 2, "Fully Up");
   await clickActionOfCategory(page, "Beschattung", 3, "Fully Up");
   await clickActionOfCategory(page, "Beschattung", 4, "Fully Up");
+};
 
-  // await sleep(500);
-  // await page.screenshot({ path: "example.png" });
+const shadeOffKitchen = async (pool) => {
+  const page = await getPageInPool(pool, "Küche");
+  await clickActionOfCategory(page, "Beschattung", 1, "Fully Up");
+};
+
+const shadeOffBedroom = async (pool) => {
+  const page = await getPageInPool(pool, "Zimmer 1");
+  await clickActionOfCategory(page, "Beschattung", 1, "Fully Up");
+};
+
+const shadeOffLoggia = async (pool) => {
+  const page = await getPageInPool(pool, "Loggia");
+  await clickActionOfCategory(page, "Beschattung", 1, "Fully In");
+  await clickActionOfCategory(page, "Beschattung", 2, "Fully In");
 };
 
 module.exports = {

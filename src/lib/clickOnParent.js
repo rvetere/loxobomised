@@ -9,7 +9,7 @@ const clickOnParent = async (page, text) => {
     }
     return;
   }
-  // console.error("Element not found");
+  console.error("Element not found");
 };
 
 module.exports = {

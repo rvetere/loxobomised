@@ -1,8 +1,7 @@
-const { clickActionOfCategory, navigateToRoom, sleep } = require("../../lib");
+const { clickActionOfCategory, getPageInPool, sleep } = require("../../lib");
 
-const run = async (page) => {
-  await navigateToRoom(page, "Loggia");
-  await page.screenshot({ path: "example1.png" });
+const run = async (pool) => {
+  const page = await getPageInPool(pool, "Loggia");
   await clickActionOfCategory(page, "Beschattung", 1, "Fully In");
   await clickActionOfCategory(page, "Beschattung", 2, "Fully In");
 

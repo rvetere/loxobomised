@@ -1,15 +1,15 @@
 const {
   clickActionOfCategory,
   clickPlusMinusOfCategory,
-  navigateToRoom,
+  getPageInPool,
   sleep,
 } = require("../../lib");
 
-const run = async (page, query) => {
+const run = async (pool, query) => {
   const percentStr = query.percent || "40";
   const percent = parseInt(percentStr, 10);
 
-  await navigateToRoom(page, "Küche");
+  const page = await getPageInPool(pool, "Küche");
   await clickActionOfCategory(page, "Beleuchtung", 1, "Switch Off");
   await clickPlusMinusOfCategory(page, "Beleuchtung", 2, percent);
 };

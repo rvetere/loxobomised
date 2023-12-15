@@ -1,14 +1,14 @@
-const { clickActionOfCategory, navigateToRoom, sleep } = require("../../lib");
+const { clickActionOfCategory, getPageInPool, sleep } = require("../../lib");
 
-const run = async (page) => {
-  await navigateToRoom(page, "Küche");
+const run = async (pool) => {
+  let page = await getPageInPool(pool, "Küche");
   await clickActionOfCategory(page, "Beleuchtung", 1, "Switch Off");
   await clickActionOfCategory(page, "Beleuchtung", 2, "Switch Off");
 
-  await navigateToRoom(page, "Wohnzimmer");
+  page = await getPageInPool(pool, "Wohnzimmer");
   await clickActionOfCategory(page, "Lüftung", 1, "Stufe 1");
 
-  await navigateToRoom(page, "Entrée");
+  page = await getPageInPool(pool, "Entrée");
   await clickActionOfCategory(page, "Beleuchtung", 1, "Switch Off");
 
   // await sleep(500);
