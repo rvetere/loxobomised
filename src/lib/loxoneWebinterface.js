@@ -14,11 +14,11 @@ class LoxoneWebinterface {
     this.room = room;
     this.initialized = false;
 
-    // setInterval(() => {
-    //   if (this.initialized) {
-    //     this.page.screenshot({ path: `${room}-status.png` });
-    //   }
-    // }, 700);
+    setInterval(() => {
+      if (this.initialized) {
+        this.page.screenshot({ path: `${room}-status.png` });
+      }
+    }, 700);
 
     return this;
   }
