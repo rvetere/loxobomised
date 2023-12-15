@@ -11,7 +11,7 @@ const clickActionOfCategory = async (
     `//div[contains(text(),'${category}')]/../../following-sibling::div[1]/div/div[${buttonGroupIndex}]`
   );
   if (!container) {
-    console.error("Category not found, scripts are loading again!");
+    console.error("Category not found!");
     await page.screenshot({ path: "error.png" });
     return;
   }
@@ -19,14 +19,17 @@ const clickActionOfCategory = async (
 
   // open overlay controls
   elements[0].click();
-  await sleep(200);
+  await sleep(300);
+  if (action === "Fully In" || action === "Fully Out") {
+    await page.screenshot({ path: "example.png" });
+  }
 
   // click action
   await clickOnParent(page, action);
 
   // close overlay controls
   await page.keyboard.press("Escape");
-  await sleep(200);
+  await sleep(300);
 };
 
 module.exports = {
