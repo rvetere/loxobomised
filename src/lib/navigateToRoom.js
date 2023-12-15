@@ -23,15 +23,25 @@ const navigateToRoom = async (page, room) => {
 
   // navigate to room
   await clickButtonByText(page, "Räume");
-  await sleep(200);
+  await sleep(100);
+  await page.waitForFunction(
+    `document.querySelector("body").innerText.includes("RÄUME")`
+  );
+
   await clickButtonByText(page, room);
-  await sleep(200);
+  await sleep(100);
+  await page.waitForFunction(
+    `document.querySelector("body").innerText.includes("${room.toUpperCase()}")`
+  );
 
   // it can happen that the app starts "loading scripts" again if you navigate trough more than one room in one command run
   // -> so we wait until the name of our apartment is visible again in the UI, this tells us the scripts are loaded
   await page.waitForFunction(
     `document.querySelector("body").innerText.includes("WOHNUNG ${apartment}")`
   );
+  await sleep(200);
+  await page.screenshot({ path: "room-navigation.png" });
+  console.log("👍 Navigated to room");
 };
 
 module.exports = {

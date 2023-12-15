@@ -19,14 +19,15 @@ const clickActionOfCategory = async (
 
   // open overlay controls
   elements[0].click();
-  await sleep(300);
+  await sleep(200);
 
   // click action
   await clickOnParent(page, action);
+  await sleep(200);
 
   // close overlay controls
   await page.keyboard.press("Escape");
-  await sleep(300);
+  await sleep(500);
 };
 
 module.exports = {

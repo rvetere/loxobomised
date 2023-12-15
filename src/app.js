@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const express = require("express");
 const puppeteer = require("puppeteer");
+const { navigateToRoom, sleep } = require("./lib");
 require("dotenv").config();
 
 const miniServerId = process.env.MINI_SERVER_ID;
@@ -9,6 +10,7 @@ const login = process.env.LOGIN;
 const password = process.env.PASSWORD;
 const port = process.env.PORT || 3000;
 const serverUrl = `https://dns.loxonecloud.com/${miniServerId}`;
+const apartment = process.env.APARTMENT || "05.18";
 
 let page = null;
 
@@ -45,7 +47,7 @@ initPage().then(() => {
 
 setInterval(() => {
   page.screenshot({ path: "status.png" });
-}, 1000);
+}, 500);
 
 setInterval(() => {
   refreshPage();
@@ -74,7 +76,14 @@ async function initPage() {
   await page.click("button[type=submit]");
   await page.waitForNavigation();
 
-  console.log("Successfully initialized, loxone web interface ready");
+  await page.waitForFunction(
+    `document.querySelector("body").innerText.includes("WOHNUNG ${apartment}")`
+  );
+
+  await navigateToRoom(page, "Wohnzimmer");
+  await sleep(1000);
+
+  console.log("Successfully initialized!");
 }
 
 async function refreshPage() {
