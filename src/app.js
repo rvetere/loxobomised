@@ -25,7 +25,7 @@ app.get("/exec/*", async (req, res) => {
     } else {
       const commandModule = require(commandPath);
       if (typeof commandModule.run === "function") {
-        await commandModule.run(page);
+        await commandModule.run(page, req.query);
         res.send(`Command ${command} executed successfully.`);
       } else {
         console.error(`Command ${command} does not have a run function.`);
@@ -39,7 +39,7 @@ app.get("/exec/*", async (req, res) => {
 
 initPage().then(() => {
   app.listen(port, () => {
-    console.log("Server is listening on port 3000");
+    console.log(`Server is listening on port ${port}`);
   });
 });
 

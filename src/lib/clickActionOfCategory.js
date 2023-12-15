@@ -10,6 +10,11 @@ const clickActionOfCategory = async (
   const [container] = await page.$x(
     `//div[contains(text(),'${category}')]/../../following-sibling::div[1]/div/div[${buttonGroupIndex}]`
   );
+  if (!container) {
+    console.error("Category not found, scripts are loading again!");
+    await page.screenshot({ path: "error.png" });
+    return;
+  }
   const elements = await container.$$("div[role=button]");
 
   // open overlay controls

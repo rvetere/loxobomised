@@ -12,8 +12,8 @@ const run = async (page) => {
   await clickActionOfCategory(page, "Beschattung", 3, "Fully Down");
   await clickActionOfCategory(page, "Beschattung", 4, "Fully Down");
 
-  await sleep(200);
-  await page.screenshot({ path: "example.png" });
+  // await sleep(200);
+  // await page.screenshot({ path: "example.png" });
 };
 
 module.exports = {

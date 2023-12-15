@@ -1,5 +1,5 @@
 const clickOnParent = async (page, text) => {
-  const [element] = await page.$x(`//div[contains(text(),'${text}')]`);
+  const [element] = await page.$x(`//div[text()='${text}']`);
 
   if (element) {
     const parentElement = await element.$x("..");
@@ -9,7 +9,7 @@ const clickOnParent = async (page, text) => {
     }
     return;
   }
-  console.error("Element not found");
+  // console.error("Element not found");
 };
 
 module.exports = {
