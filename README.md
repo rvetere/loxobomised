@@ -68,6 +68,6 @@ shell_command:
   dimm_kitchen_10: 'curl -X GET "http://localhost:3000/exec/518/dimmKitchenLights?percent=10"'
 ```
 
-Afterwards you can just add scripts and in there add actions with "call a service" - just look for "shell my-command" and you can easily execute them.
+Afterwards you can just add scripts and in there add actions of "call a service" - just look for "shell my-command" and you can easily execute them.
 
 > Pro tip: use the developer tools of HA to call a service and see what the exact response is. Great for debugging ;-)
