@@ -7,7 +7,7 @@ A super stupid puppeteer remote control for Loxone smart home systems
 - [node.js](https://nodejs.org)
 - [yarn](https://yarnpkg.com) (optional)
 
-## How to use
+## Get started
 
 1. Add a `.env` file in project root with the following structure:
 
@@ -23,7 +23,7 @@ ROOMS=Wohnzimmer,Küche,Entrée,WC-Dusche,Loggia
 2. Install all dependencies by running `npm install` (or just `yarn`)
 3. Start it with `npm start` (or `yarn start`)
 
-### Where to find the mini server ID?
+#### Where to find the mini server ID?
 
 > This is only valid for tenants living at "Jägerstrasse 59" in Winterthur.
 
@@ -31,7 +31,7 @@ Check your mails, you certainly received emails from "Living Services" portal - 
 
 After you logged in succesful into the loxone web interface, you can simply check your URL - all digits after the last `/` are representing your mini server ID.
 
-## How it works
+## How to use
 
 The project will start an express server and a pool of singleton puppeteer instances logged-in to the loxone web interface.
 The pool will hold one puppeteer `page` instance per room you define in the `.env` file.
