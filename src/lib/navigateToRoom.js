@@ -23,7 +23,9 @@ const navigateToRoom = async (page, room) => {
 
   // navigate to room
   await clickButtonByText(page, "Räume");
+  await sleep(200);
   await clickButtonByText(page, room);
+  await sleep(200);
 
   // it can happen that the app starts "loading scripts" again if you navigate trough more than one room in one command run
   // -> so we wait until the name of our apartment is visible again in the UI, this tells us the scripts are loaded
