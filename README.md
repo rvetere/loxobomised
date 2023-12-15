@@ -2,9 +2,14 @@
 
 A super stupid puppeteer remote control for Loxone smart home systems
 
+## Prerequisites:
+
+- [node.js](https://nodejs.org)
+- [yarn](https://yarnpkg.com) (optional)
+
 ## How to use
 
-Add a `.env` file in project root with the following structure:
+1. Add a `.env` file in project root with the following structure:
 
 ```javascript
 MINI_SERVER_ID=<id-of-your-server-grabbed-from-webinterface>
@@ -14,6 +19,9 @@ APARTMENT=05.18
 PORT=3000
 ROOMS=Wohnzimmer,Küche,Entrée,WC-Dusche,Loggia
 ```
+
+2. Install all dependencies by running `npm install` (or just `yarn`)
+3. Start it with `npm start` (or `yarn start`)
 
 ### Where to find the mini server ID?
 
