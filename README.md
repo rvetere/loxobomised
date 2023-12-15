@@ -70,4 +70,4 @@ shell_command:
 
 Afterwards you can just add scripts and in there add actions of "call a service" - just look for "shell my-command" and you can easily execute them.
 
-> Pro tip: use the developer tools of HA to call a service and see what the exact response is. Great for debugging ;-)
+> Pro tip: use the developer tools of HA to "call a service" with the shell command and see what the exact response is. Great for debugging ;-)
