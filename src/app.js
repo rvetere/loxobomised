@@ -5,6 +5,8 @@ const { LoxoneWebinterface } = require("./lib/loxoneWebinterface");
 
 let pool = [];
 const port = process.env.PORT || 3000;
+const roomsRaw =
+  process.env.ROOMS || "Wohnzimmer,Küche,Entrée,WC-Dusche,Loggia";
 const app = express();
 
 app.get("/exec/*", async (req, res) => {
@@ -37,14 +39,7 @@ initPool().then(() => {
 });
 
 async function initPool() {
-  const rooms = [
-    "Wohnzimmer",
-    "Küche",
-    "Entrée",
-    "WC-Dusche",
-    "Zimmer 1",
-    "Loggia",
-  ];
+  const rooms = roomsRaw.split(",");
   const instances = [];
 
   for (let room of rooms) {
