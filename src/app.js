@@ -44,6 +44,10 @@ initPage().then(() => {
 });
 
 setInterval(() => {
+  page.screenshot({ path: "status.png" });
+}, 5000);
+
+setInterval(() => {
   refreshPage();
 }, 300000);
 
