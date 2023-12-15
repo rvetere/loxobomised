@@ -15,7 +15,7 @@ PORT=3000
 ROOMS=Wohnzimmer,Küche,Entrée,WC-Dusche,Loggia
 ```
 
-### Where to find the mini server ID?
+### Where to find the mini server ID?
 
 | This is only valid for tenants living at "Jägerstrasse 59" in Winterthur.
 
