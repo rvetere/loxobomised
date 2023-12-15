@@ -22,11 +22,7 @@ const navigateToRoom = async (page, room) => {
   }
 
   // navigate to room
-  await clickButtonByText(page, "Räume");
-  await sleep(100);
-  await page.waitForFunction(
-    `document.querySelector("body").innerText.includes("RÄUME")`
-  );
+  await goThere(page, "Räume");
 
   await clickButtonByText(page, room);
   await sleep(100);
@@ -42,6 +38,34 @@ const navigateToRoom = async (page, room) => {
   await sleep(200);
   await page.screenshot({ path: "room-navigation.png" });
   console.log("👍 Navigated to room");
+};
+
+const goThere = async (page, text) => {
+  await clickButtonByText(page, text);
+
+  let foundInTime = false;
+  page
+    .waitForFunction(
+      `document.querySelector("body").innerText.includes("RÄUME")`
+    )
+    .then(() => {
+      foundInTime = true;
+    });
+
+  let counter = 0;
+  const poller = setInterval(async () => {
+    if (foundInTime) {
+      clearInterval(poller);
+    } else {
+      console.log("not found yet");
+      counter++;
+    }
+
+    if (counter > 10) {
+      clearInterval(poller);
+      await clickButtonByText(page, text);
+    }
+  }, 100);
 };
 
 module.exports = {
