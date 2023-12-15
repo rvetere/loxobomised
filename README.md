@@ -19,7 +19,7 @@ ROOMS=Wohnzimmer,Küche,Entrée,WC-Dusche,Loggia
 
 | This is only valid for tenants living at "Jägerstrasse 59" in Winterthur.
 
-Check your mails, you certainly received emails from "Living Services" portal - just search for one of those mails and open the "Living Services" App in a browser on your desktop computer. In there, you have this "Loxone" link, open that and login with the credentials you received by Wincasa (if not, ask them!).
+Check your mails, you certainly received emails from "Living Services" portal - just search for one of those mails and open the "Living Services" App in a browser on your desktop computer. In there, you have this "Loxone" link, open that and login with the credentials you received by Wincasa (if you don't know the credentials, ask Wincasa in a Support Ticket).
 
 After you logged in succesful into the loxone web interface, you can simply check your URL - all digits after the last `/` are representing your mini server ID.
 
