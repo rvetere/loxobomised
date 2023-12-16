@@ -14,6 +14,10 @@ const controlJalousieWithAction = async ({
   const [container] = await page.$x(
     `//div[contains(text(),'Beschattung')]/../../following-sibling::div[1]/div/div[${buttonGroupIndex}]`
   );
+  if (!container) {
+    return actualDelay;
+  }
+
   const texts = await container.$$eval("div", (divs) =>
     divs.map((div) => div.innerText)
   );

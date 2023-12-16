@@ -12,8 +12,12 @@ const controlJalousie = async ({
   rolloType = "Window", // Window, Loggia, Markise
   finalPosition = 0, // 0=Closed, 1=Slightly, 2=Double
 }) => {
+  let timer = null;
   let actualDelay = 0;
   let container = await getContainer(page, buttonGroupIndex);
+  if (!container) {
+    return { actualDelay, timer };
+  }
   const texts = await container.$$eval("div", (divs) =>
     divs.map((div) => div.innerText)
   );
@@ -28,7 +32,6 @@ const controlJalousie = async ({
 
   const steps = percentToSet - currentPercent;
   const isMovingDown = steps > 0;
-  let timer = null;
 
   console.log("controlJalousie", {
     buttonGroupIndex,
