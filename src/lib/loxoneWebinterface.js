@@ -9,10 +9,11 @@ const apartment = process.env.APARTMENT || "05.18";
 const serverUrl = `https://dns.loxonecloud.com/${miniServerId}`;
 
 class LoxoneWebinterface {
-  constructor(room) {
+  constructor(room, index) {
     console.log(`Creating LoxoneWebinterface instance with room "${room}"...`);
     this.room = room;
     this.initialized = false;
+    this.index = index;
 
     // setInterval(() => {
     //   if (this.initialized) {
@@ -52,12 +53,19 @@ class LoxoneWebinterface {
     await navigateToRoom(this.page, this.room);
     this.initialized = true;
 
-    this.interval = setInterval(this.refreshLogin.bind(this), 300000);
+    // random number between 0 and 30 seconds
+    const randomDelay = Math.floor(Math.random() * 1000 * 30);
+
+    this.interval = setInterval(
+      this.refreshLogin.bind(this),
+      1000 * 60 * 4 + randomDelay
+    );
     console.log(`✅ Login successful in room "${this.room}"!`);
   }
 
   async refreshLogin() {
     console.log(`Refreshing login in room "${this.room}"...`);
+    const timestamp = new Date().getTime();
 
     await this.page.goto(`https://dns.loxonecloud.com/${miniServerId}`);
     await this.page.type("input[type=text]", login);
@@ -71,7 +79,13 @@ class LoxoneWebinterface {
     );
 
     await navigateToRoom(this.page, this.room);
-    console.log(`✅ Successfully refreshed login in room "${this.room}"!`);
+    const timeElapsed = new Date().getTime() - timestamp;
+    // log success with time elapsed in seconds
+    console.log(
+      `✅ Successfully refreshed login in room "${this.room}" in ${Math.floor(
+        timeElapsed / 1000
+      )} seconds!`
+    );
   }
 
   getInstance() {
