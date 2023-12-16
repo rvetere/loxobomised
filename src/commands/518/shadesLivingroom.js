@@ -7,6 +7,9 @@ const { controlJalousie, getPageInPool, sleep } = require("../../lib");
  * @param {*} query
  */
 const run = async (pool, query) => {
+  console.log(
+    `🏎️ Run shadesLivingroom command at ${new Date().toLocaleString("de-DE")}`
+  );
   if (global.livingroomTimers && global.livingroomTimers.length) {
     global.livingroomTimers.forEach((timer) => timer && clearTimeout(timer));
     global.livingroomTimers = [];
@@ -18,7 +21,6 @@ const run = async (pool, query) => {
   let delay4 = 0;
   let timer4 = null;
   if (withLoggia) {
-    console.log({ query });
     const { actualDelay, timer } = await controlJalousie({
       page,
       buttonGroupIndex: 4,
@@ -50,6 +52,9 @@ const run = async (pool, query) => {
     timer4,
   ];
   await sleep(Math.max(delay2, delay3, delay4));
+  console.log(
+    `Finished shadesLivingroom at ${new Date().toLocaleString("de-DE")}`
+  );
 };
 
 module.exports = {

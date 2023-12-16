@@ -95,7 +95,7 @@
     shades_livingroom_100_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?percent2=100&finalPosition2=2&percent3=100&finalPosition3=2"'
 
     shades_livingroom_loggia: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1"'
-    shades_livingroom_0_loggia_0: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=0&percent3=0percent4=0"'
+    shades_livingroom_0_loggia_0: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=0&percent3=0&percent4=0"'
     shades_livingroom_30_0_loggia_50_0: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=30&finalPosition2=0&percent3=30&finalPosition3=0&percent4=50&finalPosition4=0"'
     shades_livingroom_60_0_loggia_50_0: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=60&finalPosition2=0&percent3=60&finalPosition3=0&percent4=50&finalPosition4=0"'
     shades_livingroom_90_0_loggia_50_0: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=90&finalPosition2=0&percent3=90&finalPosition3=0&percent4=50&finalPosition4=0"'

@@ -11,6 +11,10 @@ const {
  * @param {*} query
  */
 const run = async (pool, query) => {
+  console.log(
+    `🏎️ Run shadesLoggia command at ${new Date().toLocaleString("de-DE")}`
+  );
+
   const page = getPageInPool(pool, "Loggia");
   const delay1 = await controlJalousieWithAction({
     page,
@@ -25,6 +29,7 @@ const run = async (pool, query) => {
   });
 
   await sleep(Math.max(delay1, delay2));
+  console.log(`Finished shadesLoggia at ${new Date().toLocaleString("de-DE")}`);
 };
 
 module.exports = {

@@ -7,6 +7,10 @@ const { controlJalousie, getPageInPool, sleep } = require("../../lib");
  * @param {*} query
  */
 const run = async (pool, query) => {
+  console.log(
+    `🏎️ Run shadesKitchen command at ${new Date().toLocaleString("de-DE")}`
+  );
+
   if (global.kitchenTimers && global.kitchenTimers.length) {
     global.kitchenTimers.forEach((timer) => timer && clearTimeout(timer));
     global.kitchenTimers = [];
@@ -22,6 +26,9 @@ const run = async (pool, query) => {
 
   global.kitchenTimers = [...(global.kitchenTimers || []), timer];
   await sleep(actualDelay);
+  console.log(
+    `Finished shadesKitchen at ${new Date().toLocaleString("de-DE")}`
+  );
 };
 
 module.exports = {
