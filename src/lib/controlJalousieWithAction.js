@@ -18,7 +18,7 @@ const controlJalousieWithAction = async ({
     divs.map((div) => div.innerText)
   );
   const textWithPercent = texts.find((text) => text.includes("%"));
-  const textClosed = texts.find((text) => text.includes("Closed"));
+  const textClosed = texts.find((text) => text.includes("Fully extended"));
 
   const currentPercent = textWithPercent
     ? parseInt(
@@ -69,7 +69,7 @@ const controlJalousieWithAction = async ({
 };
 
 async function stopAndMoveToFinalPosition() {
-  console.log(`Run stopAndMoveToFinalPosition (${buttonGroupIndex})`);
+  console.log(`Run stopAndMoveToFinalPosition (${this.buttonGroupIndex})`);
   await clickActionOfCategory(
     this.page,
     "Beschattung",
