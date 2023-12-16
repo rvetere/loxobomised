@@ -1,5 +1,5 @@
 const puppeteer = require("puppeteer");
-const { navigateToRoom } = require("./index");
+const { navigateToRoom, sleep } = require("./index");
 require("dotenv").config();
 
 const miniServerId = process.env.MINI_SERVER_ID;
@@ -38,54 +38,69 @@ class LoxoneWebinterface {
       localStorage.setItem("LoxSettings.json", settingStr);
     }, `{"animations":true,"darkMode":true,"tileRepresentation":true,"simpleDesign":false,"miniservers":{"${miniServerId}":{"homeScreen":{"activated":true,"widget":{"building":0,"skyline":0}},"manualFavorites":{"activated":false},"deviceFavorites":{"activated":false},"entryPointLocation":"favorites","presenceRoom":"","instructionFlags":{},"userManagement":{},"sortingDeviceFavorites":{"Mieter":{"activated":false}},"kvStore":{},"ambientOnboardingShown":true}},"instructionFlags":{},"LOCAL_STORAGE":{},"entryPoint":{"activated":true,"entryPointLocation":"favorites"},"SYNC":{"ENABLED":false},"screenSaver":{"activationTime":300,"brightness":10}}`);
 
-    // login to loxone miniserver
-    await this.page.goto(serverUrl);
-    await this.page.type("input[type=text]", login);
-    await this.page.type("input[type=password]", password);
+    try {
+      // login to loxone miniserver
+      await this.page.goto(serverUrl);
+      await this.page.type("input[type=text]", login);
+      await this.page.type("input[type=password]", password);
 
-    await this.page.click("button[type=submit]");
-    await this.page.waitForNavigation();
+      await this.page.click("button[type=submit]");
+      await this.page.waitForNavigation();
 
-    await this.page.waitForFunction(
-      `document.querySelector("body").innerText.includes("WOHNUNG ${apartment}")`
-    );
+      await this.page.waitForFunction(
+        `document.querySelector("body").innerText.includes("WOHNUNG ${apartment}")`
+      );
 
-    await navigateToRoom(this.page, this.room);
-    this.initialized = true;
+      await navigateToRoom(this.page, this.room);
+      this.initialized = true;
 
-    // random number between 0 and 30 seconds
-    const randomDelay = Math.floor(Math.random() * 1000 * 30);
+      // random number between 0 and 30 seconds
+      const randomDelay = Math.floor(Math.random() * 1000 * 30);
 
-    this.interval = setInterval(
-      this.refreshLogin.bind(this),
-      1000 * 60 * 4 + randomDelay
-    );
-    console.log(`✅ Login successful in room "${this.room}"!`);
+      this.interval = setInterval(
+        this.refreshLogin.bind(this),
+        1000 * 60 * 4 + randomDelay
+      );
+      console.log(`✅ Login successful in room "${this.room}"!`);
+    } catch (e) {
+      console.error("Error during login: ", e);
+      await this.page.screenshot({ path: "error-init.png" });
+      await sleep(1000 * 5);
+      await this.init();
+    }
   }
 
   async refreshLogin() {
     console.log(`Refreshing login in room "${this.room}"...`);
     const timestamp = new Date().getTime();
 
-    await this.page.goto(`https://dns.loxonecloud.com/${miniServerId}`);
-    await this.page.type("input[type=text]", login);
-    await this.page.type("input[type=password]", password);
+    try {
+      // login to loxone miniserver
+      await this.page.goto(`https://dns.loxonecloud.com/${miniServerId}`);
+      await this.page.type("input[type=text]", login);
+      await this.page.type("input[type=password]", password);
 
-    await this.page.click("button[type=submit]");
-    await this.page.waitForNavigation();
+      await this.page.click("button[type=submit]");
+      await this.page.waitForNavigation();
 
-    await this.page.waitForFunction(
-      `document.querySelector("body").innerText.includes("WOHNUNG ${apartment}")`
-    );
+      await this.page.waitForFunction(
+        `document.querySelector("body").innerText.includes("WOHNUNG ${apartment}")`
+      );
 
-    await navigateToRoom(this.page, this.room);
-    const timeElapsed = new Date().getTime() - timestamp;
-    // log success with time elapsed in seconds
-    console.log(
-      `✅ Successfully refreshed login in room "${this.room}" in ${Math.floor(
-        timeElapsed / 1000
-      )} seconds!`
-    );
+      await navigateToRoom(this.page, this.room);
+      const timeElapsed = new Date().getTime() - timestamp;
+      // log success with time elapsed in seconds
+      console.log(
+        `✅ Successfully refreshed login in room "${this.room}" in ${Math.floor(
+          timeElapsed / 1000
+        )} seconds!`
+      );
+    } catch (e) {
+      console.error("Error during login: ", e);
+      await this.page.screenshot({ path: "error-refresh.png" });
+      await sleep(1000 * 5);
+      await this.init();
+    }
   }
 
   getInstance() {
