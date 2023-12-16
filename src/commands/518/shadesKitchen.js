@@ -1,4 +1,4 @@
-const { controlJalousie, getPageInPool } = require("../../lib");
+const { controlJalousie, getPageInPool, sleep } = require("../../lib");
 
 /**
  * ?percent=72&finalPosition=1
