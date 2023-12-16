@@ -18,6 +18,7 @@ const run = async (pool, query) => {
   let delay4 = 0;
   let timer4 = null;
   if (withLoggia) {
+    console.log({ query });
     const { actualDelay, timer } = await controlJalousie({
       page,
       buttonGroupIndex: 4,
