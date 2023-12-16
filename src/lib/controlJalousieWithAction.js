@@ -35,19 +35,18 @@ const controlJalousieWithAction = async ({
   const isMovingDown = steps > 0;
   const action = isMovingDown ? actionDown : actionUp;
 
+  console.log("controlJalousieWithAction", {
+    buttonGroupIndex,
+    percentToSet,
+    currentPercent,
+    steps,
+    rolloType,
+  });
   if (toPositive(steps) > 4) {
     await clickActionOfCategory(page, "Beschattung", buttonGroupIndex, action);
 
     // calculate exact delay to reach "percentToSet"
     const delay = Math.floor(toPositive(steps) * MarkiseTiming * 1000);
-    // console.log({
-    //   percentToSet,
-    //   currentPercent,
-    //   steps,
-    //   action,
-    //   delay,
-    //   rolloType,
-    // });
 
     // wait until jalousie is in position
     const randomDelay = Math.floor(Math.random() * 50);
@@ -70,9 +69,7 @@ const controlJalousieWithAction = async ({
 };
 
 async function stopAndMoveToFinalPosition() {
-  //   console.log(
-  //     `Run stopAndMoveToFinalPosition for buttonGroupIndex ${this.buttonGroupIndex}`
-  //   );
+  console.log(`Run stopAndMoveToFinalPosition (${buttonGroupIndex})`);
   await clickActionOfCategory(
     this.page,
     "Beschattung",

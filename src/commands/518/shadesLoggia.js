@@ -15,6 +15,7 @@ const run = async (pool, query) => {
     `🏎️ Run shadesLoggia command at ${new Date().toLocaleString("de-DE")}`
   );
 
+  console.log({ query });
   const page = getPageInPool(pool, "Loggia");
   const delay1 = await controlJalousieWithAction({
     page,
