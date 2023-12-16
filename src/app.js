@@ -42,10 +42,12 @@ async function initPool() {
   const rooms = roomsRaw.split(",");
   const instances = [];
 
+  let i = 0;
   for (let room of rooms) {
-    let instance = new LoxoneWebinterface(room);
+    let instance = new LoxoneWebinterface(room, i);
     await instance.init();
     instances.push(instance);
+    i = i + 1;
   }
 
   pool = instances;
