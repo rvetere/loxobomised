@@ -27,13 +27,19 @@ const clickUpDownOfCategory = async (
 
   // click action
   elements[0].click();
+  let timer = null;
   if (doubleClick) {
-    setTimeout(() => {
-      elements[0].click();
-      callback();
+    timer = setTimeout(() => {
+      try {
+        elements[0].click();
+        callback();
+      } catch (e) {
+        console.error(e);
+      }
     }, delay);
   }
   await sleep(800);
+  return timer;
 };
 
 module.exports = {

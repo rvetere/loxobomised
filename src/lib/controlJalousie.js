@@ -28,6 +28,7 @@ const controlJalousie = async ({
 
   const steps = percentToSet - currentPercent;
   const isMovingDown = steps > 0;
+  let timer = null;
 
   if (toPositive(steps) > 4) {
     // calculate exact delay to reach "percentToSet"
@@ -49,7 +50,7 @@ const controlJalousie = async ({
     // });
 
     // click action to move jalousie
-    await clickUpDownOfCategory(
+    timer = await clickUpDownOfCategory(
       page,
       "Beschattung",
       buttonGroupIndex,
@@ -149,7 +150,7 @@ const controlJalousie = async ({
     );
   }
 
-  return actualDelay;
+  return { actualDelay, timer };
 };
 
 const getContainer = async (page, buttonGroupIndex) => {

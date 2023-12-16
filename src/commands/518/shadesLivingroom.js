@@ -7,33 +7,47 @@ const { controlJalousie, getPageInPool, sleep } = require("../../lib");
  * @param {*} query
  */
 const run = async (pool, query) => {
+  if (global.livingroomTimers && global.livingroomTimers.length) {
+    global.livingroomTimers.forEach((timer) => timer && clearTimeout(timer));
+    global.livingroomTimers = [];
+  }
+
   const withLoggia = !!query.lg;
 
   const page = getPageInPool(pool, "Wohnzimmer");
   let delay4 = 0;
+  let timer4 = null;
   if (withLoggia) {
-    delay4 = await controlJalousie({
+    const { actualDelay, timer } = await controlJalousie({
       page,
       buttonGroupIndex: 4,
       percentToSet: parseInt(query.percent4 || "100", 10),
       finalPosition: parseInt(query.finalPosition4 || "2", 10),
       rolloType: "Loggia",
     });
+    delay4 = actualDelay;
+    timer4 = timer;
   }
 
-  const delay2 = await controlJalousie({
+  const { actualDelay: delay2, timer: timer2 } = await controlJalousie({
     page,
     buttonGroupIndex: 2,
     percentToSet: parseInt(query.percent2 || "66", 10),
     finalPosition: parseInt(query.finalPosition2 || "1", 10),
   });
-  const delay3 = await controlJalousie({
+  const { actualDelay: delay3, timer: timer3 } = await controlJalousie({
     page,
     buttonGroupIndex: 3,
     percentToSet: parseInt(query.percent3 || "72", 10),
     finalPosition: parseInt(query.finalPosition3 || "1", 10),
   });
 
+  global.livingroomTimers = [
+    ...(global.livingroomTimers || []),
+    timer2,
+    timer3,
+    timer4,
+  ];
   await sleep(Math.max(delay2, delay3, delay4));
 };
 
