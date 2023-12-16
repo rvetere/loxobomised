@@ -30,7 +30,7 @@ const controlJalousie = async ({
   const isMovingDown = steps > 0;
   let timer = null;
 
-  console.log({
+  console.log("controlJalousie", {
     buttonGroupIndex,
     percentToSet,
     currentPercent,
@@ -46,6 +46,7 @@ const controlJalousie = async ({
         ? WindowRolloTiming
         : MarkiseTiming;
     const delay = Math.floor(toPositive(steps) * timing * 1000);
+    actualDelay = delay;
 
     // click action to move jalousie
     timer = await clickUpDownOfCategory(
@@ -56,16 +57,10 @@ const controlJalousie = async ({
       true,
       delay,
       async () => {
-        console.log({
-          buttonGroupIndex,
-          isMovingDown,
-          rolloType,
-          finalPosition,
-        });
-
         if (rolloType !== "Markise") {
-          // const subActionDown = actionDown.split(" ")[1];
-          // const subActionUp = actionUp.split(" ")[1];
+          console.log(
+            `Move jalousie (${buttonGroupIndex}) into final position - ${finalPosition}`
+          );
           if (isMovingDown) {
             if (finalPosition === 0) {
               // nothing to do, the blinds are already closed
