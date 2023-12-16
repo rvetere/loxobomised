@@ -30,6 +30,13 @@ const controlJalousie = async ({
   const isMovingDown = steps > 0;
   let timer = null;
 
+  console.log({
+    buttonGroupIndex,
+    percentToSet,
+    currentPercent,
+    steps,
+    rolloType,
+  });
   if (toPositive(steps) > 4) {
     // calculate exact delay to reach "percentToSet"
     const timing =
@@ -40,15 +47,6 @@ const controlJalousie = async ({
         : MarkiseTiming;
     const delay = Math.floor(toPositive(steps) * timing * 1000);
 
-    // console.log({
-    //   buttonGroupIndex,
-    //   percentToSet,
-    //   currentPercent,
-    //   steps,
-    //   rolloType,
-    //   delay,
-    // });
-
     // click action to move jalousie
     timer = await clickUpDownOfCategory(
       page,
@@ -58,12 +56,12 @@ const controlJalousie = async ({
       true,
       delay,
       async () => {
-        // console.log({
-        //   buttonGroupIndex,
-        //   isMovingDown,
-        //   rolloType,
-        //   finalPosition,
-        // });
+        console.log({
+          buttonGroupIndex,
+          isMovingDown,
+          rolloType,
+          finalPosition,
+        });
 
         if (rolloType !== "Markise") {
           // const subActionDown = actionDown.split(" ")[1];

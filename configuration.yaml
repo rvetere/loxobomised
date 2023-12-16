@@ -1,90 +1,142 @@
-# Loads default set of integrations. Do not remove.
-default_config:
+  # Loads default set of integrations. Do not remove.
+  default_config:
 
-# Load frontend themes from the themes folder
-frontend:
-  themes: !include_dir_merge_named themes
+  # Load frontend themes from the themes folder
+  frontend:
+    themes: !include_dir_merge_named themes
 
-automation: !include automations.yaml
-script: !include scripts.yaml
-scene: !include scenes.yaml
+  automation: !include automations.yaml
+  script: !include scripts.yaml
+  scene: !include scenes.yaml
 
-http:
-  use_x_forwarded_for: true
-  trusted_proxies:
-    - 172.30.33.2
+  http:
+    use_x_forwarded_for: true
+    trusted_proxies:
+      - 172.30.33.2
 
-shell_command:
-  full_bathroom_light: 'curl -X GET "http://192.168.1.12:4233/exec/518/fullBathroomLight"'
-  easy: 'curl -X GET "http://192.168.1.12:4233/exec/518/easy"'
-  sleep: 'curl -X GET "http://192.168.1.12:4233/exec/518/sleep"'
-  bathroom_light_on: 'curl -X GET "http://192.168.1.12:4233/exec/518/bathroomLightOn"'
-  bathroom_light_off: 'curl -X GET "http://192.168.1.12:4233/exec/518/bathroomLightOff"'
-  home_office_shade_on: 'curl -X GET "http://192.168.1.12:4233/exec/518/homeOfficeShadeOn"'
-  home_office_shade_off: 'curl -X GET "http://192.168.1.12:4233/exec/518/homeOfficeShadeOff"'
-  shade_on: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadeOn"'
-  shade_off: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadeOff"'
-  markise_on: 'curl -X GET "http://192.168.1.12:4233/exec/518/markiseOn"'
-  markise_off: 'curl -X GET "http://192.168.1.12:4233/exec/518/markiseOff"'
-  cinema_power_on: 'curl -X GET "http://192.168.1.12:4233/exec/518/cinemaPowerOn"'
-  cinema_power_on_with_shade: 'curl -X GET "http://192.168.1.12:4233/exec/518/cinemaPowerOnWithShade"'
-  dimm_kitchen_10: 'curl -X GET "http://192.168.1.12:4233/exec/518/dimmKitchenLights?percent=10"'
-  dimm_kitchen_20: 'curl -X GET "http://192.168.1.12:4233/exec/518/dimmKitchenLights?percent=20"'
-  dimm_kitchen_30: 'curl -X GET "http://192.168.1.12:4233/exec/518/dimmKitchenLights?percent=30"'
-  dimm_kitchen_40: 'curl -X GET "http://192.168.1.12:4233/exec/518/dimmKitchenLights?percent=40"'
-  dimm_kitchen_50: 'curl -X GET "http://192.168.1.12:4233/exec/518/dimmKitchenLights?percent=50"'
-  dimm_kitchen_60: 'curl -X GET "http://192.168.1.12:4233/exec/518/dimmKitchenLights?percent=60"'
-  dimm_kitchen_70: 'curl -X GET "http://192.168.1.12:4233/exec/518/dimmKitchenLights?percent=70"'
-  dimm_kitchen_80: 'curl -X GET "http://192.168.1.12:4233/exec/518/dimmKitchenLights?percent=80"'
-  dimm_kitchen_90: 'curl -X GET "http://192.168.1.12:4233/exec/518/dimmKitchenLights?percent=90"'
-  dimm_kitchen_100: 'curl -X GET "http://192.168.1.12:4233/exec/518/dimmKitchenLights?percent=100"'
-  full_light_on: 'curl -X GET "http://192.168.1.12:4233/exec/518/fullLightOn"'
-  full_light_off: 'curl -X GET "http://192.168.1.12:4233/exec/518/fullLightOff"'
-  
-  shades_loggia: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLoggia"'
-  shades_loggia_30: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLoggia?percent1=30&percent2=30"'
-  shades_loggia_60: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLoggia?percent1=60&percent2=60"'
-  shades_loggia_90: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLoggia?percent1=90&percent2=90"'
-  
-  shades_bedroom: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesBedroom"'
-  shades_bedroom_30_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesBedroom?percent=30&finalPosition=1"'
-  shades_bedroom_60_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesBedroom?percent=60&finalPosition=1"'
-  shades_bedroom_90_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesBedroom?percent=90&finalPosition=1"'
-  shades_bedroom_30_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesBedroom?percent=30&finalPosition=2"'
-  shades_bedroom_60_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesBedroom?percent=60&finalPosition=2"'
-  shades_bedroom_90_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesBedroom?percent=90&finalPosition=2"'
-  
-  shades_kitchen: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesKitchen"'
-  shades_kitchen_30_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesKitchen?percent=30&finalPosition=1"'
-  shades_kitchen_60_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesKitchen?percent=60&finalPosition=1"'
-  shades_kitchen_90_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesKitchen?percent=90&finalPosition=1"'
-  shades_kitchen_30_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesKitchen?percent=30&finalPosition=2"'
-  shades_kitchen_60_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesKitchen?percent=60&finalPosition=2"'
-  shades_kitchen_90_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesKitchen?percent=90&finalPosition=2"'
-  
-  shades_livingroom: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom"'
-  shades_livingroom_loggia: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1"'
-  shades_livingroom_30_1_loggia_50_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=30&finalPosition2=1&percent3=30&finalPosition3=1&percent4=50&finalPosition4=1"'
-  shades_livingroom_60_1_loggia_50_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=60&finalPosition2=1&percent3=60&finalPosition3=1&percent4=50&finalPosition4=1"'
-  shades_livingroom_90_1_loggia_50_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=90&finalPosition2=1&percent3=90&finalPosition3=1&percent4=50&finalPosition4=1"'
-  shades_livingroom_30_1_loggia_100_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=30&finalPosition2=1&percent3=30&finalPosition3=1&percent4=100&finalPosition4=1"'
-  shades_livingroom_60_1_loggia_100_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=60&finalPosition2=1&percent3=60&finalPosition3=1&percent4=100&finalPosition4=1"'
-  shades_livingroom_90_1_loggia_100_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=90&finalPosition2=1&percent3=90&finalPosition3=1&percent4=100&finalPosition4=1"'
-  shades_livingroom_30_1_loggia_50_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=30&finalPosition2=1&percent3=30&finalPosition3=1&percent4=50&finalPosition4=2"'
-  shades_livingroom_60_1_loggia_50_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=60&finalPosition2=1&percent3=60&finalPosition3=1&percent4=50&finalPosition4=2"'
-  shades_livingroom_90_1_loggia_50_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=90&finalPosition2=1&percent3=90&finalPosition3=1&percent4=50&finalPosition4=2"'
-  shades_livingroom_30_1_loggia_100_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=30&finalPosition2=1&percent3=30&finalPosition3=1&percent4=100&finalPosition4=2"'
-  shades_livingroom_60_1_loggia_100_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=60&finalPosition2=1&percent3=60&finalPosition3=1&percent4=100&finalPosition4=2"'
-  shades_livingroom_90_1_loggia_100_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=90&finalPosition2=1&percent3=90&finalPosition3=1&percent4=100&finalPosition4=2"'
-  shades_livingroom_30_2_loggia_50_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=30&finalPosition2=2&percent3=30&finalPosition3=2&percent4=50&finalPosition4=1"'
-  shades_livingroom_60_2_loggia_50_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=60&finalPosition2=2&percent3=60&finalPosition3=2&percent4=50&finalPosition4=1"'
-  shades_livingroom_90_2_loggia_50_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=90&finalPosition2=2&percent3=90&finalPosition3=2&percent4=50&finalPosition4=1"'
-  shades_livingroom_30_2_loggia_100_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=30&finalPosition2=2&percent3=30&finalPosition3=2&percent4=100&finalPosition4=1"'
-  shades_livingroom_60_2_loggia_100_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=60&finalPosition2=2&percent3=60&finalPosition3=2&percent4=100&finalPosition4=1"'
-  shades_livingroom_90_2_loggia_100_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=90&finalPosition2=2&percent3=90&finalPosition3=2&percent4=100&finalPosition4=1"'
-  shades_livingroom_30_2_loggia_50_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=30&finalPosition2=2&percent3=30&finalPosition3=2&percent4=50&finalPosition4=2"'
-  shades_livingroom_60_2_loggia_50_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=60&finalPosition2=2&percent3=60&finalPosition3=2&percent4=50&finalPosition4=2"'
-  shades_livingroom_90_2_loggia_50_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=90&finalPosition2=2&percent3=90&finalPosition3=2&percent4=50&finalPosition4=2"'
-  shades_livingroom_30_2_loggia_100_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=30&finalPosition2=2&percent3=30&finalPosition3=2&percent4=100&finalPosition4=2"'
-  shades_livingroom_60_2_loggia_100_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=60&finalPosition2=2&percent3=60&finalPosition3=2&percent4=100&finalPosition4=2"'
-  shades_livingroom_90_2_loggia_100_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=90&finalPosition2=2&percent3=90&finalPosition3=2&percent4=100&finalPosition4=2"'
+  shell_command:
+    full_bathroom_light: 'curl -X GET "http://192.168.1.12:4233/exec/518/fullBathroomLight"'
+    easy: 'curl -X GET "http://192.168.1.12:4233/exec/518/easy"'
+    sleep: 'curl -X GET "http://192.168.1.12:4233/exec/518/sleep"'
+    bathroom_light_on: 'curl -X GET "http://192.168.1.12:4233/exec/518/bathroomLightOn"'
+    bathroom_light_off: 'curl -X GET "http://192.168.1.12:4233/exec/518/bathroomLightOff"'
+    home_office_shade_on: 'curl -X GET "http://192.168.1.12:4233/exec/518/homeOfficeShadeOn"'
+    home_office_shade_off: 'curl -X GET "http://192.168.1.12:4233/exec/518/homeOfficeShadeOff"'
+    shade_on: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadeOn"'
+    shade_off: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadeOff"'
+    markise_on: 'curl -X GET "http://192.168.1.12:4233/exec/518/markiseOn"'
+    markise_off: 'curl -X GET "http://192.168.1.12:4233/exec/518/markiseOff"'
+    cinema_power_on: 'curl -X GET "http://192.168.1.12:4233/exec/518/cinemaPowerOn"'
+    cinema_power_on_with_shade: 'curl -X GET "http://192.168.1.12:4233/exec/518/cinemaPowerOnWithShade"'
+    dimm_kitchen_10: 'curl -X GET "http://192.168.1.12:4233/exec/518/dimmKitchenLights?percent=10"'
+    dimm_kitchen_20: 'curl -X GET "http://192.168.1.12:4233/exec/518/dimmKitchenLights?percent=20"'
+    dimm_kitchen_30: 'curl -X GET "http://192.168.1.12:4233/exec/518/dimmKitchenLights?percent=30"'
+    dimm_kitchen_40: 'curl -X GET "http://192.168.1.12:4233/exec/518/dimmKitchenLights?percent=40"'
+    dimm_kitchen_50: 'curl -X GET "http://192.168.1.12:4233/exec/518/dimmKitchenLights?percent=50"'
+    dimm_kitchen_60: 'curl -X GET "http://192.168.1.12:4233/exec/518/dimmKitchenLights?percent=60"'
+    dimm_kitchen_70: 'curl -X GET "http://192.168.1.12:4233/exec/518/dimmKitchenLights?percent=70"'
+    dimm_kitchen_80: 'curl -X GET "http://192.168.1.12:4233/exec/518/dimmKitchenLights?percent=80"'
+    dimm_kitchen_90: 'curl -X GET "http://192.168.1.12:4233/exec/518/dimmKitchenLights?percent=90"'
+    dimm_kitchen_100: 'curl -X GET "http://192.168.1.12:4233/exec/518/dimmKitchenLights?percent=100"'
+    full_light_on: 'curl -X GET "http://192.168.1.12:4233/exec/518/fullLightOn"'
+    full_light_off: 'curl -X GET "http://192.168.1.12:4233/exec/518/fullLightOff"'
+    
+    shades_loggia: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLoggia"'
+    shades_loggia_0: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLoggia?percent1=0&percent2=0"'
+    shades_loggia_30: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLoggia?percent1=30&percent2=30"'
+    shades_loggia_60: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLoggia?percent1=60&percent2=60"'
+    shades_loggia_90: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLoggia?percent1=90&percent2=90"'
+    shades_loggia_100: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLoggia?percent1=100&percent2=100"'
+    
+    shades_bedroom: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesBedroom"'
+    shades_bedroom_0: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesBedroom?percent=0"'
+    shades_bedroom_30_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesBedroom?percent=30&finalPosition=1"'
+    shades_bedroom_60_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesBedroom?percent=60&finalPosition=1"'
+    shades_bedroom_90_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesBedroom?percent=90&finalPosition=1"'    
+    shades_bedroom_100_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesBedroom?percent=100&finalPosition=1"'    
+    
+    shades_bedroom_30_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesBedroom?percent=30&finalPosition=2"'
+    shades_bedroom_60_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesBedroom?percent=60&finalPosition=2"'
+    shades_bedroom_90_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesBedroom?percent=90&finalPosition=2"'
+    shades_bedroom_100_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesBedroom?percent=100&finalPosition=2"'
+    
+    shades_kitchen: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesKitchen"'
+    shades_kitchen_0: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesKitchen?percent=0"'
+    shades_kitchen_30_0: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesKitchen?percent=30&finalPosition=0"'
+    shades_kitchen_60_0: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesKitchen?percent=60&finalPosition=0"'
+    shades_kitchen_90_0: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesKitchen?percent=90&finalPosition=0"'
+    shades_kitchen_100_0: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesKitchen?percent=100&finalPosition=0"'
+   
+    shades_kitchen_30_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesKitchen?percent=30&finalPosition=1"'
+    shades_kitchen_60_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesKitchen?percent=60&finalPosition=1"'
+    shades_kitchen_90_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesKitchen?percent=90&finalPosition=1"'
+    shades_kitchen_100_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesKitchen?percent=100&finalPosition=1"'
+    
+    shades_kitchen_30_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesKitchen?percent=30&finalPosition=2"'
+    shades_kitchen_60_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesKitchen?percent=60&finalPosition=2"'
+    shades_kitchen_90_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesKitchen?percent=90&finalPosition=2"'
+    shades_kitchen_100_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesKitchen?percent=100&finalPosition=2"'
+    
+    shades_livingroom: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom"'
+    shades_livingroom_0: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?percent2=0&percent3=0"'
+    shades_livingroom_30_0: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?percent2=30&finalPosition2=0&percent3=30&finalPosition3=0"'
+    shades_livingroom_60_0: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?percent2=60&finalPosition2=0&percent3=60&finalPosition3=0"'
+    shades_livingroom_90_0: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?percent2=90&finalPosition2=0&percent3=90&finalPosition3=0"'
+    shades_livingroom_100_0: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?percent2=100&finalPosition2=0&percent3=100&finalPosition3=0"'
+
+    shades_livingroom_30_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?percent2=30&finalPosition2=1&percent3=30&finalPosition3=1"'
+    shades_livingroom_60_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?percent2=60&finalPosition2=1&percent3=60&finalPosition3=1"'
+    shades_livingroom_90_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?percent2=90&finalPosition2=1&percent3=90&finalPosition3=1"'
+    shades_livingroom_100_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?percent2=100&finalPosition2=1&percent3=100&finalPosition3=1"'
+    
+    shades_livingroom_30_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?percent2=30&finalPosition2=2&percent3=30&finalPosition3=2"'
+    shades_livingroom_60_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?percent2=60&finalPosition2=2&percent3=60&finalPosition3=2"'
+    shades_livingroom_90_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?percent2=90&finalPosition2=2&percent3=90&finalPosition3=2"'
+    shades_livingroom_100_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?percent2=100&finalPosition2=2&percent3=100&finalPosition3=2"'
+
+    shades_livingroom_loggia: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1"'
+    shades_livingroom_0_loggia_0: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=0&percent3=0percent4=0"'
+    shades_livingroom_30_0_loggia_50_0: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=30&finalPosition2=0&percent3=30&finalPosition3=0&percent4=50&finalPosition4=0"'
+    shades_livingroom_60_0_loggia_50_0: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=60&finalPosition2=0&percent3=60&finalPosition3=0&percent4=50&finalPosition4=0"'
+    shades_livingroom_90_0_loggia_50_0: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=90&finalPosition2=0&percent3=90&finalPosition3=0&percent4=50&finalPosition4=0"'
+    shades_livingroom_100_0_loggia_50_0: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=100&finalPosition2=0&percent3=100&finalPosition3=0&percent4=50&finalPosition4=0"'
+
+    shades_livingroom_30_1_loggia_50_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=30&finalPosition2=1&percent3=30&finalPosition3=1&percent4=50&finalPosition4=1"'
+    shades_livingroom_60_1_loggia_50_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=60&finalPosition2=1&percent3=60&finalPosition3=1&percent4=50&finalPosition4=1"'
+    shades_livingroom_90_1_loggia_50_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=90&finalPosition2=1&percent3=90&finalPosition3=1&percent4=50&finalPosition4=1"'
+    shades_livingroom_100_1_loggia_50_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=100&finalPosition2=1&percent3=100&finalPosition3=1&percent4=50&finalPosition4=1"'
+    
+    shades_livingroom_30_1_loggia_100_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=30&finalPosition2=1&percent3=30&finalPosition3=1&percent4=100&finalPosition4=1"'
+    shades_livingroom_60_1_loggia_100_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=60&finalPosition2=1&percent3=60&finalPosition3=1&percent4=100&finalPosition4=1"'
+    shades_livingroom_90_1_loggia_100_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=90&finalPosition2=1&percent3=90&finalPosition3=1&percent4=100&finalPosition4=1"'
+    shades_livingroom_100_1_loggia_100_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=100&finalPosition2=1&percent3=100&finalPosition3=1&percent4=100&finalPosition4=1"'
+    
+    shades_livingroom_30_1_loggia_50_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=30&finalPosition2=1&percent3=30&finalPosition3=1&percent4=50&finalPosition4=2"'
+    shades_livingroom_60_1_loggia_50_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=60&finalPosition2=1&percent3=60&finalPosition3=1&percent4=50&finalPosition4=2"'
+    shades_livingroom_90_1_loggia_50_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=90&finalPosition2=1&percent3=90&finalPosition3=1&percent4=50&finalPosition4=2"'
+    shades_livingroom_100_1_loggia_50_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=100&finalPosition2=1&percent3=100&finalPosition3=1&percent4=50&finalPosition4=2"'
+    
+    shades_livingroom_30_1_loggia_100_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=30&finalPosition2=1&percent3=30&finalPosition3=1&percent4=100&finalPosition4=2"'
+    shades_livingroom_60_1_loggia_100_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=60&finalPosition2=1&percent3=60&finalPosition3=1&percent4=100&finalPosition4=2"'
+    shades_livingroom_90_1_loggia_100_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=90&finalPosition2=1&percent3=90&finalPosition3=1&percent4=100&finalPosition4=2"'
+    shades_livingroom_100_1_loggia_100_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=100&finalPosition2=1&percent3=100&finalPosition3=1&percent4=100&finalPosition4=2"'
+    
+    shades_livingroom_30_2_loggia_50_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=30&finalPosition2=2&percent3=30&finalPosition3=2&percent4=50&finalPosition4=1"'
+    shades_livingroom_60_2_loggia_50_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=60&finalPosition2=2&percent3=60&finalPosition3=2&percent4=50&finalPosition4=1"'
+    shades_livingroom_90_2_loggia_50_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=90&finalPosition2=2&percent3=90&finalPosition3=2&percent4=50&finalPosition4=1"'
+    shades_livingroom_100_2_loggia_50_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=100&finalPosition2=2&percent3=100&finalPosition3=2&percent4=50&finalPosition4=1"'
+    
+    shades_livingroom_30_2_loggia_100_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=30&finalPosition2=2&percent3=30&finalPosition3=2&percent4=100&finalPosition4=1"'
+    shades_livingroom_60_2_loggia_100_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=60&finalPosition2=2&percent3=60&finalPosition3=2&percent4=100&finalPosition4=1"'
+    shades_livingroom_90_2_loggia_100_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=90&finalPosition2=2&percent3=90&finalPosition3=2&percent4=100&finalPosition4=1"'
+    shades_livingroom_100_2_loggia_100_1: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=100&finalPosition2=2&percent3=100&finalPosition3=2&percent4=100&finalPosition4=1"'
+    
+    shades_livingroom_30_2_loggia_50_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=30&finalPosition2=2&percent3=30&finalPosition3=2&percent4=50&finalPosition4=2"'
+    shades_livingroom_60_2_loggia_50_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=60&finalPosition2=2&percent3=60&finalPosition3=2&percent4=50&finalPosition4=2"'
+    shades_livingroom_90_2_loggia_50_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=90&finalPosition2=2&percent3=90&finalPosition3=2&percent4=50&finalPosition4=2"'
+    shades_livingroom_100_2_loggia_50_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=100&finalPosition2=2&percent3=100&finalPosition3=2&percent4=50&finalPosition4=2"'
+    
+    shades_livingroom_30_2_loggia_100_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=30&finalPosition2=2&percent3=30&finalPosition3=2&percent4=100&finalPosition4=2"'
+    shades_livingroom_60_2_loggia_100_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=60&finalPosition2=2&percent3=60&finalPosition3=2&percent4=100&finalPosition4=2"'
+    shades_livingroom_90_2_loggia_100_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=90&finalPosition2=2&percent3=90&finalPosition3=2&percent4=100&finalPosition4=2"'
+    shades_livingroom_100_2_loggia_100_2: 'curl -X GET "http://192.168.1.12:4233/exec/518/shadesLivingRoom?lg=1&percent2=100&finalPosition2=2&percent3=100&finalPosition3=2&percent4=100&finalPosition4=2"'
