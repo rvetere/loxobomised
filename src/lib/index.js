@@ -1,4 +1,5 @@
 const { controlJalousie } = require("./controlJalousie");
+const { controlJalousieWithAction } = require("./controlJalousieWithAction");
 const { clickActionOfCategory } = require("./clickActionOfCategory");
 const { clickUpDownOfCategory } = require("./clickUpDownOfCategory");
 const { clickPlusMinusOfCategory } = require("./clickPlusMinusOfCategory");
@@ -10,6 +11,7 @@ const { sleep } = require("./sleep");
 
 module.exports = {
   controlJalousie,
+  controlJalousieWithAction,
   clickUpDownOfCategory,
   clickActionOfCategory,
   clickPlusMinusOfCategory,

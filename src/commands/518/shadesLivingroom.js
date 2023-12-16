@@ -1,7 +1,7 @@
 const { controlJalousie, getPageInPool, sleep } = require("../../lib");
 
 /**
- * ?lg=1&percent2=66&finalPosition2=1&percent3=66&finalPosition3=1&percent4=0&finalPosition4=0
+ * ?lg=1&percent2=66&finalPosition2=1&percent3=72&finalPosition3=1&percent4=100&finalPosition4=2
  *
  * @param {*} pool
  * @param {*} query
@@ -30,7 +30,7 @@ const run = async (pool, query) => {
   const delay3 = await controlJalousie({
     page,
     buttonGroupIndex: 3,
-    percentToSet: parseInt(query.percent3 || "66", 10),
+    percentToSet: parseInt(query.percent3 || "72", 10),
     finalPosition: parseInt(query.finalPosition3 || "1", 10),
   });
 

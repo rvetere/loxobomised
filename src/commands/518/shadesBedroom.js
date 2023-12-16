@@ -1,5 +1,11 @@
 const { controlJalousie, getPageInPool } = require("../../lib");
 
+/**
+ * ?percent=45&finalPosition=1
+ *
+ * @param {*} pool
+ * @param {*} query
+ */
 const run = async (pool, query) => {
   const page = getPageInPool(pool, "Zimmer 1");
   await controlJalousie({

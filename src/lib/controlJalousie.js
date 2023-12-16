@@ -1,7 +1,7 @@
 const { clickUpDownOfCategory } = require("./clickUpDownOfCategory");
 const { sleep } = require("./sleep");
 
-const LoggiaRolloTiming = 60 / 100;
+const LoggiaRolloTiming = 59 / 100;
 const WindowRolloTiming = 40 / 100;
 const MarkiseTiming = 20 / 100;
 
@@ -29,14 +29,7 @@ const controlJalousie = async ({
   const steps = percentToSet - currentPercent;
   const isMovingDown = steps > 0;
 
-  console.log({
-    buttonGroupIndex,
-    percentToSet,
-    currentPercent,
-    steps,
-    rolloType,
-  });
-  if (toPositive(steps) > 0) {
+  if (toPositive(steps) > 4) {
     // calculate exact delay to reach "percentToSet"
     const timing =
       rolloType === "Loggia"
@@ -45,6 +38,15 @@ const controlJalousie = async ({
         ? WindowRolloTiming
         : MarkiseTiming;
     const delay = Math.floor(toPositive(steps) * timing * 1000);
+
+    // console.log({
+    //   buttonGroupIndex,
+    //   percentToSet,
+    //   currentPercent,
+    //   steps,
+    //   rolloType,
+    //   delay,
+    // });
 
     // click action to move jalousie
     await clickUpDownOfCategory(
@@ -55,12 +57,13 @@ const controlJalousie = async ({
       true,
       delay,
       async () => {
-        console.log({
-          buttonGroupIndex,
-          isMovingDown,
-          rolloType,
-          finalPosition,
-        });
+        // console.log({
+        //   buttonGroupIndex,
+        //   isMovingDown,
+        //   rolloType,
+        //   finalPosition,
+        // });
+
         if (rolloType !== "Markise") {
           // const subActionDown = actionDown.split(" ")[1];
           // const subActionUp = actionUp.split(" ")[1];
@@ -87,7 +90,7 @@ const controlJalousie = async ({
                 buttonGroupIndex,
                 "up"
               );
-              await sleep(400);
+              await sleep(450);
               await clickUpDownOfCategory(
                 page,
                 "Beschattung",

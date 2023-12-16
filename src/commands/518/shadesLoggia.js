@@ -1,20 +1,30 @@
-const { clickActionOfCategory, getPageInPool, sleep } = require("../../lib");
+const {
+  controlJalousieWithAction,
+  getPageInPool,
+  sleep,
+} = require("../../lib");
 
+/**
+ * ?percent1=50&percent2=33
+ *
+ * @param {*} pool
+ * @param {*} query
+ */
 const run = async (pool, query) => {
-  const windowDelay1 = parseInt(query.delay1 || "10", 10);
-  const windowDelay2 = parseInt(query.delay2 || "8", 10);
-  const direction = query.direction || "Out";
-
   const page = getPageInPool(pool, "Loggia");
-  await clickActionOfCategory(page, "Beschattung", 1, `Fully ${direction}`);
-  setTimeout(async () => {
-    await clickActionOfCategory(page, "Beschattung", 1, direction);
-  }, 1000 * windowDelay1);
+  const delay1 = await controlJalousieWithAction({
+    page,
+    buttonGroupIndex: 1,
+    percentToSet: parseInt(query.percent1 || "50", 10),
+  });
 
-  await clickActionOfCategory(page, "Beschattung", 2, `Fully ${direction}`);
-  setTimeout(async () => {
-    await clickActionOfCategory(page, "Beschattung", 2, direction);
-  }, 1000 * windowDelay2);
+  const delay2 = await controlJalousieWithAction({
+    page,
+    buttonGroupIndex: 2,
+    percentToSet: parseInt(query.percent2 || "33", 10),
+  });
+
+  await sleep(Math.max(delay1, delay2));
 };
 
 module.exports = {
