@@ -9,7 +9,7 @@ const run = async (pool, query) => {
   const percentStr = query.percent || "100";
   const percent = parseInt(percentStr, 10);
 
-  const page = await getPageInPool(pool, "WC-Dusche");
+  const page = getPageInPool(pool, "WC-Dusche");
   await clickActionOfCategory(page, "Beleuchtung", 2, "Switch On");
   await clickPlusMinusOfCategory(page, "Beleuchtung", 1, percent);
 };

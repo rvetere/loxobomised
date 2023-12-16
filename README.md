@@ -45,7 +45,7 @@ const { clickActionOfCategory, getPageInPool } = require("../../lib");
 
 // Set smooth kitchen light
 const run = async (page, query) => {
-  const page = await getPageInPool(pool, "Küche");
+  const page = getPageInPool(pool, "Küche");
 
   // Turn off head lights
   await clickActionOfCategory(page, "Beleuchtung", 1, "Switch Off");

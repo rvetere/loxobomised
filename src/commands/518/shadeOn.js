@@ -8,24 +8,24 @@ const run = async (pool) => {
 };
 
 const shadeOnLivingRoom = async (pool) => {
-  const page = await getPageInPool(pool, "Wohnzimmer");
+  const page = getPageInPool(pool, "Wohnzimmer");
   await clickActionOfCategory(page, "Beschattung", 2, "Fully Down");
   await clickActionOfCategory(page, "Beschattung", 3, "Fully Down");
   await clickActionOfCategory(page, "Beschattung", 4, "Fully Down");
 };
 
 const shadeOnKitchen = async (pool) => {
-  const page = await getPageInPool(pool, "Küche");
+  const page = getPageInPool(pool, "Küche");
   await clickActionOfCategory(page, "Beschattung", 1, "Fully Down");
 };
 
 const shadeOnBedroom = async (pool) => {
-  const page = await getPageInPool(pool, "Zimmer 1");
+  const page = getPageInPool(pool, "Zimmer 1");
   await clickActionOfCategory(page, "Beschattung", 1, "Fully Down");
 };
 
 const shadeOnLoggia = async (pool) => {
-  const page = await getPageInPool(pool, "Loggia");
+  const page = getPageInPool(pool, "Loggia");
   await clickActionOfCategory(page, "Beschattung", 1, "Fully Out");
   await clickActionOfCategory(page, "Beschattung", 2, "Fully Out");
 };

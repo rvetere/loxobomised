@@ -74,7 +74,7 @@ class LoxoneWebinterface {
     console.log(`✅ Successfully refreshed login in room "${this.room}"!`);
   }
 
-  async getInstance() {
+  getInstance() {
     return this.page;
   }
 

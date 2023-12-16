@@ -1,7 +1,7 @@
 const { clickActionOfCategory, getPageInPool, sleep } = require("../../lib");
 
 const run = async (pool) => {
-  const page = await getPageInPool(pool, "Loggia");
+  const page = getPageInPool(pool, "Loggia");
   await clickActionOfCategory(page, "Beschattung", 1, "Fully In");
   await clickActionOfCategory(page, "Beschattung", 2, "Fully In");
 

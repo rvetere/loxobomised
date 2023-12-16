@@ -6,7 +6,7 @@ const {
 } = require("../../lib");
 
 const run = async (pool, query) => {
-  const page = await getPageInPool(pool, "Küche");
+  const page = getPageInPool(pool, "Küche");
 
   // Turn off head lights
   await clickActionOfCategory(page, "Beleuchtung", 1, "Switch Off");
