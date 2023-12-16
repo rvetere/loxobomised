@@ -18,7 +18,7 @@ class LoxoneWebinterface {
     //   if (this.initialized) {
     //     this.page.screenshot({ path: `${room}-status.png` });
     //   }
-    // }, 700);
+    // }, 350);
 
     return this;
   }

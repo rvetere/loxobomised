@@ -5,7 +5,8 @@ const clickActionOfCategory = async (
   page,
   category,
   buttonGroupIndex,
-  action
+  action,
+  doubleClick = false
 ) => {
   const [container] = await page.$x(
     `//div[contains(text(),'${category}')]/../../following-sibling::div[1]/div/div[${buttonGroupIndex}]`
@@ -20,13 +21,18 @@ const clickActionOfCategory = async (
   // open overlay controls
   elements[0].click();
   await sleep(200);
+  if (doubleClick) {
+    elements[0].click();
+    await sleep(200);
+  }
 
   // click action
-  await clickOnParent(page, action);
-
-  // close overlay controls
-  await page.keyboard.press("Escape");
-  await sleep(200);
+  const element = await clickOnParent(page, action);
+  if (element) {
+    // close overlay controls
+    await page.keyboard.press("Escape");
+    await sleep(200);
+  }
 };
 
 module.exports = {
