@@ -31,7 +31,7 @@ module.exports = {
     {
       name: "loxone-bedroom",
       script: "src/app.js", // Path to your main application file
-      args: "--room=Zimmer 1", // Some arguments
+      args: "--room=Zimmer_1", // Some arguments
       instances: 1, // Number of application instances to be launched
       autorestart: true, // Restart the application if it crashes
       watch: false, // Watch for file changes and restart the application

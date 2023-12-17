@@ -62,13 +62,9 @@ async function initPool(room) {
 const args = process.argv;
 let room = args[args.length - 1];
 if (room && room.startsWith("--room=")) {
-  room = room.replace("--room=", "");
-} else if (room === "1") {
-  room = "Scheduler";
+  room = room.replace("--room=", "").replace("_", " ");
 } else {
   room = null;
 }
-if (room !== "Scheduler") {
-  console.log(`🔥🔥 ${args[args.length - 1]} room: ${room}`);
-  initApp(room);
-}
+console.log(`🔥🔥 ${args[args.length - 1]} room: ${room}`);
+initApp(room);
