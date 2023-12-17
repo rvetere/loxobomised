@@ -14,7 +14,12 @@ const controlJalousieWithAction = async ({
   const rolloType = "Markise";
   let actualDelay = 0;
   console.log("getContainer - controlJalousieWithAction");
-  const container = await getContainer(page, room, buttonGroupIndex);
+  const container = await getContainer(
+    page,
+    room,
+    buttonGroupIndex,
+    "controlJalousieWithAction"
+  );
   if (!container) {
     return { actualDelay };
   }

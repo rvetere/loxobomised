@@ -9,7 +9,12 @@ const clickPlusMinusOfTitle = async (
   percentToSet
 ) => {
   console.log("getContainer - clickPlusMinusOfTitle");
-  const container = await getContainer(page, title, buttonGroupIndex);
+  const container = await getContainer(
+    page,
+    title,
+    buttonGroupIndex,
+    "clickPlusMinusOfTitle"
+  );
   if (!container) {
     return { actualDelay, timer };
   }

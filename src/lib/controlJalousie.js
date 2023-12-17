@@ -17,7 +17,12 @@ const controlJalousie = async ({
   let timer = null;
   let actualDelay = 0;
   console.log("getContainer - controlJalousie");
-  const container = await getContainer(page, room, buttonGroupIndex);
+  const container = await getContainer(
+    page,
+    room,
+    buttonGroupIndex,
+    "controlJalousie"
+  );
   if (!container) {
     return { actualDelay, timer };
   }

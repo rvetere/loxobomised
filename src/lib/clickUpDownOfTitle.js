@@ -69,7 +69,12 @@ const hasActionHappened = async (page, title, buttonGroupIndex) => {
   let itWorked = false;
   let lastPercent = -1;
   console.log("getContainer - hasActionHappened");
-  const container = await getContainer(page, title, buttonGroupIndex);
+  const container = await getContainer(
+    page,
+    title,
+    buttonGroupIndex,
+    "hasActionHappened"
+  );
   if (!container) {
     return itWorked;
   }
@@ -96,7 +101,12 @@ const hasActionHappened = async (page, title, buttonGroupIndex) => {
 
 const getElement = async (page, title, buttonGroupIndex) => {
   console.log("getContainer - getElement");
-  const container = await getContainer(page, title, buttonGroupIndex);
+  const container = await getContainer(
+    page,
+    title,
+    buttonGroupIndex,
+    "getElement"
+  );
   if (!container) {
     return { upButton: null, downButton: null };
   }
