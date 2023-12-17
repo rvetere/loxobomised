@@ -1,4 +1,5 @@
 const { clickOnParent } = require("./clickOnParent");
+const { getContainer } = require("./getContainer");
 const { sleep } = require("./sleep");
 
 const clickPlusMinusOfCategory = async (
@@ -7,9 +8,10 @@ const clickPlusMinusOfCategory = async (
   buttonGroupIndex,
   percentToSet
 ) => {
-  const [container] = await page.$x(
-    `//div[contains(text(),'${category}')]/../../following-sibling::div[1]/div/div[${buttonGroupIndex}]`
-  );
+  const container = await getContainer(page, category, buttonGroupIndex);
+  if (!container) {
+    return { actualDelay, timer };
+  }
 
   const texts = await container.$$eval("div", (divs) =>
     divs.map((div) => div.innerText)
@@ -21,19 +23,29 @@ const clickPlusMinusOfCategory = async (
   const steps = (percentToSet - currentPercent) / 10;
   const kind = steps > 0 ? "plus" : "minus";
 
-  const elements = await container.$$("div[role=button]");
+  console.log("clickPlusMinusOfCategory", {
+    buttonGroupIndex,
+    percentToSet,
+    currentPercent,
+    steps,
+    kind,
+  });
 
-  // open overlay controls
-  elements[0].click();
-  await sleep(200);
+  if (toPositive(steps) > 0) {
+    const elements = await container.$$("div[role=button]");
 
-  for (let i = 0; i < toPositive(steps); i++) {
-    await clickPlusMinus(page, kind);
+    // open overlay controls
+    elements[0].click();
+    await sleep(200);
+
+    for (let i = 0; i < toPositive(steps); i++) {
+      await clickPlusMinus(page, kind);
+    }
+
+    // close overlay controls
+    await page.keyboard.press("Escape");
+    await sleep(200);
   }
-
-  // close overlay controls
-  await page.keyboard.press("Escape");
-  await sleep(200);
 };
 
 const clickPlusMinus = async (page, kind) => {

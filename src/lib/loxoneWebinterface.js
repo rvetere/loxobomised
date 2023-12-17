@@ -45,21 +45,23 @@ class LoxoneWebinterface {
       await this.page.type("input[type=password]", password);
 
       await this.page.click("button[type=submit]");
+      this.page.screenshot({ path: `${this.room}-status.png` });
       await this.page.waitForNavigation();
 
       await this.page.waitForFunction(
         `document.querySelector("body").innerText.includes("WOHNUNG ${apartment}")`
       );
 
+      this.page.screenshot({ path: `${this.room}-status.png` });
       await navigateToRoom(this.page, this.room);
       this.initialized = true;
 
-      // random number between 0 and 30 seconds
-      const randomDelay = Math.floor(Math.random() * 1000 * 30);
+      // random number between 0 and 60 seconds
+      const randomDelay = Math.floor(Math.random() * 1000 * 60);
 
       this.interval = setInterval(
         this.refreshLogin.bind(this),
-        1000 * 60 * 4 + randomDelay
+        1000 * 60 * 60 + randomDelay
       );
       console.log(`✅ Login successful in room "${this.room}"!`);
     } catch (e) {

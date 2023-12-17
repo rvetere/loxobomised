@@ -27,8 +27,8 @@ const clickActionOfCategory = async (
   }
 
   // click action
-  const element = await clickOnParent(page, action);
-  if (element) {
+  const elementFound = await clickOnParent(page, action);
+  if (!!elementFound) {
     // close overlay controls
     await page.keyboard.press("Escape");
     await sleep(200);

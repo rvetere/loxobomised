@@ -9,9 +9,9 @@ const clickOnParent = async (page, text) => {
     }
     return element;
   }
-  const timeStamp = new Date().getTime();
-  await page.screenshot({ path: `element-not-found-${timeStamp}.png` });
-  console.error("Element not found");
+  // const timeStamp = new Date().getTime();
+  // await page.screenshot({ path: `element-not-found-${timeStamp}.png` });
+  // console.error("Element not found");
 
   return null;
 };

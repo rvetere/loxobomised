@@ -1,4 +1,5 @@
 const { clickUpDownOfCategory } = require("./clickUpDownOfCategory");
+const { getContainer } = require("./getContainer");
 const { sleep } = require("./sleep");
 
 const LoggiaRolloTiming = 59 / 100;
@@ -14,7 +15,7 @@ const controlJalousie = async ({
 }) => {
   let timer = null;
   let actualDelay = 0;
-  let container = await getContainer(page, buttonGroupIndex);
+  const container = await getContainer(page, "Beschattung", buttonGroupIndex);
   if (!container) {
     return { actualDelay, timer };
   }
@@ -147,14 +148,6 @@ const controlJalousie = async ({
   }
 
   return { actualDelay, timer };
-};
-
-const getContainer = async (page, buttonGroupIndex) => {
-  const category = "Beschattung";
-  const [container] = await page.$x(
-    `//div[contains(text(),'${category}')]/../../following-sibling::div[1]/div/div[${buttonGroupIndex}]`
-  );
-  return container;
 };
 
 function toPositive(n) {
