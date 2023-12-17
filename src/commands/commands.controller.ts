@@ -36,7 +36,6 @@ export class CommandsController {
   }
 
   resetRequestCounter() {
-    console.log("🔥 Reset request counter to 0");
     this.requestCounter = 0;
   }
 
@@ -71,14 +70,11 @@ export class CommandsController {
       );
 
       sleep(executionDelay).then(() => {
-        console.log(`🤖 Executing command "${name}" NOW!`);
         const [apartment, category] = name.split("-");
         const command = this.commands[`${apartment}-${category}`];
 
         command?.run(req.query).then(() => {
-          const message = `✅ Executed "${name}" successfully!`;
-          console.log(message);
-          res.json({ message });
+          res.json({ message: `✅ Executed "${name}" successfully!` });
         });
       });
 
@@ -102,12 +98,11 @@ export class CommandsController {
       this.requestCounter = this.requestCounter + 1;
     }
     if (this.resetTimer) {
-      console.log("🔥 Reset timer");
       clearTimeout(this.resetTimer);
     }
     this.resetTimer = setTimeout(this.resetRequestCounter, 1000 * 3);
 
-    const executionDelay = this.requestCounter * 600;
+    const executionDelay = this.requestCounter * 800;
 
     return { formattedDate, executionDelay };
   }
