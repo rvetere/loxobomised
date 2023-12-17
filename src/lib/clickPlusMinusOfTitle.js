@@ -58,7 +58,6 @@ const clickParent = async (element) => {
     const parentElement = await element.$x("../..");
 
     if (parentElement && parentElement[0]) {
-      console.log(" -- click parent (clickPlusMinusOfTitle)");
       await element.click();
     }
     return element;

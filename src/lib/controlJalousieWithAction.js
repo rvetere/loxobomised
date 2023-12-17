@@ -39,18 +39,18 @@ const controlJalousieWithAction = async ({
   const isMovingDown = steps > 0;
   const action = isMovingDown ? actionDown : actionUp;
 
-  console.log("controlJalousieWithAction", {
-    buttonGroupIndex,
-    percentToSet,
-    currentPercent,
-    steps,
-    rolloType,
-  });
   if (toPositive(steps) > 4) {
     await clickActionOfTitle(page, room, buttonGroupIndex, action);
 
     // calculate exact delay to reach "percentToSet"
     const delay = Math.floor(toPositive(steps) * MarkiseTiming * 1000);
+    console.log("controlJalousieWithAction", {
+      buttonGroupIndex,
+      percentToSet,
+      currentPercent,
+      steps,
+      delay,
+    });
 
     // wait until jalousie is in position
     const randomDelay = Math.floor(Math.random() * 50);

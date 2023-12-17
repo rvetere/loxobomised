@@ -32,6 +32,7 @@ const clickUpDownOfTitle = async (
       // double click action by starting a timer with a delay of at least 200ms
       timer = setTimeout(async () => {
         try {
+          // TODO can't we re-use the element from above?
           const { upButton, downButton } = await getElement(
             page,
             title,
