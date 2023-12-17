@@ -6,6 +6,7 @@ const clickOnParent = async (page, text) => {
       const parentElement = await element.$x("..");
 
       if (parentElement && parentElement[0]) {
+        console.log(" -- click on parent", text);
         await element.click();
       }
       return element;

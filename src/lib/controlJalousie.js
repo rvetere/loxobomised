@@ -35,13 +35,13 @@ const controlJalousie = async ({
   const steps = percentToSet - currentPercent;
   const isMovingDown = steps > 0;
 
-  console.log("controlJalousie", {
-    buttonGroupIndex,
-    percentToSet,
-    currentPercent,
-    steps,
-    rolloType,
-  });
+  // console.log("controlJalousie", {
+  //   buttonGroupIndex,
+  //   percentToSet,
+  //   currentPercent,
+  //   steps,
+  //   rolloType,
+  // });
   if (toPositive(steps) > 4) {
     // calculate exact delay to reach "percentToSet"
     const timing =
@@ -61,35 +61,26 @@ const controlJalousie = async ({
       isMovingDown ? "down" : "up",
       true,
       delay,
-      async () => {
+      async (upButton, downButton) => {
         if (rolloType !== "Markise") {
           console.log(
-            `Move jalousie (${room} - ${buttonGroupIndex}) into final position - ${finalPosition}`
+            `Move jalousie (${room} - ${buttonGroupIndex}) into final position - ${finalPosition} (isMovingDown=${isMovingDown}))`
           );
           if (isMovingDown) {
             if (finalPosition === 0) {
               // nothing to do, the blinds are already closed
             } else if (finalPosition === 1) {
-              await clickUpDownOfTitle(page, room, buttonGroupIndex, "up");
-              await clickUpDownOfTitle(page, room, buttonGroupIndex, "up");
+              await clickButton(upButton, 400);
             } else if (finalPosition === 2) {
-              await clickUpDownOfTitle(page, room, buttonGroupIndex, "up");
-              await sleep(450);
-              await clickUpDownOfTitle(page, room, buttonGroupIndex, "up");
+              await clickButton(upButton, 900);
             }
           } else {
             if (finalPosition === 0) {
-              await clickUpDownOfTitle(page, room, buttonGroupIndex, "down");
-              await sleep(600);
-              await clickUpDownOfTitle(page, room, buttonGroupIndex, "up");
+              await clickButton(downButton, 1200);
             } else if (finalPosition === 1) {
-              await clickUpDownOfTitle(page, room, buttonGroupIndex, "down");
-              await sleep(400);
-              await clickUpDownOfTitle(page, room, buttonGroupIndex, "up");
+              await clickButton(downButton, 850);
             } else if (finalPosition === 2) {
-              await clickUpDownOfTitle(page, room, buttonGroupIndex, "down");
-              await sleep(150);
-              await clickUpDownOfTitle(page, room, buttonGroupIndex, "up");
+              await clickButton(downButton, 400);
             }
           }
         }
@@ -100,6 +91,12 @@ const controlJalousie = async ({
 
   return { actualDelay, timer };
 };
+
+async function clickButton(button, delay = 250) {
+  button.click();
+  await sleep(delay);
+  button.click();
+}
 
 function toPositive(n) {
   if (n < 0) {

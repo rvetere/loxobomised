@@ -35,6 +35,11 @@ const clickPlusMinusOfTitle = async (
     const elements = await container.$$("div[role=button]");
 
     // open overlay controls
+    console.log(
+      " -- click overlay open (clickPlusMinusOfTitle)",
+      title,
+      buttonGroupIndex
+    );
     elements[0].click();
     await sleep(200);
 
@@ -53,6 +58,7 @@ const clickParent = async (element) => {
     const parentElement = await element.$x("../..");
 
     if (parentElement && parentElement[0]) {
+      console.log(" -- click parent (clickPlusMinusOfTitle)");
       await element.click();
     }
     return element;

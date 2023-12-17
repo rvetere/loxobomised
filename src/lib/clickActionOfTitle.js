@@ -18,9 +18,11 @@ const clickActionOfTitle = async (
   const elements = await container.$$("div[role=button]");
 
   // open overlay controls
+  console.log(" -- click overlay open");
   elements[0].click();
   await sleep(200);
   if (doubleClick) {
+    console.log(" -- doubleClick overlay open");
     elements[0].click();
     await sleep(200);
   }
