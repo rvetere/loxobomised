@@ -66,4 +66,5 @@ if (room && room.startsWith("--room=")) {
 } else {
   room = null;
 }
+console.log(`🔥🔥 ${args[args.length - 1]} room: ${room}`);
 initApp(room);
