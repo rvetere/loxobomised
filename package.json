@@ -4,8 +4,8 @@
   "description": "A super stupid puppeteer remote control for Loxone smart home systems",
   "main": "index.js",
   "scripts": {
-    "start": "node src/app.js",
-    "start:forever": "forever start nodemon --exitcrash src/app.js",
+    "start": "nodemon src/app.js",
+    "start:pm2": "yarn pm2 start src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,8 +21,10 @@
   "dependencies": {
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "forever": "^4.0.3",
     "nodemon": "^3.0.2",
     "puppeteer": "^21.4.1"
+  },
+  "devDependencies": {
+    "pm2": "^5.3.0"
   }
 }
