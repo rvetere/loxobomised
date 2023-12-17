@@ -1,4 +1,9 @@
-const { controlJalousie, getPageInPool, sleep } = require("../../lib");
+const {
+  controlJalousie,
+  controlJalousieWithAction,
+  getPageInPool,
+  sleep,
+} = require("../../lib");
 
 /**
  * http://localhost:9001/exec/518/shades
