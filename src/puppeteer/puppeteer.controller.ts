@@ -1,7 +1,7 @@
-const puppeteer = require("puppeteer");
-const { navigate } = require("./navigate");
-const { sleep } = require("./sleep");
-require("dotenv").config();
+import puppeteer, { Browser, Page } from "puppeteer";
+import { sleep } from "src/utils/sleep";
+import { navigate } from "./utils/navigate";
+import "dotenv/config";
 
 const miniServerId = process.env.MINI_SERVER_ID;
 const login = process.env.LOGIN;
@@ -10,30 +10,35 @@ const apartment = process.env.APARTMENT || "05.18";
 const serverUrl = `https://dns.loxonecloud.com/${miniServerId}`;
 const loginDelay = parseInt(process.env.LOGIN_DELAY_SECONDS || "0", 10);
 
-class LoxoneWebinterface {
-  constructor(category, index) {
-    console.log(
-      `Creating LoxoneWebinterface instance with category "${category}"...`
-    );
+export class PuppeteerController {
+  initialized: boolean;
+  index: number;
+  category: string;
+  page: Page | null | undefined;
+  browser: Browser | null | undefined;
+  interval: any | undefined;
+
+  constructor(category: string, index: number) {
     this.category = category;
     this.initialized = false;
     this.index = index;
 
-    setInterval(() => {
-      if (this.initialized) {
-        this.page.screenshot({ path: `${category}-status.png` });
-      }
-    }, 350);
+    // setInterval(() => {
+    //   if (this.initialized) {
+    //     this.page?.screenshot({ path: `${category}-status.png` });
+    //   }
+    // }, 350);
 
     return this;
   }
 
   async init() {
-    console.log(
-      `Initializing LoxoneWebinterface with loginDelay of ${loginDelay} (${this.category})`
-    );
+    if (!login || !password || !miniServerId) {
+      process.exit(1);
+    }
+
     await sleep(loginDelay * 1000);
-    console.log("Open url: " + serverUrl);
+    console.log(`🔗 Open URL "${serverUrl}"`);
     const browser = await puppeteer.launch({ headless: "new" });
     this.browser = browser;
     this.page = await browser.newPage();
@@ -57,8 +62,9 @@ class LoxoneWebinterface {
       await this.page.waitForNavigation();
 
       await this.page.waitForFunction(
-        `document.querySelector("body").innerText.includes("WOHNUNG ${apartment}")`
+        `document.querySelector("body").innerText.includes("WOHNUNG ${apartment}")`,
       );
+      await sleep(1000 * 2);
 
       // this.page.screenshot({ path: `${this.category}-status.png` });
       await navigate(this.page, this.category, "Kategorien");
@@ -69,9 +75,11 @@ class LoxoneWebinterface {
 
       this.interval = setInterval(
         this.refreshLogin.bind(this),
-        1000 * 60 * 60 + randomDelay
+        1000 * 60 * 60 + randomDelay,
       );
-      console.log(`✅ Login successful in category "${this.category}"!`);
+      console.log(
+        `✅ Login successful to Loxone in category "${this.category}"!`,
+      );
     } catch (e) {
       console.error("Error during login! We probably hit the rate limit..");
       process.exit(1);
@@ -79,39 +87,45 @@ class LoxoneWebinterface {
   }
 
   async refreshLogin() {
+    if (!login || !password || !miniServerId) {
+      process.exit(1);
+    }
+
     console.log(`Refreshing login in category "${this.category}"...`);
     const timestamp = new Date().getTime();
 
     try {
       // login to loxone miniserver
-      await this.page.goto(`https://dns.loxonecloud.com/${miniServerId}`);
-      await this.page.type("input[type=text]", login);
-      await this.page.type("input[type=password]", password);
+      await this.page?.goto(`https://dns.loxonecloud.com/${miniServerId}`);
+      await this.page?.type("input[type=text]", login);
+      await this.page?.type("input[type=password]", password);
 
-      await this.page.click("button[type=submit]");
-      await this.page.waitForNavigation();
+      await this.page?.click("button[type=submit]");
+      await this.page?.waitForNavigation();
 
-      await this.page.waitForFunction(
-        `document.querySelector("body").innerText.includes("WOHNUNG ${apartment}")`
+      await this.page?.waitForFunction(
+        `document.querySelector("body").innerText.includes("WOHNUNG ${apartment}")`,
       );
 
-      await navigate(this.page, this.category, "Kategorien");
+      if (this.page) {
+        await navigate(this.page, this.category, "Kategorien");
+      }
       const timeElapsed = new Date().getTime() - timestamp;
       // log success with time elapsed in seconds
       console.log(
         `✅ Successfully refreshed login in category "${
           this.category
-        }" in ${Math.floor(timeElapsed / 1000)} seconds!`
+        }" in ${Math.floor(timeElapsed / 1000)} seconds!`,
       );
     } catch (e) {
       console.error("Error during login: ", e);
-      await this.page.screenshot({ path: "error-refresh.png" });
+      await this.page?.screenshot({ path: "error-refresh.png" });
       await sleep(1000 * 5);
       await this.init();
     }
   }
 
-  getInstance() {
+  getPage() {
     return this.page;
   }
 
@@ -123,5 +137,3 @@ class LoxoneWebinterface {
     return this.category;
   }
 }
-
-module.exports = { LoxoneWebinterface };

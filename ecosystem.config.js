@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: "loxone-lights",
-      script: "src/app.js", // Path to your main application file
+      script: "dist/index.mjs", // Path to your main application file
       args: "--category=Beleuchtung", // Some arguments
       instances: 1, // Number of application instances to be launched
       autorestart: true, // Restart the application if it crashes
@@ -16,7 +16,7 @@ module.exports = {
     },
     {
       name: "loxone-shades",
-      script: "src/app.js", // Path to your main application file
+      script: "dist/index.mjs", // Path to your main application file
       args: "--category=Beschattung", // Some arguments
       instances: 1, // Number of application instances to be launched
       autorestart: true, // Restart the application if it crashes
@@ -30,7 +30,7 @@ module.exports = {
     },
     {
       name: "loxone-ventilation",
-      script: "src/app.js", // Path to your main application file
+      script: "dist/index.mjs", // Path to your main application file
       args: "--category=Lüftung", // Some arguments
       instances: 1, // Number of application instances to be launched
       autorestart: true, // Restart the application if it crashes

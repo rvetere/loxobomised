@@ -1,30 +1,40 @@
-const { clickActionOfTitle } = require("./clickActionOfTitle");
-const { getContainer } = require("./getContainer");
+/* eslint-disable @typescript-eslint/indent */
+import { Page } from "puppeteer";
+import { getContainer } from "./getContainer";
+import { clickActionOfTitle } from "./clickActionOfTitle";
 
 const MarkiseTiming = 20 / 100;
 
-const controlJalousieWithAction = async ({
+function toPositive(n: number) {
+  if (n < 0) {
+    n = n * -1;
+  }
+  return n;
+}
+
+export const controlJalousieWithAction = async ({
   page,
   room,
   buttonGroupIndex,
   percentToSet,
   actionUp = "Fully In",
   actionDown = "Fully Out",
+}: {
+  page: Page | null;
+  room: string;
+  buttonGroupIndex: number;
+  percentToSet: number;
+  actionUp?: string;
+  actionDown?: string;
 }) => {
-  const rolloType = "Markise";
   let actualDelay = 0;
-  const container = await getContainer(
-    page,
-    room,
-    buttonGroupIndex,
-    "controlJalousieWithAction"
-  );
+  const container = await getContainer(page, room, buttonGroupIndex);
   if (!container) {
-    return { actualDelay };
+    return actualDelay;
   }
 
   const texts = await container.$$eval("div", (divs) =>
-    divs.map((div) => div.innerText)
+    divs.map((div) => div.innerText),
   );
   const textWithPercent = texts.find((text) => text.includes("%"));
   const textClosed = texts.find((text) => text.includes("Fully extended"));
@@ -34,11 +44,11 @@ const controlJalousieWithAction = async ({
         textWithPercent.includes("(")
           ? textWithPercent.split("(")[1].split(")")[0]
           : textWithPercent.split("is ")[1].split(" ")[0],
-        10
+        10,
       )
     : textClosed
-    ? 100
-    : 0;
+      ? 100
+      : 0;
 
   const steps = percentToSet - currentPercent;
   const isMovingDown = steps > 0;
@@ -57,41 +67,11 @@ const controlJalousieWithAction = async ({
     // wait until jalousie is in position
     const randomDelay = Math.floor(Math.random() * 50);
     actualDelay = delay + randomDelay;
-    setTimeout(
-      stopAndMoveToFinalPosition.bind({
-        page,
-        room,
-        buttonGroupIndex,
-        action,
-        actionUp,
-        actionDown,
-        rolloType,
-        isMovingDown,
-      }),
-      actualDelay
-    );
+    setTimeout(async () => {
+      console.log(`Run stopAndMoveToFinalPosition (${buttonGroupIndex})`);
+      await clickActionOfTitle(page, room, buttonGroupIndex, action);
+    }, actualDelay);
   }
 
   return actualDelay;
-};
-
-async function stopAndMoveToFinalPosition() {
-  console.log(`Run stopAndMoveToFinalPosition (${this.buttonGroupIndex})`);
-  await clickActionOfTitle(
-    this.page,
-    this.room,
-    this.buttonGroupIndex,
-    this.action
-  );
-}
-
-function toPositive(n) {
-  if (n < 0) {
-    n = n * -1;
-  }
-  return n;
-}
-
-module.exports = {
-  controlJalousieWithAction,
 };

@@ -1,4 +1,6 @@
-const clickOnParent = async (page, text) => {
+import { Page } from "puppeteer";
+
+export const clickOnParent = async (page: Page, text: string) => {
   try {
     const [element] = await page.$x(`//div[text()='${text}']`);
 
@@ -6,7 +8,7 @@ const clickOnParent = async (page, text) => {
       const parentElement = await element.$x("..");
 
       if (parentElement && parentElement[0]) {
-        await element.click();
+        await (element as unknown as HTMLElement).click();
       }
       return element;
     }
@@ -19,8 +21,4 @@ const clickOnParent = async (page, text) => {
     console.error("clickOnParent", e);
     return null;
   }
-};
-
-module.exports = {
-  clickOnParent,
 };
