@@ -63,8 +63,12 @@ const args = process.argv;
 let room = args[args.length - 1];
 if (room && room.startsWith("--room=")) {
   room = room.replace("--room=", "");
+} else if (room === "1") {
+  room = "Scheduler";
 } else {
   room = null;
 }
-console.log(`🔥🔥 ${args[args.length - 1]} room: ${room}`);
-initApp(room);
+if (room !== "Scheduler") {
+  console.log(`🔥🔥 ${args[args.length - 1]} room: ${room}`);
+  initApp(room);
+}
