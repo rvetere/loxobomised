@@ -11,6 +11,7 @@ const clickUpDownOfTitle = async (props) => {
 
   let timer = null;
 
+  console.log("props", props);
   const { upButton, downButton } = await getElement(
     props.page,
     props.title,
@@ -48,6 +49,7 @@ const clickUpDownOfTitle = async (props) => {
 
 const executeCallback = async () => {
   try {
+    console.log("this", this);
     const { upButton, downButton } = await getElement(
       this.page,
       this.title,
