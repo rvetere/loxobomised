@@ -37,29 +37,30 @@ const clickUpDownOfTitle = async (props) => {
 
     if (doubleClick) {
       // double click action by starting a timer with a delay of at least 200ms
-      timer = setTimeout(async () => {
-        try {
-          // TODO can't we re-use the element from above?
-          const { upButton, downButton } = await getElement(
-            props.page,
-            props.title,
-            props.buttonGroupIndex,
-            props.action
-          );
-          const element = action === "up" ? upButton : downButton;
-          element.click();
-          await sleep(400);
-          callback(upButton, downButton);
-        } catch (e) {
-          console.error(e);
-        }
-      }, delay);
+      timer = setTimeout(executeCallback.bind(props), delay);
     }
 
     await sleep(800);
   }
 
   return timer;
+};
+
+const executeCallback = async () => {
+  try {
+    const { upButton, downButton } = await getElement(
+      this.page,
+      this.title,
+      this.buttonGroupIndex,
+      this.action
+    );
+    const element = action === "up" ? upButton : downButton;
+    element.click();
+    await sleep(400);
+    this.callback(upButton, downButton);
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 const hasActionHappened = async (page, title, buttonGroupIndex) => {
