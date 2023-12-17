@@ -15,9 +15,7 @@ function initApp(category) {
 
   app.get("/exec/*", async (req, res) => {
     const randomDelay = getRandomDelay(global.lastRandomDelay);
-    console.log(
-      `- 🚀 Random delay to sleep before command run: ${randomDelay}ms`
-    );
+    console.log(`Random delay to sleep before command run: ${randomDelay}ms`);
     await sleep(randomDelay);
     global.lastRandomDelay = randomDelay;
 

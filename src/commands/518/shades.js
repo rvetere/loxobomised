@@ -13,7 +13,7 @@ const {
  * @param {*} query
  */
 const run = async (pool, query) => {
-  console.log(`🚀 Run shades command at ${new Date().toLocaleString("de-DE")}`);
+  console.log(`## Run shades command at ${new Date().toLocaleString("de-DE")}`);
   const page = getPageInPool(pool, "Beschattung");
 
   if (query.room === "Livingroom") {
@@ -30,7 +30,7 @@ const run = async (pool, query) => {
   }
 
   console.log(
-    `🚀 Finished shades command at ${new Date().toLocaleString("de-DE")}`
+    `## Finished shades command at ${new Date().toLocaleString("de-DE")}`
   );
 };
 
