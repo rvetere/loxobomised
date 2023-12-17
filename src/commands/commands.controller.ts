@@ -58,12 +58,12 @@ export class CommandsController {
       // log formatted date with miliseconds
       const now = new Date();
       const formattedDate = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}.${now.getMilliseconds()}`;
-      const timeEllapsed = this.lastRequestTstamp
-        ? this.lastRequestTstamp - now.getTime()
-        : 1;
+      const timeEllapsedMs = this.lastRequestTstamp
+        ? now.getTime() - this.lastRequestTstamp
+        : -1;
       this.lastRequestTstamp = now.getTime();
       console.log(
-        `🤖 [${formattedDate}] Executing command "${name}", time ellapsed: ${timeEllapsed}`
+        `🤖 [${formattedDate}] Executing command "${name}", time ellapsed: ${timeEllapsedMs}`
       );
 
       const [apartment, category] = name.split("-");
