@@ -22,12 +22,20 @@ export class CommandsController {
   initialized = false;
   pool: PuppeteerController[];
   commands: Record<string, any> = {};
-  lastRequestTstamp: number;
+  lastRequestTstamp: number | undefined;
+  requestCounter = 0;
+  resetTimer: any | null = null;
 
   constructor() {
     this.pool = [];
     this.index = this.index.bind(this);
     this.execute = this.execute.bind(this);
+    this.resetRequestCounter = this.resetRequestCounter.bind(this);
+    this.setPool = this.setPool.bind(this);
+  }
+
+  resetRequestCounter() {
+    this.requestCounter = 0;
   }
 
   setPool(pool: PuppeteerController[]) {
@@ -58,12 +66,21 @@ export class CommandsController {
       // log formatted date with miliseconds
       const now = new Date();
       const formattedDate = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}.${now.getMilliseconds()}`;
+
       const timeEllapsedMs = this.lastRequestTstamp
         ? now.getTime() - this.lastRequestTstamp
         : -1;
       this.lastRequestTstamp = now.getTime();
+      if (timeEllapsedMs < 200) {
+        this.requestCounter = this.requestCounter + 1;
+      }
+      if (this.resetTimer) {
+        clearTimeout(this.resetTimer);
+      }
+      this.resetTimer = setTimeout(this.resetRequestCounter, 1000 * 3);
+
       console.log(
-        `🤖 [${formattedDate}] Executing command "${name}", time ellapsed: ${timeEllapsedMs}`
+        `🤖 [${formattedDate}] Executing command "${name}", time ellapsed: ${timeEllapsedMs} (${this.requestCounter})`
       );
 
       const [apartment, category] = name.split("-");
