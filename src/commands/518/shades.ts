@@ -34,7 +34,7 @@ export class FiveEightTheenShades {
   bedroom = async () => {
     if ((global as any).bedroomTimers && (global as any).bedroomTimers.length) {
       (global as any).bedroomTimers.forEach(
-        (timer: any) => timer && clearTimeout(timer),
+        (timer: any) => timer && clearTimeout(timer)
       );
       (global as any).bedroomTimers = [];
     }
@@ -59,7 +59,7 @@ export class FiveEightTheenShades {
 
     if (globalObject.kitchenTimers && globalObject.kitchenTimers.length) {
       globalObject.kitchenTimers.forEach(
-        (timer: any) => timer && clearTimeout(timer),
+        (timer: any) => timer && clearTimeout(timer)
       );
       globalObject.kitchenTimers = [];
     }
@@ -99,7 +99,7 @@ export class FiveEightTheenShades {
 
     if (globalObject.livingroomTimers && globalObject.livingroomTimers.length) {
       globalObject.livingroomTimers.forEach(
-        (timer: any) => timer && clearTimeout(timer),
+        (timer: any) => timer && clearTimeout(timer)
       );
       globalObject.livingroomTimers = [];
     }

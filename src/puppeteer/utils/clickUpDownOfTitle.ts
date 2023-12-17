@@ -52,10 +52,7 @@ const getElement = async (
   };
 };
 
-export const clickUpDownOfTitle = async (
-  page: Page | null,
-  category: string,
-  buttonGroupIndex: number,
+export const clickUpDownOfTitle = async ({
   action = "down", // "up", "down"
   doubleClick = false,
   delay = 200,
@@ -65,14 +62,23 @@ export const clickUpDownOfTitle = async (
   ) => {
     console.log("IMPLEMENT!", { upButton, downButton });
   },
-) => {
-  console.log("clickUpDownOfTitle", { buttonGroupIndex, action });
+  ...props
+}: {
+  page: Page | null,
+  category: string,
+  buttonGroupIndex: number,
+  action: string,
+  doubleClick: boolean,
+  delay: number,
+  callback: (upButton: ElementHandle | null, downButton: ElementHandle | null) => void,
+}) => {
+  console.log("clickUpDownOfTitle", { buttonGroupIndex: props.buttonGroupIndex, action });
 
   let timer = null;
   const { element } = await getElement(
-    page,
-    category,
-    buttonGroupIndex,
+    props.page,
+    props.category,
+    props.buttonGroupIndex,
     action,
   );
   if (element) {
@@ -86,8 +92,8 @@ export const clickUpDownOfTitle = async (
             element: elementCb,
             upButton: upButtonCb,
             downButton: downButtonCb,
-          } = await getElement(page, category, buttonGroupIndex, action);
-          elementCb?.click();
+          } = await getElement(props.page, props.category, props.buttonGroupIndex, action);
+            elementCb?.click();
           callback(upButtonCb, downButtonCb);
         } catch (e) {
           console.error(e);

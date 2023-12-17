@@ -1,7 +1,7 @@
 import { ElementHandle, Page } from "puppeteer";
 import { sleep } from "src/utils/sleep";
-import { getContainer } from "./getContainer";
 import { clickUpDownOfTitle } from "./clickUpDownOfTitle";
+import { getContainer } from "./getContainer";
 
 const LoggiaRolloTiming = 59 / 100;
 const WindowRolloTiming = 40 / 100;
@@ -38,13 +38,13 @@ export const controlJalousie = async (props: {
   const container = await getContainer(
     props.page,
     props.room,
-    props.buttonGroupIndex,
+    props.buttonGroupIndex
   );
   if (!container) {
     return { actualDelay, timer };
   }
   const texts = await container.$$eval("div", (divs) =>
-    divs.map((div) => div.innerText),
+    divs.map((div) => div.innerText)
   );
   const textWithPercent = texts.find((text) => text.includes("%"));
   const textClosed = texts.find((text) => text.includes("Closed"));
@@ -57,7 +57,6 @@ export const controlJalousie = async (props: {
 
   const steps = props.percentToSet - currentPercent;
   const isMovingDown = steps > 0;
-  const action = steps < 0 ? "up" : "down";
 
   if (toPositive(steps) > 4) {
     // calculate exact delay to reach "percentToSet"
@@ -72,26 +71,21 @@ export const controlJalousie = async (props: {
 
     console.log("controlJalousie", {
       room: `${props.room} [${props.buttonGroupIndex}]}`,
-      currentPercent,
-      percentToSet: props.percentToSet,
       steps,
     });
 
     // click action to move jalousie
-    timer = await clickUpDownOfTitle(
-      props.page,
-      props.room,
-      props.buttonGroupIndex,
-      action,
-      true,
+    timer = await clickUpDownOfTitle({
+      page: props.page,
+      category: props.room,
+      buttonGroupIndex: props.buttonGroupIndex,
+      action: isMovingDown ? "down" : "up",
+      doubleClick: true,
       delay,
-      async (
-        upButton: ElementHandle<Element> | null,
-        downButton: ElementHandle<Element> | null,
-      ) => {
+      callback: async (upButton, downButton) => {
         if (rolloType !== "Markise") {
           console.log(
-            `Move jalousie (${props.room}) [${props.buttonGroupIndex}] to final position (tilted=${finalPosition};isMovingDown=${isMovingDown}))`,
+            `Move jalousie (${props.room}) [${props.buttonGroupIndex}] to final position (tilted=${finalPosition};isMovingDown=${isMovingDown}))`
           );
           if (isMovingDown) {
             if (finalPosition === 0) {
@@ -112,7 +106,7 @@ export const controlJalousie = async (props: {
           }
         }
       },
-    );
+    });
   }
 
   return { actualDelay, timer };
