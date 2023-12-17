@@ -50,14 +50,14 @@ class LoxoneWebinterface {
       await this.page.type("input[type=password]", password);
 
       await this.page.click("button[type=submit]");
-      this.page.screenshot({ path: `${this.room}-status.png` });
+      // this.page.screenshot({ path: `${this.room}-status.png` });
       await this.page.waitForNavigation();
 
       await this.page.waitForFunction(
         `document.querySelector("body").innerText.includes("WOHNUNG ${apartment}")`
       );
 
-      this.page.screenshot({ path: `${this.room}-status.png` });
+      // this.page.screenshot({ path: `${this.room}-status.png` });
       await navigateToRoom(this.page, this.room);
       this.initialized = true;
 
