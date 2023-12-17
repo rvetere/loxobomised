@@ -14,6 +14,13 @@ function initApp(category) {
   const app = express();
 
   app.get("/exec/*", async (req, res) => {
+    const randomDelay = getRandomDelay(global.lastRandomDelay);
+    console.log(
+      `🚀 Random delay to sleep before command run: ${randomDelay}ms`
+    );
+    await sleep(randomDelay);
+    global.lastRandomDelay = randomDelay;
+
     const command = req.params[0];
     const commandPath = path.join(__dirname, "commands", `${command}.js`);
 
@@ -41,6 +48,19 @@ function initApp(category) {
       console.log(`🚀 Server ready and listening on port ${port}`);
     });
   });
+}
+
+// Generate a random delay between 0 and 2000 miliseconds
+// -> the new value must differ by at least 400 miliseconds from the last value
+function getRandomDelay(lastRandomDelay) {
+  const randomDelay = Math.floor(Math.random() * 2000);
+  if (lastRandomDelay) {
+    const diff = Math.abs(randomDelay - lastRandomDelay);
+    if (diff < 400) {
+      return getRandomDelay(lastRandomDelay);
+    }
+  }
+  return randomDelay;
 }
 
 async function initPool(category) {
