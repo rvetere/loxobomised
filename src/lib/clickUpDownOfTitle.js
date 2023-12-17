@@ -3,9 +3,6 @@ const { sleep } = require("./sleep");
 
 const clickUpDownOfTitle = async (props) => {
   const {
-    page,
-    title,
-    buttonGroupIndex,
     action = "down", // "up", "down"
     doubleClick = false,
     delay = 200,
@@ -16,9 +13,9 @@ const clickUpDownOfTitle = async (props) => {
   await page.screenshot({ path: "clickUpDownOfTitle.png" });
 
   const { upButton, downButton } = await getElement(
-    page,
-    title,
-    buttonGroupIndex
+    props.page,
+    props.title,
+    props.buttonGroupIndex
   );
   const element = action === "up" ? upButton : downButton;
   if (element) {
@@ -26,13 +23,18 @@ const clickUpDownOfTitle = async (props) => {
     element.click();
 
     // check if action happened
-    hasActionHappened(page, title, buttonGroupIndex).then((itWorked) => {
-      if (!itWorked && (props.retry || 0) < 3) {
-        // try again
-        console.log(`🚨 Action was not executed, RETRY! 🚨`);
-        return clickUpDownOfTitle({ ...props, retry: (props.retry || 0) + 1 });
+    hasActionHappened(props.page, props.title, props.buttonGroupIndex).then(
+      (itWorked) => {
+        if (!itWorked && (props.retry || 0) < 3) {
+          // try again
+          console.log(`🚨 Action was not executed, RETRY! 🚨`);
+          return clickUpDownOfTitle({
+            ...props,
+            retry: (props.retry || 0) + 1,
+          });
+        }
       }
-    });
+    );
 
     if (doubleClick) {
       // double click action by starting a timer with a delay of at least 200ms
@@ -40,10 +42,10 @@ const clickUpDownOfTitle = async (props) => {
         try {
           // TODO can't we re-use the element from above?
           const { upButton, downButton } = await getElement(
-            page,
-            title,
-            buttonGroupIndex,
-            action
+            props.page,
+            props.title,
+            props.buttonGroupIndex,
+            props.action
           );
           const element = action === "up" ? upButton : downButton;
           element.click();
@@ -64,6 +66,7 @@ const clickUpDownOfTitle = async (props) => {
 const hasActionHappened = async (page, title, buttonGroupIndex) => {
   let itWorked = false;
   let lastPercent = -1;
+  console.log("getContainer - hasActionHappened");
   const container = await getContainer(page, title, buttonGroupIndex);
   if (!container) {
     return itWorked;
@@ -90,6 +93,7 @@ const hasActionHappened = async (page, title, buttonGroupIndex) => {
 };
 
 const getElement = async (page, title, buttonGroupIndex) => {
+  console.log("getContainer - getElement");
   const container = await getContainer(page, title, buttonGroupIndex);
   if (!container) {
     return { upButton: null, downButton: null };
