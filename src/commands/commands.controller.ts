@@ -45,7 +45,7 @@ export class CommandsController {
     this.resetTimer = setTimeout(this.resetRequestCounter, 1000 * 3);
 
     return {
-      delay: (this.requestCounter[category] || 0) * 800,
+      delay: (this.requestCounter[category] || 0) * 1500,
       formattedDate: `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}.${now.getMilliseconds()}`,
     };
   }
