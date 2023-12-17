@@ -23,6 +23,7 @@
     "start": "node dist/index.mjs",
     "start:category": "node dist/index.mjs --category=Beschattung",
     "start:pm2": "yarn pm2 start ecosystem.config.js",
+    "stop:pm2": "yarn pm2 delete ecosystem.config.js",
     "dev": "tsup src/index.ts --format esm --watch --onSuccess \"node dist/index.mjs\"",
     "build": "tsup src/index.ts --format esm --dts --minify --clean --sourcemap",
     "lint": "eslint . --ext .ts"
