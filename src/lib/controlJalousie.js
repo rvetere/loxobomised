@@ -64,7 +64,7 @@ const controlJalousie = async ({
       async () => {
         if (rolloType !== "Markise") {
           console.log(
-            `Move jalousie (${buttonGroupIndex}) into final position - ${finalPosition}`
+            `Move jalousie (${room} - ${buttonGroupIndex}) into final position - ${finalPosition}`
           );
           if (isMovingDown) {
             if (finalPosition === 0) {
