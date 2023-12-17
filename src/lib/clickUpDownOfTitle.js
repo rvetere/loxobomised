@@ -10,16 +10,8 @@ const clickUpDownOfTitle = async (
   delay = 200,
   callback = () => {}
 ) => {
-  console.log("Execute clickUpDownOfTitle", {
-    title,
-    buttonGroupIndex,
-    action,
-    doubleClick,
-    delay,
-  });
   let timer = null;
   await page.screenshot({ path: "clickUpDownOfTitle.png" });
-  console.log(" - container found");
 
   const { upButton, downButton } = await getElement(
     page,
@@ -29,20 +21,15 @@ const clickUpDownOfTitle = async (
   const element = action === "up" ? upButton : downButton;
   if (element) {
     // click action
-    console.log(" - click it");
     element.click();
 
     // check if action happened
-    console.log(" - check if action happened");
     hasActionHappened(page, title, buttonGroupIndex).then((itWorked) => {
-      console.log("hasActionHappened", itWorked);
+      console.log("- 🚨 hasActionHappened?", itWorked);
     });
 
     if (doubleClick) {
       // double click action by starting a timer with a delay of at least 200ms
-      console.log(
-        ` - double click action by starting a timer with a delay of ${delay}ms`
-      );
       timer = setTimeout(async () => {
         try {
           const { upButton, downButton } = await getElement(
@@ -52,9 +39,6 @@ const clickUpDownOfTitle = async (
             action
           );
           const element = action === "up" ? upButton : downButton;
-          console.log(
-            ` - DOUBLE click NOW! ${title} ${buttonGroupIndex} ${action}`
-          );
           element.click();
           await sleep(400);
           callback(upButton, downButton);
@@ -86,7 +70,7 @@ const hasActionHappened = async (page, title, buttonGroupIndex) => {
     const currentPercent = textWithPercent
       ? parseInt(textWithPercent.split("(")[1].split(")")[0].replace("%", ""))
       : -1;
-    console.log({ textWithPercent, currentPercent });
+    // console.log({ textWithPercent, currentPercent });
     if (lastPercent !== currentPercent) {
       itWorked = true;
       break;
