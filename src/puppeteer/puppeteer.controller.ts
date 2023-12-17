@@ -62,7 +62,7 @@ export class PuppeteerController {
       await this.page.waitForNavigation();
 
       await this.page.waitForFunction(
-        `document.querySelector("body").innerText.includes("WOHNUNG ${apartment}")`,
+        `document.querySelector("body").innerText.includes("WOHNUNG ${apartment}")`
       );
       await sleep(1000 * 2);
 
@@ -75,10 +75,10 @@ export class PuppeteerController {
 
       this.interval = setInterval(
         this.refreshLogin.bind(this),
-        1000 * 60 * 60 + randomDelay,
+        1000 * 60 * 60 + randomDelay
       );
       console.log(
-        `✅ Login successful to Loxone in category "${this.category}"!`,
+        `✅ Login successful to Loxone in category "${this.category}"!`
       );
     } catch (e) {
       console.error("Error during login! We probably hit the rate limit..");
@@ -91,7 +91,7 @@ export class PuppeteerController {
       process.exit(1);
     }
 
-    console.log(`Refreshing login in category "${this.category}"...`);
+    console.log(`🤖 Refreshing login in category "${this.category}"...`);
     const timestamp = new Date().getTime();
 
     try {
@@ -104,7 +104,7 @@ export class PuppeteerController {
       await this.page?.waitForNavigation();
 
       await this.page?.waitForFunction(
-        `document.querySelector("body").innerText.includes("WOHNUNG ${apartment}")`,
+        `document.querySelector("body").innerText.includes("WOHNUNG ${apartment}")`
       );
 
       if (this.page) {
@@ -115,7 +115,7 @@ export class PuppeteerController {
       console.log(
         `✅ Successfully refreshed login in category "${
           this.category
-        }" in ${Math.floor(timeElapsed / 1000)} seconds!`,
+        }" in ${Math.floor(timeElapsed / 1000)} seconds!`
       );
     } catch (e) {
       console.error("Error during login: ", e);

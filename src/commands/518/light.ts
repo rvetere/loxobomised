@@ -2,13 +2,11 @@ import { Page } from "puppeteer";
 import { clickActionOfTitle } from "src/puppeteer/utils/clickActionOfTitle";
 import { clickPlusMinusOfTitle } from "src/puppeteer/utils/clickPlusMinusOfTitle";
 
-export class FiveEightTheenLight {
+export class Apartment518Light {
   page: Page | null;
-  query: Record<string, any>;
 
-  constructor(page: Page | null, query: Record<string, any>) {
+  constructor(page: Page | null) {
     this.page = page;
-    this.query = query;
   }
 
   /**
@@ -20,8 +18,8 @@ export class FiveEightTheenLight {
    * http://localhost:9000/exec/518/light?withBathroomHeadlights=1&actionBathroom=Switch Off
    *
    */
-  async run() {
-    const { page, query } = this;
+  async run(query: Record<string, any>) {
+    const { page } = this;
 
     // 1. Kitchen Headlights
     if (!!query.withKitchenHeadlights) {
@@ -30,7 +28,7 @@ export class FiveEightTheenLight {
         page,
         "Küche",
         1,
-        query.actionKitchen || "Switch On",
+        query.actionKitchen || "Switch On"
       );
     }
 
@@ -52,7 +50,7 @@ export class FiveEightTheenLight {
         page,
         "Entrée",
         1,
-        query.actionEntrance || "Switch On",
+        query.actionEntrance || "Switch On"
       );
     }
 
@@ -62,7 +60,7 @@ export class FiveEightTheenLight {
         page,
         "Loggia",
         1,
-        query.actionLoggia || "Switch On",
+        query.actionLoggia || "Switch On"
       );
     }
 
@@ -83,7 +81,7 @@ export class FiveEightTheenLight {
         page,
         "WC-Dusche",
         2,
-        query.actionBathroom || "Switch On",
+        query.actionBathroom || "Switch On"
       );
     }
   }

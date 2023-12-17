@@ -1,36 +1,43 @@
 import { Page } from "puppeteer";
 import { sleep } from "src/utils/sleep";
 import { clickOnParent } from "./clickOnParent";
+import { getContainer } from "./getContainer";
 
 export const clickActionOfTitle = async (
   page: Page | null,
-  text: string,
+  title: string,
   buttonGroupIndex: number,
   action: string,
-  doubleClick = false,
+  doubleClick = false
 ) => {
   if (!page) {
     console.error("Page not found!");
     return;
   }
 
-  const containerXPath = `//div[contains(text(),'${text}')]/../../following-sibling::div[1]/div/div[${buttonGroupIndex}]`;
-  const [container] = await page.$x(containerXPath);
+  const container = await getContainer(page, title, buttonGroupIndex);
   if (!container) {
     return;
   }
   const elements = await container.$$("div[role=button]");
+  const element = elements.length ? elements[0] : null;
+  if (!element) {
+    console.error("Element not found!");
+    return;
+  }
 
   // open overlay controls
-  elements[0].click();
+  element.click();
   await sleep(200);
+
   if (doubleClick) {
-    elements[0].click();
+    element.click();
     await sleep(200);
   }
 
   // click action
   await clickOnParent(page, action);
+
   // close overlay controls
   await page.keyboard.press("Escape");
   await sleep(200);

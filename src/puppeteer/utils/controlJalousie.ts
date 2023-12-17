@@ -2,10 +2,14 @@ import { ElementHandle, Page } from "puppeteer";
 import { sleep } from "src/utils/sleep";
 import { clickUpDownOfTitle } from "./clickUpDownOfTitle";
 import { getContainer } from "./getContainer";
-
-const LoggiaRolloTiming = 59 / 100;
-const WindowRolloTiming = 40 / 100;
-const MarkiseTiming = 20 / 100;
+import { getDataPercent } from "./getDataPercent";
+import {
+  LoggiaRolloTiming,
+  MarkiseTiming,
+  RolloType,
+  WindowRolloTiming,
+  getTiming,
+} from "./jalousieTiming";
 
 async function clickButton(button: ElementHandle<Element> | null, delay = 250) {
   button?.click();
@@ -20,72 +24,57 @@ function toPositive(n: number) {
   return n;
 }
 
-export const controlJalousie = async (props: {
+interface ControlJalousieProps {
   page: Page | null;
   room: string;
   buttonGroupIndex: number;
   percentToSet: number;
   finalPosition: number;
-  rolloType?: string;
-}) => {
-  const {
-    rolloType = "Window", // Window, Loggia, Markise
-    finalPosition = 0, // 0=Closed, 1=Slightly, 2=Double
-  } = props;
+  rolloType?: RolloType;
+  callback?: (room: string, buttonGroupIndex: number) => void;
+}
 
-  let timer = null;
+export const controlJalousie = async ({
+  page,
+  room,
+  buttonGroupIndex,
+  percentToSet,
+  rolloType = "Window", // Window, Loggia, Markise
+  finalPosition = 0, // 0=Closed, 1=Slightly, 2=Double
+  callback = () => {},
+}: ControlJalousieProps) => {
   let actualDelay = 0;
-  const container = await getContainer(
-    props.page,
-    props.room,
-    props.buttonGroupIndex
-  );
+  const container = await getContainer(page, room, buttonGroupIndex);
   if (!container) {
-    return { actualDelay, timer };
+    return actualDelay;
   }
-  const texts = await container.$$eval("div", (divs) =>
-    divs.map((div) => div.innerText)
-  );
-  const textWithPercent = texts.find((text) => text.includes("%"));
-  const textClosed = texts.find((text) => text.includes("Closed"));
 
-  const currentPercent = textWithPercent
-    ? parseInt(textWithPercent.split("(")[1].split(")")[0].replace("%", ""))
-    : textClosed
-      ? 100
-      : 0;
-
-  const steps = props.percentToSet - currentPercent;
+  const currentPercent = await getDataPercent(container);
+  const steps = percentToSet - currentPercent;
   const isMovingDown = steps > 0;
 
-  if (toPositive(steps) > 4) {
+  console.log("   Run controlJalousie", {
+    room: `${room} [${buttonGroupIndex}]`,
+    steps,
+  });
+
+  if (toPositive(steps) > 3) {
     // calculate exact delay to reach "percentToSet"
-    const timing =
-      rolloType === "Loggia"
-        ? LoggiaRolloTiming
-        : rolloType === "Window"
-          ? WindowRolloTiming
-          : MarkiseTiming;
-    const delay = Math.floor(toPositive(steps) * timing * 1000);
+    const delay = Math.floor(toPositive(steps) * getTiming(rolloType) * 1000);
     actualDelay = delay;
 
-    console.log("controlJalousie", {
-      room: `${props.room} [${props.buttonGroupIndex}]}`,
-      steps,
-    });
-
     // click action to move jalousie
-    timer = await clickUpDownOfTitle({
-      page: props.page,
-      category: props.room,
-      buttonGroupIndex: props.buttonGroupIndex,
+    await clickUpDownOfTitle({
+      page: page,
+      category: room,
+      buttonGroupIndex: buttonGroupIndex,
       action: isMovingDown ? "down" : "up",
       doubleClick: true,
       delay,
-      callback: async (upButton, downButton) => {
-        if (rolloType !== "Markise") {
+      callback: async (afterDoubleClick, upButton, downButton) => {
+        if (afterDoubleClick && rolloType !== "Markise") {
           console.log(
-            `Move jalousie (${props.room}) [${props.buttonGroupIndex}] to final position (tilted=${finalPosition};isMovingDown=${isMovingDown}))`
+            `   Move jalousie (${room}) [${buttonGroupIndex}] to final position (tilted=${finalPosition};isMovingDown=${isMovingDown}))`
           );
           if (isMovingDown) {
             if (finalPosition === 0) {
@@ -105,9 +94,12 @@ export const controlJalousie = async (props: {
             }
           }
         }
+        callback(room, buttonGroupIndex);
       },
     });
+  } else {
+    callback(room, buttonGroupIndex);
   }
 
-  return { actualDelay, timer };
+  return actualDelay;
 };

@@ -25,10 +25,10 @@ const clickPlusMinus = async (page: Page, kind: string) => {
   const buttons =
     kind === "plus"
       ? await page.$$(
-          "path[d='M13 21a1 1 0 11-2 0v-8H3a1 1 0 110-2h8V3a1 1 0 112 0v8h8a1 1 0 110 2h-8v8z']",
+          "path[d='M13 21a1 1 0 11-2 0v-8H3a1 1 0 110-2h8V3a1 1 0 112 0v8h8a1 1 0 110 2h-8v8z']"
         )
       : await page.$$(
-          "path[d='M2 12a1 1 0 011-1h18a1 1 0 110 2H3a1 1 0 01-1-1z']",
+          "path[d='M2 12a1 1 0 011-1h18a1 1 0 110 2H3a1 1 0 01-1-1z']"
         );
 
   // click plus/minus
@@ -45,7 +45,7 @@ export const clickPlusMinusOfTitle = async (
   page: Page | null,
   title: string,
   buttonGroupIndex: number,
-  percentToSet: number,
+  percentToSet: number
 ) => {
   if (!page) {
     console.error("Page not found!");
@@ -57,7 +57,7 @@ export const clickPlusMinusOfTitle = async (
   }
 
   const texts = await container.$$eval("div", (divs) =>
-    divs.map((div) => div.innerText),
+    divs.map((div) => div.innerText)
   );
   const textWithPercent = texts.find((text) => text.endsWith("%"));
   const currentPercent = textWithPercent
@@ -66,23 +66,10 @@ export const clickPlusMinusOfTitle = async (
   const steps = (percentToSet - currentPercent) / 10;
   const kind = steps > 0 ? "plus" : "minus";
 
-  // console.log("clickPlusMinusOfTitle", {
-  //   buttonGroupIndex,
-  //   percentToSet,
-  //   currentPercent,
-  //   steps,
-  //   kind,
-  // });
-
   if (toPositive(steps) > 0) {
     const elements = await container.$$("div[role=button]");
 
     // open overlay controls
-    console.log(
-      " -- click overlay open (clickPlusMinusOfTitle)",
-      title,
-      buttonGroupIndex,
-    );
     elements[0].click();
     await sleep(200);
 

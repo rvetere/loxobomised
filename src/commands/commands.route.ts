@@ -6,7 +6,7 @@ const router = Router();
 
 const commandsController = new CommandsController();
 initPool().then((pool) => {
-  commandsController.pool = pool;
+  commandsController.setPool(pool);
 });
 
 router

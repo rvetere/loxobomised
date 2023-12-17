@@ -7,7 +7,7 @@ export const clickButtonByText = async (page: Page, text: string) => {
       (element as unknown as HTMLElement).click();
     } else {
       await page.screenshot({ path: `clickButtonByText-${text}.png` });
-      console.error("Element not found");
+      console.error("Button by text not found");
     }
   } catch (e) {
     console.error(e);
