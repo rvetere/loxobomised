@@ -6,10 +6,10 @@ require("dotenv").config();
 
 let pool = [];
 
-const roomsRaw =
-  process.env.ROOMS || "Wohnzimmer,Küche,Entrée,WC-Dusche,Loggia";
+const categoriesRaw =
+  process.env.CATEGORIES || "Wohnzimmer,Küche,Entrée,WC-Dusche,Loggia";
 
-function initApp(room) {
+function initApp(category) {
   const port = process.env.PORT || 3000;
   const app = express();
 
@@ -36,21 +36,21 @@ function initApp(room) {
     });
   });
 
-  initPool(room).then(() => {
+  initPool(category).then(() => {
     app.listen(port, () => {
       console.log(`🚀 Server ready and listening on port ${port}`);
     });
   });
 }
 
-async function initPool(room) {
-  const rooms = room ? [room] : roomsRaw.split(",");
-  console.log(`🤖 Initializing pool with rooms ${rooms}`);
+async function initPool(category) {
+  const categorys = category ? [category] : categoriesRaw.split(",");
+  console.log(`🤖 Initializing pool with categorys ${categorys}`);
   const instances = [];
 
   let i = 0;
-  for (let room of rooms) {
-    let instance = new LoxoneWebinterface(room, i);
+  for (let _category of categorys) {
+    let instance = new LoxoneWebinterface(_category, i);
     await instance.init();
     instances.push(instance);
     i = i + 1;
@@ -60,11 +60,10 @@ async function initPool(room) {
 }
 
 const args = process.argv;
-let room = args[args.length - 1];
-if (room && room.startsWith("--room=")) {
-  room = room.replace("--room=", "").replace("_", " ");
+let category = args[args.length - 1];
+if (category && category.startsWith("--category=")) {
+  category = category.replace("--category=", "").replace("_", " ");
 } else {
-  room = null;
+  category = null;
 }
-console.log(`🔥🔥 ${args[args.length - 1]} room: ${room}`);
-initApp(room);
+initApp(category);

@@ -1,5 +1,5 @@
-function getPageInPool(pool, room) {
-  const instance = pool.find((p) => p.getRoom() === room);
+function getPageInPool(pool, category) {
+  const instance = pool.find((p) => p.getCategory() === category);
   return instance.getInstance();
 }
 

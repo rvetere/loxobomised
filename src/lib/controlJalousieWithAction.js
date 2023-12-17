@@ -1,4 +1,4 @@
-const { clickActionOfCategory } = require("./clickActionOfCategory");
+const { clickActionOfTitle } = require("./clickActionOfTitle");
 
 const MarkiseTiming = 20 / 100;
 
@@ -47,7 +47,7 @@ const controlJalousieWithAction = async ({
     rolloType,
   });
   if (toPositive(steps) > 4) {
-    await clickActionOfCategory(page, "Beschattung", buttonGroupIndex, action);
+    await clickActionOfTitle(page, "Beschattung", buttonGroupIndex, action);
 
     // calculate exact delay to reach "percentToSet"
     const delay = Math.floor(toPositive(steps) * MarkiseTiming * 1000);
@@ -74,7 +74,7 @@ const controlJalousieWithAction = async ({
 
 async function stopAndMoveToFinalPosition() {
   console.log(`Run stopAndMoveToFinalPosition (${this.buttonGroupIndex})`);
-  await clickActionOfCategory(
+  await clickActionOfTitle(
     this.page,
     "Beschattung",
     this.buttonGroupIndex,

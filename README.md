@@ -17,7 +17,6 @@ LOGIN=Mieter
 PASSWORD=Password
 APARTMENT=05.18
 PORT=3000
-ROOMS=Wohnzimmer,Küche,Entrée,WC-Dusche,Loggia
 ```
 
 2. Install all dependencies by running `npm install` (or just `yarn`)
@@ -41,20 +40,20 @@ You can simply add "commands" in the folder `./src/commands/<my-apartment-nr>` a
 Start by adding a folder for your appartment in `./src/commands` and then just add javascript files in there with the following structure:
 
 ```javascript
-const { clickActionOfCategory, getPageInPool } = require("../../lib");
+const { clickActionOfTitle, getPageInPool } = require("../../lib");
 
 // Set smooth kitchen light
 const run = async (page, query) => {
   const page = getPageInPool(pool, "Küche");
 
   // Turn off head lights
-  await clickActionOfCategory(page, "Beleuchtung", 1, "Switch Off");
+  await clickActionOfTitle(page, "Beleuchtung", 1, "Switch Off");
 
   // Set spots to a dimmed level
   // -> you can call this command with params too! http://localhost:3000/exec/518/example?percent=60
   const percentStr = query.percent || "40";
   const percent = parseInt(percentStr, 10);
-  await clickPlusMinusOfCategory(page, "Beleuchtung", 2, percent);
+  await clickPlusMinusOfTitle(page, "Beleuchtung", 2, percent);
 };
 
 module.exports = {

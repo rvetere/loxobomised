@@ -1,8 +1,8 @@
 const { sleep } = require("./sleep");
 
-const clickUpDownOfCategory = async (
+const clickUpDownOfTitle = async (
   page,
-  category,
+  title,
   buttonGroupIndex,
   action = "down", // "up", "down"
   doubleClick = false,
@@ -10,7 +10,7 @@ const clickUpDownOfCategory = async (
   callback = () => {}
 ) => {
   let timer = null;
-  const element = await getElement(page, category, buttonGroupIndex, action);
+  const element = await getElement(page, title, buttonGroupIndex, action);
   if (element) {
     // click action
     element.click();
@@ -20,7 +20,7 @@ const clickUpDownOfCategory = async (
         try {
           const element = await getElement(
             page,
-            category,
+            title,
             buttonGroupIndex,
             action
           );
@@ -38,9 +38,9 @@ const clickUpDownOfCategory = async (
   return timer;
 };
 
-const getElement = async (page, category, buttonGroupIndex, action) => {
+const getElement = async (page, title, buttonGroupIndex, action) => {
   const [container] = await page.$x(
-    `//div[contains(text(),'${category}')]/../../following-sibling::div[1]/div/div[${buttonGroupIndex}]`
+    `//div[contains(text(),'${title}')]/../../following-sibling::div[1]/div/div[${buttonGroupIndex}]`
   );
   if (!container) {
     console.error("Category not found!");
@@ -64,5 +64,5 @@ const getElement = async (page, category, buttonGroupIndex, action) => {
 };
 
 module.exports = {
-  clickUpDownOfCategory,
+  clickUpDownOfTitle,
 };

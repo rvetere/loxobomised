@@ -1,25 +1,25 @@
 const { controlJalousie } = require("./controlJalousie");
 const { controlJalousieWithAction } = require("./controlJalousieWithAction");
-const { clickActionOfCategory } = require("./clickActionOfCategory");
-const { clickUpDownOfCategory } = require("./clickUpDownOfCategory");
-const { clickPlusMinusOfCategory } = require("./clickPlusMinusOfCategory");
+const { clickActionOfTitle } = require("./clickActionOfTitle");
+const { clickUpDownOfTitle } = require("./clickUpDownOfTitle");
+const { clickPlusMinusOfTitle } = require("./clickPlusMinusOfTitle");
 const { clickButtonByText } = require("./clickButtonByText");
 const { clickOnParent } = require("./clickOnParent");
 const { getContainer } = require("./getContainer");
 const { getPageInPool } = require("./getPageInPool");
-const { navigateToRoom } = require("./navigateToRoom");
+const { navigate } = require("./navigate");
 const { sleep } = require("./sleep");
 
 module.exports = {
   controlJalousie,
   controlJalousieWithAction,
-  clickUpDownOfCategory,
-  clickActionOfCategory,
-  clickPlusMinusOfCategory,
+  clickUpDownOfTitle,
+  clickActionOfTitle,
+  clickPlusMinusOfTitle,
   clickButtonByText,
   clickOnParent,
   getContainer,
   getPageInPool,
-  navigateToRoom,
+  navigate,
   sleep,
 };

@@ -1,4 +1,4 @@
-const { clickUpDownOfCategory } = require("./clickUpDownOfCategory");
+const { clickUpDownOfTitle } = require("./clickUpDownOfTitle");
 const { getContainer } = require("./getContainer");
 const { sleep } = require("./sleep");
 
@@ -8,6 +8,7 @@ const MarkiseTiming = 20 / 100;
 
 const controlJalousie = async ({
   page,
+  title,
   buttonGroupIndex,
   percentToSet,
   rolloType = "Window", // Window, Loggia, Markise
@@ -15,7 +16,7 @@ const controlJalousie = async ({
 }) => {
   let timer = null;
   let actualDelay = 0;
-  const container = await getContainer(page, "Beschattung", buttonGroupIndex);
+  const container = await getContainer(page, title, buttonGroupIndex);
   if (!container) {
     return { actualDelay, timer };
   }
@@ -53,7 +54,7 @@ const controlJalousie = async ({
     actualDelay = delay;
 
     // click action to move jalousie
-    timer = await clickUpDownOfCategory(
+    timer = await clickUpDownOfTitle(
       page,
       "Beschattung",
       buttonGroupIndex,
@@ -69,27 +70,27 @@ const controlJalousie = async ({
             if (finalPosition === 0) {
               // nothing to do, the blinds are already closed
             } else if (finalPosition === 1) {
-              await clickUpDownOfCategory(
+              await clickUpDownOfTitle(
                 page,
                 "Beschattung",
                 buttonGroupIndex,
                 "up"
               );
-              await clickUpDownOfCategory(
+              await clickUpDownOfTitle(
                 page,
                 "Beschattung",
                 buttonGroupIndex,
                 "up"
               );
             } else if (finalPosition === 2) {
-              await clickUpDownOfCategory(
+              await clickUpDownOfTitle(
                 page,
                 "Beschattung",
                 buttonGroupIndex,
                 "up"
               );
               await sleep(450);
-              await clickUpDownOfCategory(
+              await clickUpDownOfTitle(
                 page,
                 "Beschattung",
                 buttonGroupIndex,
@@ -98,42 +99,42 @@ const controlJalousie = async ({
             }
           } else {
             if (finalPosition === 0) {
-              await clickUpDownOfCategory(
+              await clickUpDownOfTitle(
                 page,
                 "Beschattung",
                 buttonGroupIndex,
                 "down"
               );
               await sleep(600);
-              await clickUpDownOfCategory(
+              await clickUpDownOfTitle(
                 page,
                 "Beschattung",
                 buttonGroupIndex,
                 "up"
               );
             } else if (finalPosition === 1) {
-              await clickUpDownOfCategory(
+              await clickUpDownOfTitle(
                 page,
                 "Beschattung",
                 buttonGroupIndex,
                 "down"
               );
               await sleep(400);
-              await clickUpDownOfCategory(
+              await clickUpDownOfTitle(
                 page,
                 "Beschattung",
                 buttonGroupIndex,
                 "up"
               );
             } else if (finalPosition === 2) {
-              await clickUpDownOfCategory(
+              await clickUpDownOfTitle(
                 page,
                 "Beschattung",
                 buttonGroupIndex,
                 "down"
               );
               await sleep(150);
-              await clickUpDownOfCategory(
+              await clickUpDownOfTitle(
                 page,
                 "Beschattung",
                 buttonGroupIndex,

@@ -2,13 +2,13 @@ const { clickOnParent } = require("./clickOnParent");
 const { getContainer } = require("./getContainer");
 const { sleep } = require("./sleep");
 
-const clickPlusMinusOfCategory = async (
+const clickPlusMinusOfTitle = async (
   page,
-  category,
+  title,
   buttonGroupIndex,
   percentToSet
 ) => {
-  const container = await getContainer(page, category, buttonGroupIndex);
+  const container = await getContainer(page, title, buttonGroupIndex);
   if (!container) {
     return { actualDelay, timer };
   }
@@ -23,7 +23,7 @@ const clickPlusMinusOfCategory = async (
   const steps = (percentToSet - currentPercent) / 10;
   const kind = steps > 0 ? "plus" : "minus";
 
-  // console.log("clickPlusMinusOfCategory", {
+  // console.log("clickPlusMinusOfTitle", {
   //   buttonGroupIndex,
   //   percentToSet,
   //   currentPercent,
@@ -86,5 +86,5 @@ function toPositive(n) {
 }
 
 module.exports = {
-  clickPlusMinusOfCategory,
+  clickPlusMinusOfTitle,
 };

@@ -1,15 +1,15 @@
 const { clickOnParent } = require("./clickOnParent");
 const { sleep } = require("./sleep");
 
-const clickActionOfCategory = async (
+const clickActionOfTitle = async (
   page,
-  category,
+  title,
   buttonGroupIndex,
   action,
   doubleClick = false
 ) => {
   const [container] = await page.$x(
-    `//div[contains(text(),'${category}')]/../../following-sibling::div[1]/div/div[${buttonGroupIndex}]`
+    `//div[contains(text(),'${title}')]/../../following-sibling::div[1]/div/div[${buttonGroupIndex}]`
   );
   if (!container) {
     console.error("Category not found!");
@@ -34,5 +34,5 @@ const clickActionOfCategory = async (
 };
 
 module.exports = {
-  clickActionOfCategory,
+  clickActionOfTitle,
 };

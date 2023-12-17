@@ -3,46 +3,31 @@ const { sleep } = require("./sleep");
 
 const apartment = process.env.APARTMENT || "05.18";
 
-const navigateToRoom = async (page, room) => {
-  // console.log(`Navigating to room ${room}`);
+const navigate = async (page, target, mainNav = "Räume") => {
+  console.log(`Navigating to "${mainNav} - ${target}"`);
 
-  // const texts = await page.$$eval("body", (bodies) =>
-  //   bodies.map((body) => body.innerText)
-  // );
-  // const bodyText = texts.join("\n");
-  // if (bodyText.includes("Loading information for the App")) {
-  //   await sleep(1000);
-  // }
-  // if (
-  //   bodyText.includes(`WOHNUNG ${apartment}`) &&
-  //   bodyText.includes(room.toUpperCase())
-  // ) {
-  //   console.log("Already in room");
-  //   return;
-  // }
-
-  // navigate to room
+  // navigate to mainNav
   try {
-    await goTo(page, "Räume");
+    await goTo(page, mainNav);
   } catch (_e) {
-    await clickButtonByText(page, "Räume");
+    await clickButtonByText(page, mainNav);
     await sleep(500);
   }
 
+  // navigate to target
   try {
-    await goTo(page, room);
+    await goTo(page, target);
   } catch (_e) {
-    await clickButtonByText(page, room);
+    await clickButtonByText(page, target);
     await sleep(500);
   }
 
-  // it can happen that the app starts "loading scripts" again if you navigate trough more than one room in one command run
+  // it can happen that the app starts "loading scripts" again if you navigate trough more than one target in one command run
   // -> so we wait until the name of our apartment is visible again in the UI, this tells us the scripts are loaded
   await page.waitForFunction(
     `document.querySelector("body").innerText.includes("WOHNUNG ${apartment}")`
   );
   await sleep(500);
-  // console.log("Navigated to room");
 };
 
 const goTo = async (page, text) => {
@@ -90,5 +75,5 @@ const goTo = async (page, text) => {
 };
 
 module.exports = {
-  navigateToRoom,
+  navigate,
 };
