@@ -11,7 +11,7 @@ const clickUpDownOfTitle = async (props) => {
 
   let timer = null;
 
-  console.log("props", props);
+  console.log("props", props.title);
   const { upButton, downButton } = await getElement(
     props.page,
     props.title,
@@ -49,7 +49,7 @@ const clickUpDownOfTitle = async (props) => {
 
 const executeCallback = async () => {
   try {
-    console.log("this", this);
+    console.log("this", this.title);
     const { upButton, downButton } = await getElement(
       this.page,
       this.title,
@@ -100,7 +100,7 @@ const hasActionHappened = async (page, title, buttonGroupIndex) => {
 };
 
 const getElement = async (page, title, buttonGroupIndex) => {
-  console.log("getContainer - getElement");
+  console.log("getContainer - getElement", title);
   const container = await getContainer(
     page,
     title,
