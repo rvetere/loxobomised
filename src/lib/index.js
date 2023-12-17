@@ -8,6 +8,7 @@ const { clickOnParent } = require("./clickOnParent");
 const { getContainer } = require("./getContainer");
 const { getPageInPool } = require("./getPageInPool");
 const { navigate } = require("./navigate");
+const { LoxoneWebinterface } = require("./loxoneWebinterface");
 const { sleep } = require("./sleep");
 
 module.exports = {
@@ -21,5 +22,6 @@ module.exports = {
   getContainer,
   getPageInPool,
   navigate,
+  LoxoneWebinterface,
   sleep,
 };

@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const express = require("express");
-const { LoxoneWebinterface } = require("./lib/loxoneWebinterface");
+const { LoxoneWebinterface, sleep } = require("./lib");
 require("dotenv").config();
 
 let pool = [];
