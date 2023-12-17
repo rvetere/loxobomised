@@ -45,6 +45,7 @@ function initApp(room) {
 
 async function initPool(room) {
   const rooms = room ? [room] : roomsRaw.split(",");
+  console.log(`🤖 Initializing pool with rooms ${rooms}`);
   const instances = [];
 
   let i = 0;
