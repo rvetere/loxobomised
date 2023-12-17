@@ -76,6 +76,7 @@ export const controlJalousie = async ({
       doubleClick: true,
       callback: async (afterDoubleClick, upButton, downButton) => {
         if (afterDoubleClick && rolloType !== "Markise") {
+          await sleep(400);
           console.log(
             `   Move jalousie (${room}) [${buttonGroupIndex}] to final position (tilted=${finalPosition};isMovingDown=${isMovingDown}))`
           );

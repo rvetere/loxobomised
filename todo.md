@@ -1,5 +1,6 @@
 # TODO
 
+- mehr pause zwischen commands in einem run
 - der ramp up muss noch krasser sein
 - feststellen ob eine aktion geklappt hat
 - tracken wie oft ich "container not found" habe in der app

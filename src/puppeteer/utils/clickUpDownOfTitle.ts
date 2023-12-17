@@ -46,17 +46,9 @@ export const clickUpDownOfTitle = async ({
 
     if (doubleClick) {
       // double click action by starting a timer with a delay of at least 200ms
-      setTimeout(async () => {
-        const {
-          element: elementCb,
-          upButton: upButtonCb,
-          downButton: downButtonCb,
-        } = await getUpDownElement(page, title, buttonGroupIndex, action);
-
-        elementCb?.click();
-        await sleep(400);
-
-        callback(true, upButtonCb, downButtonCb);
+      setTimeout(() => {
+        element.click();
+        callback(true, upButton, downButton);
       }, delay);
       return;
     }
