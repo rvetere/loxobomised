@@ -25,8 +25,8 @@ export class CommandsController {
     this.resetRequestCounter = this.resetRequestCounter.bind(this);
   }
 
-  private resetRequestCounter(category: string) {
-    this.requestCounter[category] = 0;
+  private resetRequestCounter() {
+    this.requestCounter = {};
   }
 
   private rampUp(category: string) {
@@ -42,10 +42,10 @@ export class CommandsController {
     if (this.resetTimer) {
       clearTimeout(this.resetTimer);
     }
-    this.resetTimer = setTimeout(this.resetRequestCounter, 1000 * 3);
+    this.resetTimer = setTimeout(this.resetRequestCounter, 1000 * 4);
 
     return {
-      delay: (this.requestCounter[category] || 0) * 1500,
+      delay: (this.requestCounter[category] || 0) * 1800,
       formattedDate: `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}.${now.getMilliseconds()}`,
     };
   }
