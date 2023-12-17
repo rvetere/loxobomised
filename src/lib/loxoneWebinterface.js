@@ -7,6 +7,7 @@ const login = process.env.LOGIN;
 const password = process.env.PASSWORD;
 const apartment = process.env.APARTMENT || "05.18";
 const serverUrl = `https://dns.loxonecloud.com/${miniServerId}`;
+const loginDelay = parseInt(process.env.LOGIN_DELAY_SECONDS || "0", 10);
 
 class LoxoneWebinterface {
   constructor(room, index) {
@@ -25,6 +26,10 @@ class LoxoneWebinterface {
   }
 
   async init() {
+    console.log(
+      `Initializing LoxoneWebinterface with loginDelay of ${loginDelay} (${this.room})`
+    );
+    await sleep(loginDelay * 1000);
     console.log("Open url: " + serverUrl);
     const browser = await puppeteer.launch({ headless: "new" });
     this.browser = browser;
@@ -65,10 +70,8 @@ class LoxoneWebinterface {
       );
       console.log(`✅ Login successful in room "${this.room}"!`);
     } catch (e) {
-      console.error("Error during login: ", e);
-      await this.page.screenshot({ path: "error-init.png" });
-      await sleep(1000 * 5);
-      await this.init();
+      console.error("Error during login! We probably hit the rate limit..");
+      process.exit(1);
     }
   }
 

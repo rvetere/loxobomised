@@ -27,12 +27,10 @@ const clickActionOfCategory = async (
   }
 
   // click action
-  const elementFound = await clickOnParent(page, action);
-  if (!!elementFound) {
-    // close overlay controls
-    await page.keyboard.press("Escape");
-    await sleep(200);
-  }
+  await clickOnParent(page, action);
+  // close overlay controls
+  await page.keyboard.press("Escape");
+  await sleep(200);
 };
 
 module.exports = {

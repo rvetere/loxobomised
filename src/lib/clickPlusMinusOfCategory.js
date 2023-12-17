@@ -23,13 +23,13 @@ const clickPlusMinusOfCategory = async (
   const steps = (percentToSet - currentPercent) / 10;
   const kind = steps > 0 ? "plus" : "minus";
 
-  console.log("clickPlusMinusOfCategory", {
-    buttonGroupIndex,
-    percentToSet,
-    currentPercent,
-    steps,
-    kind,
-  });
+  // console.log("clickPlusMinusOfCategory", {
+  //   buttonGroupIndex,
+  //   percentToSet,
+  //   currentPercent,
+  //   steps,
+  //   kind,
+  // });
 
   if (toPositive(steps) > 0) {
     const elements = await container.$$("div[role=button]");
@@ -48,6 +48,16 @@ const clickPlusMinusOfCategory = async (
   }
 };
 
+const clickParent = async (element) => {
+  if (element) {
+    const parentElement = await element.$x("../..");
+
+    if (parentElement && parentElement[0]) {
+      await element.click();
+    }
+    return element;
+  }
+};
 const clickPlusMinus = async (page, kind) => {
   const buttons =
     kind === "plus"
@@ -59,8 +69,13 @@ const clickPlusMinus = async (page, kind) => {
         );
 
   // click plus/minus
-  buttons[0].click();
-  await sleep(200);
+  if (buttons.length) {
+    await clickParent(buttons[0]);
+    await sleep(200);
+  } else {
+    console.error("clickPlusMinus", "no button found");
+    await page.screenshot({ path: "clickPlusMinus-error.png" });
+  }
 };
 
 function toPositive(n) {
