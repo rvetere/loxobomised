@@ -1,5 +1,6 @@
 const puppeteer = require("puppeteer");
-const { navigate, sleep } = require("./index");
+const { navigate } = require("./navigate");
+const { sleep } = require("./sleep");
 require("dotenv").config();
 
 const miniServerId = process.env.MINI_SERVER_ID;
