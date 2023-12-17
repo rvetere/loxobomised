@@ -43,34 +43,37 @@ export const controlJalousie = async ({
   finalPosition = 0, // 0=Closed, 1=Slightly, 2=Double
   callback = () => {},
 }: ControlJalousieProps) => {
-  let actualDelay = 0;
   const container = await getContainer(page, room, buttonGroupIndex);
   if (!container) {
-    return actualDelay;
+    return 0;
   }
 
   const currentPercent = await getDataPercent(container);
   const steps = percentToSet - currentPercent;
   const isMovingDown = steps > 0;
+  const props = {
+    page,
+    title: room,
+    buttonGroupIndex,
+    action: isMovingDown ? "down" : "up",
+  };
 
   console.log("   Run controlJalousie", {
     room: `${room} [${buttonGroupIndex}]`,
     steps,
   });
 
-  if (toPositive(steps) > 3) {
+  if (percentToSet === 0) {
+    await clickUpDownOfTitle(props);
+  } else if (toPositive(steps) > 3) {
     // calculate exact delay to reach "percentToSet"
     const delay = Math.floor(toPositive(steps) * getTiming(rolloType) * 1000);
-    actualDelay = delay;
 
     // click action to move jalousie
     await clickUpDownOfTitle({
-      page: page,
-      category: room,
-      buttonGroupIndex: buttonGroupIndex,
-      action: isMovingDown ? "down" : "up",
-      doubleClick: true,
+      ...props,
       delay,
+      doubleClick: true,
       callback: async (afterDoubleClick, upButton, downButton) => {
         if (afterDoubleClick && rolloType !== "Markise") {
           console.log(
@@ -97,9 +100,10 @@ export const controlJalousie = async ({
         callback(room, buttonGroupIndex);
       },
     });
-  } else {
-    callback(room, buttonGroupIndex);
+
+    return delay;
   }
 
-  return actualDelay;
+  callback(room, buttonGroupIndex);
+  return 0;
 };

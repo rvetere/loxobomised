@@ -24,10 +24,9 @@ export const controlJalousieWithAction = async ({
   actionDown = "Fully Out",
   callback = () => {},
 }: ControlJalousieWithActionProps) => {
-  let actualDelay = 0;
   const container = await getContainer(page, room, buttonGroupIndex);
   if (!container) {
-    return actualDelay;
+    return 0;
   }
 
   const currentPercent = await getDataPercent(container, "Fully extended");
@@ -39,22 +38,24 @@ export const controlJalousieWithAction = async ({
     steps,
   });
 
-  if (toPositive(steps) > 3) {
+  if (percentToSet === 0) {
+    await clickActionOfTitle(page, room, buttonGroupIndex, action);
+  } else if (toPositive(steps) > 3) {
     await clickActionOfTitle(page, room, buttonGroupIndex, action);
 
     // calculate exact delay to reach "percentToSet"
     const delay = Math.floor(toPositive(steps) * getTiming("Markise") * 1000);
-    actualDelay = delay;
 
     // wait until jalousie is in position
     setTimeout(async () => {
       console.log(`   Run stopAndMoveToFinalPosition (${buttonGroupIndex})`);
       await clickActionOfTitle(page, room, buttonGroupIndex, action);
       callback(room, buttonGroupIndex);
-    }, actualDelay);
-  } else {
-    callback(room, buttonGroupIndex);
+    }, delay);
+
+    return delay;
   }
 
-  return actualDelay;
+  callback(room, buttonGroupIndex);
+  return 0;
 };

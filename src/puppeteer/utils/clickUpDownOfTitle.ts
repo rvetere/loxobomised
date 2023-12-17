@@ -5,12 +5,12 @@ import { getUpDownElement } from "./getUpDownElement";
 
 interface ClickUpDownOfTitleProps {
   page: Page | null;
-  category: string;
+  title: string;
   buttonGroupIndex: number;
-  action: string;
-  doubleClick: boolean;
-  delay: number;
-  callback: (
+  action?: string;
+  doubleClick?: boolean;
+  delay?: number;
+  callback?: (
     afterDoubleClick: boolean,
     upButton: ElementHandle | null,
     downButton: ElementHandle | null
@@ -18,16 +18,14 @@ interface ClickUpDownOfTitleProps {
 }
 
 const dummyCallback = (
-  afterDoubleClick: boolean,
-  upButton: ElementHandle<Element> | null,
-  downButton: ElementHandle<Element> | null
-) => {
-  console.log("IMPLEMENT!", { upButton, downButton });
-};
+  _afterDoubleClick: boolean,
+  _upButton: ElementHandle<Element> | null,
+  _downButton: ElementHandle<Element> | null
+) => {};
 
 export const clickUpDownOfTitle = async ({
   page,
-  category,
+  title,
   buttonGroupIndex,
   action = "down", // "up", "down"
   doubleClick = false,
@@ -36,7 +34,7 @@ export const clickUpDownOfTitle = async ({
 }: ClickUpDownOfTitleProps) => {
   const { element, upButton, downButton } = await getUpDownElement(
     page,
-    category,
+    title,
     buttonGroupIndex,
     action
   );

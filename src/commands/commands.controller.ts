@@ -5,38 +5,49 @@ import { Apartment518Ventilation } from "./518/ventilation";
 import { Apartment518Light } from "./518/light";
 import { Apartment518Test } from "./518/test";
 import { sleep } from "src/utils/sleep";
-
-const getPage = (pool: PuppeteerController[], category: string) => {
-  const instance = pool.find((p) => p.category === category);
-  if (instance) {
-    const page = instance.getPage();
-    if (page) {
-      return page;
-    }
-    return null;
-  }
-
-  return null;
-};
+import { getPage } from "src/utils/getPage";
 
 export class CommandsController {
   initialized = false;
   pool: PuppeteerController[];
   commands: Record<string, any> = {};
-  lastRequestTstamp: number | undefined;
-  requestCounter = 0;
+  requestTstamp: number | undefined;
+  requestCounter: Record<string, number> = {};
   resetTimer: any | null = null;
 
   constructor() {
     this.pool = [];
+
     this.index = this.index.bind(this);
     this.execute = this.execute.bind(this);
-    this.resetRequestCounter = this.resetRequestCounter.bind(this);
     this.setPool = this.setPool.bind(this);
+    this.rampUp = this.rampUp.bind(this);
+    this.resetRequestCounter = this.resetRequestCounter.bind(this);
   }
 
-  resetRequestCounter() {
-    this.requestCounter = 0;
+  private resetRequestCounter(category: string) {
+    this.requestCounter[category] = 0;
+  }
+
+  private rampUp(category: string) {
+    const now = new Date();
+    const time = now.getTime();
+    const ellapsedMs = this.requestTstamp ? time - this.requestTstamp : 200;
+    this.requestTstamp = time;
+
+    if (ellapsedMs < 200) {
+      this.requestCounter[category] = (this.requestCounter[category] || 0) + 1;
+    }
+
+    if (this.resetTimer) {
+      clearTimeout(this.resetTimer);
+    }
+    this.resetTimer = setTimeout(this.resetRequestCounter, 1000 * 3);
+
+    return {
+      delay: (this.requestCounter[category] || 0) * 800,
+      formattedDate: `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}.${now.getMilliseconds()}`,
+    };
   }
 
   setPool(pool: PuppeteerController[]) {
@@ -50,6 +61,7 @@ export class CommandsController {
       "518-shades": new Apartment518Shades(getPage(this.pool, "Beschattung")),
     };
     this.initialized = true;
+
     console.log("🤖 Commands initialized");
   }
 
@@ -64,13 +76,13 @@ export class CommandsController {
 
     const { name } = req.params;
     if (name.includes("-")) {
-      const { formattedDate, executionDelay } = this.handleRequestTiming();
+      const [apartment, category] = name.split("-");
+      const { formattedDate, delay } = this.rampUp(category);
       console.log(
-        `🤖 [${formattedDate}] Executing command "${name}" with delay: ${executionDelay}ms`
+        `🤖 [${formattedDate}] Executing command "${name}" with delay: ${delay}ms`
       );
 
-      sleep(executionDelay).then(() => {
-        const [apartment, category] = name.split("-");
+      sleep(delay).then(() => {
         const command = this.commands[`${apartment}-${category}`];
 
         command?.run(req.query).then(() => {
@@ -84,26 +96,5 @@ export class CommandsController {
     return res.json({
       message: `Incorrect format for parameter "${name}", must be "111-category"`,
     });
-  }
-
-  handleRequestTiming() {
-    const now = new Date();
-    const formattedDate = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}.${now.getMilliseconds()}`;
-
-    const timeEllapsedMs = this.lastRequestTstamp
-      ? now.getTime() - this.lastRequestTstamp
-      : 200;
-    this.lastRequestTstamp = now.getTime();
-    if (timeEllapsedMs < 200) {
-      this.requestCounter = this.requestCounter + 1;
-    }
-    if (this.resetTimer) {
-      clearTimeout(this.resetTimer);
-    }
-    this.resetTimer = setTimeout(this.resetRequestCounter, 1000 * 3);
-
-    const executionDelay = this.requestCounter * 800;
-
-    return { formattedDate, executionDelay };
   }
 }
