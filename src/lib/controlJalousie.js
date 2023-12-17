@@ -6,21 +6,18 @@ const LoggiaRolloTiming = 59 / 100;
 const WindowRolloTiming = 40 / 100;
 const MarkiseTiming = 20 / 100;
 
-const controlJalousie = async ({
-  page,
-  room,
-  buttonGroupIndex,
-  percentToSet,
-  rolloType = "Window", // Window, Loggia, Markise
-  finalPosition = 0, // 0=Closed, 1=Slightly, 2=Double
-}) => {
+const controlJalousie = async (props) => {
+  const {
+    rolloType = "Window", // Window, Loggia, Markise
+    finalPosition = 0, // 0=Closed, 1=Slightly, 2=Double
+  } = props;
+
   let timer = null;
   let actualDelay = 0;
-  console.log("getContainer - controlJalousie");
   const container = await getContainer(
-    page,
-    room,
-    buttonGroupIndex,
+    props.page,
+    props.room,
+    props.buttonGroupIndex,
     "controlJalousie"
   );
   if (!container) {
@@ -38,7 +35,7 @@ const controlJalousie = async ({
     ? 100
     : 0;
 
-  const steps = percentToSet - currentPercent;
+  const steps = props.percentToSet - currentPercent;
   const isMovingDown = steps > 0;
 
   if (toPositive(steps) > 4) {
@@ -53,7 +50,7 @@ const controlJalousie = async ({
     actualDelay = delay;
 
     console.log("controlJalousie", {
-      room: `${room} [${buttonGroupIndex}]}`,
+      room: `${props.room} [${props.buttonGroupIndex}]}`,
       steps,
     });
 
@@ -61,7 +58,7 @@ const controlJalousie = async ({
     const callback = async (upButton, downButton) => {
       if (rolloType !== "Markise") {
         console.log(
-          `Move jalousie (${room} - ${buttonGroupIndex}) into final position - ${finalPosition} (isMovingDown=${isMovingDown}))`
+          `Move jalousie (${room}) [${buttonGroupIndex}] to final position (tilted=${finalPosition};isMovingDown=${isMovingDown}))`
         );
         if (isMovingDown) {
           if (finalPosition === 0) {
@@ -84,9 +81,9 @@ const controlJalousie = async ({
     };
 
     timer = await clickUpDownOfTitle({
-      page,
-      room,
-      buttonGroupIndex,
+      page: props.page,
+      room: props.room,
+      buttonGroupIndex: props.buttonGroupIndex,
       isMovingDown: isMovingDown ? "down" : "up",
       doubleClick: true,
       delay,

@@ -6,15 +6,13 @@ const clickUpDownOfTitle = async (props) => {
     action = "down", // "up", "down"
     doubleClick = false,
     delay = 200,
-    callback = () => {},
   } = props;
 
   let timer = null;
 
-  console.log("props", props.title);
   const { upButton, downButton } = await getElement(
     props.page,
-    props.title,
+    props.room,
     props.buttonGroupIndex
   );
   const element = action === "up" ? upButton : downButton;
@@ -23,11 +21,17 @@ const clickUpDownOfTitle = async (props) => {
     element.click();
 
     // check if action happened
-    hasActionHappened(props.page, props.title, props.buttonGroupIndex).then(
+    hasActionHappened(props.page, props.room, props.buttonGroupIndex).then(
       (itWorked) => {
         if (!itWorked && (props.retry || 0) < 3) {
           // try again
-          console.log(`🚨 Action was not executed, RETRY! 🚨`);
+          console.log(
+            `🚨 Action "${action}" was not executed, RETRY (${
+              props.retry || 0
+            })! 🚨`,
+            props
+          );
+          clearTimeout(timer);
           return clickUpDownOfTitle({
             ...props,
             retry: (props.retry || 0) + 1,
@@ -38,7 +42,25 @@ const clickUpDownOfTitle = async (props) => {
 
     if (doubleClick) {
       // double click action by starting a timer with a delay of at least 200ms
-      timer = setTimeout(executeCallback.bind(props), delay);
+      timer = setTimeout(async () => {
+        try {
+          const { upButton, downButton } = await getElement(
+            props.page,
+            props.room,
+            props.buttonGroupIndex,
+            props.action
+          );
+          const element = props.action === "up" ? upButton : downButton;
+          element.click();
+          await sleep(400);
+          const { callback = () => {}, ...rest } = props;
+          if (typeof callback === "function") {
+            callback(upButton, downButton, ...rest);
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }, delay);
     }
 
     await sleep(800);
@@ -47,34 +69,10 @@ const clickUpDownOfTitle = async (props) => {
   return timer;
 };
 
-const executeCallback = async () => {
-  try {
-    console.log("this", this.title);
-    const { upButton, downButton } = await getElement(
-      this.page,
-      this.title,
-      this.buttonGroupIndex,
-      this.action
-    );
-    const element = action === "up" ? upButton : downButton;
-    element.click();
-    await sleep(400);
-    this.callback(upButton, downButton);
-  } catch (e) {
-    console.error(e);
-  }
-};
-
 const hasActionHappened = async (page, title, buttonGroupIndex) => {
   let itWorked = false;
   let lastPercent = -1;
-  console.log("getContainer - hasActionHappened");
-  const container = await getContainer(
-    page,
-    title,
-    buttonGroupIndex,
-    "hasActionHappened"
-  );
+  const container = await getContainer(page, title, buttonGroupIndex);
   if (!container) {
     return itWorked;
   }
@@ -87,7 +85,7 @@ const hasActionHappened = async (page, title, buttonGroupIndex) => {
     const currentPercent = textWithPercent
       ? parseInt(textWithPercent.split("(")[1].split(")")[0].replace("%", ""))
       : -1;
-    console.log("--> ", { textWithPercent, currentPercent });
+    // console.log("--> ", { texts, textWithPercent });
     if (lastPercent !== currentPercent) {
       itWorked = true;
       break;
@@ -100,13 +98,7 @@ const hasActionHappened = async (page, title, buttonGroupIndex) => {
 };
 
 const getElement = async (page, title, buttonGroupIndex) => {
-  console.log("getContainer - getElement", title);
-  const container = await getContainer(
-    page,
-    title,
-    buttonGroupIndex,
-    "getElement"
-  );
+  const container = await getContainer(page, title, buttonGroupIndex);
   if (!container) {
     return { upButton: null, downButton: null };
   }

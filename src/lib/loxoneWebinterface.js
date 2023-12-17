@@ -19,11 +19,11 @@ class LoxoneWebinterface {
     this.initialized = false;
     this.index = index;
 
-    // setInterval(() => {
-    //   if (this.initialized) {
-    //     this.page.screenshot({ path: `${category}-status.png` });
-    //   }
-    // }, 350);
+    setInterval(() => {
+      if (this.initialized) {
+        this.page.screenshot({ path: `${category}-status.png` });
+      }
+    }, 350);
 
     return this;
   }
