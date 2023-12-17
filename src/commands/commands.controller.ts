@@ -54,14 +54,25 @@ export class CommandsController {
 
     const { name } = req.params;
     if (name.includes("-")) {
+      // log formatted date with miliseconds
+      const now = new Date();
+      const formattedDate = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}.${now.getMilliseconds()}`;
+      console.log(`🤖 [${formattedDate}] Executing command "${name}"...`);
+
       const [apartment, category] = name.split("-");
       const command = this.commands[`${apartment}-${category}`];
+
       command?.run(req.query).then(() => {
-        res.json({ message: "✅ Executed successfully!" });
+        const message = `✅ Executed "${name}" successfully!`;
+        console.log(message);
+        res.json({ message });
       });
+
       return;
     }
 
-    return res.json({ message: 'Incorrect format, must be "111-category"' });
+    return res.json({
+      message: `Incorrect format for parameter "${name}", must be "111-category"`,
+    });
   }
 }
