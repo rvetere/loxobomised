@@ -1,15 +1,17 @@
 const { getContainer } = require("./getContainer");
 const { sleep } = require("./sleep");
 
-const clickUpDownOfTitle = async (
-  page,
-  title,
-  buttonGroupIndex,
-  action = "down", // "up", "down"
-  doubleClick = false,
-  delay = 200,
-  callback = () => {}
-) => {
+const clickUpDownOfTitle = async (props) => {
+  const {
+    page,
+    title,
+    buttonGroupIndex,
+    action = "down", // "up", "down"
+    doubleClick = false,
+    delay = 200,
+    callback = () => {},
+  } = props;
+
   let timer = null;
   await page.screenshot({ path: "clickUpDownOfTitle.png" });
 
@@ -25,10 +27,11 @@ const clickUpDownOfTitle = async (
 
     // check if action happened
     hasActionHappened(page, title, buttonGroupIndex).then((itWorked) => {
-      console.log(`- ${itWorked ? "✅" : "🚨"} hasActionHappened?`, itWorked, {
-        title,
-        buttonGroupIndex,
-      });
+      if (!itWorked && (props.retry || 0) < 3) {
+        // try again
+        console.log(`🚨 Action was not executed, RETRY! 🚨`);
+        return clickUpDownOfTitle({ ...props, retry: (props.retry || 0) + 1 });
+      }
     });
 
     if (doubleClick) {
@@ -74,7 +77,7 @@ const hasActionHappened = async (page, title, buttonGroupIndex) => {
     const currentPercent = textWithPercent
       ? parseInt(textWithPercent.split("(")[1].split(")")[0].replace("%", ""))
       : -1;
-    // console.log({ textWithPercent, currentPercent });
+    console.log("--> ", { textWithPercent, currentPercent });
     if (lastPercent !== currentPercent) {
       itWorked = true;
       break;

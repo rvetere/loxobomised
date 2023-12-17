@@ -52,39 +52,41 @@ const controlJalousie = async ({
     });
 
     // click action to move jalousie
-    timer = await clickUpDownOfTitle(
+    const callback = async (upButton, downButton) => {
+      if (rolloType !== "Markise") {
+        console.log(
+          `Move jalousie (${room} - ${buttonGroupIndex}) into final position - ${finalPosition} (isMovingDown=${isMovingDown}))`
+        );
+        if (isMovingDown) {
+          if (finalPosition === 0) {
+            // nothing to do, the blinds are already closed
+          } else if (finalPosition === 1) {
+            await clickButton(upButton, 400);
+          } else if (finalPosition === 2) {
+            await clickButton(upButton, 900);
+          }
+        } else {
+          if (finalPosition === 0) {
+            await clickButton(downButton, 1200);
+          } else if (finalPosition === 1) {
+            await clickButton(downButton, 850);
+          } else if (finalPosition === 2) {
+            await clickButton(downButton, 400);
+          }
+        }
+      }
+    };
+
+    timer = await clickUpDownOfTitle({
       page,
       room,
       buttonGroupIndex,
-      isMovingDown ? "down" : "up",
-      true,
+      isMovingDown: isMovingDown ? "down" : "up",
+      doubleClick: true,
       delay,
-      async (upButton, downButton) => {
-        if (rolloType !== "Markise") {
-          console.log(
-            `Move jalousie (${room} - ${buttonGroupIndex}) into final position - ${finalPosition} (isMovingDown=${isMovingDown}))`
-          );
-          if (isMovingDown) {
-            if (finalPosition === 0) {
-              // nothing to do, the blinds are already closed
-            } else if (finalPosition === 1) {
-              await clickButton(upButton, 400);
-            } else if (finalPosition === 2) {
-              await clickButton(upButton, 900);
-            }
-          } else {
-            if (finalPosition === 0) {
-              await clickButton(downButton, 1200);
-            } else if (finalPosition === 1) {
-              await clickButton(downButton, 850);
-            } else if (finalPosition === 2) {
-              await clickButton(downButton, 400);
-            }
-          }
-        }
-      },
-      rolloType
-    );
+      callback,
+      rolloType,
+    });
   }
 
   return { actualDelay, timer };
