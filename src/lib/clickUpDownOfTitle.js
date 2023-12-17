@@ -10,7 +10,6 @@ const clickUpDownOfTitle = async (props) => {
   } = props;
 
   let timer = null;
-  await page.screenshot({ path: "clickUpDownOfTitle.png" });
 
   const { upButton, downButton } = await getElement(
     props.page,
