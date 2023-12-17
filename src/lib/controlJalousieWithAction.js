@@ -45,11 +45,8 @@ const controlJalousieWithAction = async ({
     // calculate exact delay to reach "percentToSet"
     const delay = Math.floor(toPositive(steps) * MarkiseTiming * 1000);
     console.log("controlJalousieWithAction", {
-      buttonGroupIndex,
-      percentToSet,
-      currentPercent,
+      room: `${room} [${buttonGroupIndex}]}`,
       steps,
-      delay,
     });
 
     // wait until jalousie is in position

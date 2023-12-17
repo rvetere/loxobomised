@@ -25,7 +25,10 @@ const clickUpDownOfTitle = async (
 
     // check if action happened
     hasActionHappened(page, title, buttonGroupIndex).then((itWorked) => {
-      console.log("- 🚨 hasActionHappened?", itWorked);
+      console.log(`- ${itWorked ? "✅" : "🚨"} hasActionHappened?`, itWorked, {
+        title,
+        buttonGroupIndex,
+      });
     });
 
     if (doubleClick) {

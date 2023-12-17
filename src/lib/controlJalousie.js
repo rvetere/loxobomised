@@ -47,11 +47,8 @@ const controlJalousie = async ({
     actualDelay = delay;
 
     console.log("controlJalousie", {
-      buttonGroupIndex,
-      percentToSet,
-      currentPercent,
+      room: `${room} [${buttonGroupIndex}]}`,
       steps,
-      delay,
     });
 
     // click action to move jalousie
