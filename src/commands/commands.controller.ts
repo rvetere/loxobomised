@@ -22,6 +22,7 @@ export class CommandsController {
   initialized = false;
   pool: PuppeteerController[];
   commands: Record<string, any> = {};
+  lastRequestTstamp: number;
 
   constructor() {
     this.pool = [];
@@ -44,7 +45,7 @@ export class CommandsController {
   }
 
   index(req: Request, res: Response) {
-    return res.json({ message: "Commands List" });
+    return res.json({ message: "🤖 Commands List" });
   }
 
   execute(req: Request, res: Response) {
@@ -57,7 +58,13 @@ export class CommandsController {
       // log formatted date with miliseconds
       const now = new Date();
       const formattedDate = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}.${now.getMilliseconds()}`;
-      console.log(`🤖 [${formattedDate}] Executing command "${name}"...`);
+      const timeEllapsed = this.lastRequestTstamp
+        ? this.lastRequestTstamp - now.getTime()
+        : 1;
+      this.lastRequestTstamp = now.getTime();
+      console.log(
+        `🤖 [${formattedDate}] Executing command "${name}", time ellapsed: ${timeEllapsed}`
+      );
 
       const [apartment, category] = name.split("-");
       const command = this.commands[`${apartment}-${category}`];
