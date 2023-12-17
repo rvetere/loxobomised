@@ -14,9 +14,25 @@ function initApp(category) {
   const app = express();
 
   app.get("/exec/*", async (req, res) => {
+    const tstamp = new Date().getTime();
+    global.requestDelayCounter = 0;
+    global.lastRequestTstamp = tstamp;
+    const delaySinceLastRequest = global.lastResponseTstamp
+      ? tstamp - global.lastResponseTstamp
+      : 1000 * 60 * 60 * 24;
+    if (delaySinceLastRequest < 800) {
+      clearTimeout(global.resetDelayCounter);
+      global.resetDelayCounter = setTimeout(() => {
+        global.requestDelayCounter = 0;
+      }, 1000 * 6);
+      global.requestDelayCounter = global.requestDelayCounter + 1;
+      console.log(
+        `- 🚨🚨 Too many requests. Last request was ${delaySinceLastRequest}ms ago. Delaycounter: ${global.requestDelayCounter}`
+      );
+    }
     const randomDelay = getRandomDelay(global.lastRandomDelay);
     console.log(
-      `🚀 Random delay to sleep before command run: ${randomDelay}ms`
+      `- 🚀 Random delay to sleep before command run: ${randomDelay}ms`
     );
     await sleep(randomDelay);
     global.lastRandomDelay = randomDelay;
