@@ -8,7 +8,7 @@ const MarkiseTiming = 20 / 100;
 
 const controlJalousie = async ({
   page,
-  title,
+  room,
   buttonGroupIndex,
   percentToSet,
   rolloType = "Window", // Window, Loggia, Markise
@@ -16,7 +16,7 @@ const controlJalousie = async ({
 }) => {
   let timer = null;
   let actualDelay = 0;
-  const container = await getContainer(page, title, buttonGroupIndex);
+  const container = await getContainer(page, room, buttonGroupIndex);
   if (!container) {
     return { actualDelay, timer };
   }
@@ -56,7 +56,7 @@ const controlJalousie = async ({
     // click action to move jalousie
     timer = await clickUpDownOfTitle(
       page,
-      "Beschattung",
+      room,
       buttonGroupIndex,
       isMovingDown ? "down" : "up",
       true,
@@ -70,76 +70,26 @@ const controlJalousie = async ({
             if (finalPosition === 0) {
               // nothing to do, the blinds are already closed
             } else if (finalPosition === 1) {
-              await clickUpDownOfTitle(
-                page,
-                "Beschattung",
-                buttonGroupIndex,
-                "up"
-              );
-              await clickUpDownOfTitle(
-                page,
-                "Beschattung",
-                buttonGroupIndex,
-                "up"
-              );
+              await clickUpDownOfTitle(page, room, buttonGroupIndex, "up");
+              await clickUpDownOfTitle(page, room, buttonGroupIndex, "up");
             } else if (finalPosition === 2) {
-              await clickUpDownOfTitle(
-                page,
-                "Beschattung",
-                buttonGroupIndex,
-                "up"
-              );
+              await clickUpDownOfTitle(page, room, buttonGroupIndex, "up");
               await sleep(450);
-              await clickUpDownOfTitle(
-                page,
-                "Beschattung",
-                buttonGroupIndex,
-                "up"
-              );
+              await clickUpDownOfTitle(page, room, buttonGroupIndex, "up");
             }
           } else {
             if (finalPosition === 0) {
-              await clickUpDownOfTitle(
-                page,
-                "Beschattung",
-                buttonGroupIndex,
-                "down"
-              );
+              await clickUpDownOfTitle(page, room, buttonGroupIndex, "down");
               await sleep(600);
-              await clickUpDownOfTitle(
-                page,
-                "Beschattung",
-                buttonGroupIndex,
-                "up"
-              );
+              await clickUpDownOfTitle(page, room, buttonGroupIndex, "up");
             } else if (finalPosition === 1) {
-              await clickUpDownOfTitle(
-                page,
-                "Beschattung",
-                buttonGroupIndex,
-                "down"
-              );
+              await clickUpDownOfTitle(page, room, buttonGroupIndex, "down");
               await sleep(400);
-              await clickUpDownOfTitle(
-                page,
-                "Beschattung",
-                buttonGroupIndex,
-                "up"
-              );
+              await clickUpDownOfTitle(page, room, buttonGroupIndex, "up");
             } else if (finalPosition === 2) {
-              await clickUpDownOfTitle(
-                page,
-                "Beschattung",
-                buttonGroupIndex,
-                "down"
-              );
+              await clickUpDownOfTitle(page, room, buttonGroupIndex, "down");
               await sleep(150);
-              await clickUpDownOfTitle(
-                page,
-                "Beschattung",
-                buttonGroupIndex,
-                "up"
-              );
+              await clickUpDownOfTitle(page, room, buttonGroupIndex, "up");
             }
           }
         }

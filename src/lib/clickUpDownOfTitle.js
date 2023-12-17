@@ -39,11 +39,10 @@ const clickUpDownOfTitle = async (
 };
 
 const getElement = async (page, title, buttonGroupIndex, action) => {
-  const [container] = await page.$x(
-    `//div[contains(text(),'${title}')]/../../following-sibling::div[1]/div/div[${buttonGroupIndex}]`
-  );
+  const containerXPath = `//div[contains(text(),'${title}')]/../../following-sibling::div[1]/div/div[${buttonGroupIndex}]`;
+  const [container] = await page.$x(containerXPath);
   if (!container) {
-    console.error("Category not found!");
+    console.error("Category (clickUpDownOfTitle) not found!", containerXPath);
     await page.screenshot({ path: "error.png" });
     return null;
   }

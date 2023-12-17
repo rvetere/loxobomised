@@ -4,7 +4,7 @@
   "description": "A super stupid puppeteer remote control for Loxone smart home systems",
   "main": "index.js",
   "scripts": {
-    "start": "node src/app.js",
+    "start": "node src/app.js --category=Beschattung",
     "start:pm2": "yarn pm2 start ecosystem.config.js",
     "stop:pm2": "yarn pm2 delete ecosystem.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"

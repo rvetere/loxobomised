@@ -1,9 +1,11 @@
 const { clickActionOfTitle } = require("./clickActionOfTitle");
+const { getContainer } = require("./getContainer");
 
 const MarkiseTiming = 20 / 100;
 
 const controlJalousieWithAction = async ({
   page,
+  room,
   buttonGroupIndex,
   percentToSet,
   actionUp = "Fully In",
@@ -11,11 +13,9 @@ const controlJalousieWithAction = async ({
 }) => {
   const rolloType = "Markise";
   let actualDelay = 0;
-  const [container] = await page.$x(
-    `//div[contains(text(),'Beschattung')]/../../following-sibling::div[1]/div/div[${buttonGroupIndex}]`
-  );
+  const container = await getContainer(page, room, buttonGroupIndex);
   if (!container) {
-    return actualDelay;
+    return { actualDelay };
   }
 
   const texts = await container.$$eval("div", (divs) =>
@@ -47,7 +47,7 @@ const controlJalousieWithAction = async ({
     rolloType,
   });
   if (toPositive(steps) > 4) {
-    await clickActionOfTitle(page, "Beschattung", buttonGroupIndex, action);
+    await clickActionOfTitle(page, room, buttonGroupIndex, action);
 
     // calculate exact delay to reach "percentToSet"
     const delay = Math.floor(toPositive(steps) * MarkiseTiming * 1000);
@@ -58,6 +58,7 @@ const controlJalousieWithAction = async ({
     setTimeout(
       stopAndMoveToFinalPosition.bind({
         page,
+        room,
         buttonGroupIndex,
         action,
         actionUp,
@@ -76,7 +77,7 @@ async function stopAndMoveToFinalPosition() {
   console.log(`Run stopAndMoveToFinalPosition (${this.buttonGroupIndex})`);
   await clickActionOfTitle(
     this.page,
-    "Beschattung",
+    this.room,
     this.buttonGroupIndex,
     this.action
   );
