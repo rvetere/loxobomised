@@ -6,7 +6,7 @@ import { getPlusOrMinusElement } from "./utils/getPlusOrMinusElement";
 import { getUpDownElement } from "./utils/getUpDownElement";
 import { navigate } from "./utils/navigate";
 import { clickElement } from "./utils/clickElement";
-import { getElementByText } from "./utils/getElementByText";
+import { getButtonElementByText } from "./utils/getButtonElementByText";
 import { getButtonInElement } from "./utils/getButtonInElement";
 import { Logger } from "src/utils/logger";
 import { getToggleButton } from "./utils/getToggleButton";
@@ -42,8 +42,8 @@ export class PuppetBase {
     this.query = query;
 
     this.getContainer = this.getContainer.bind(this);
-    this.clickActionOfBlock = this.clickActionOfBlock.bind(this);
-    this.clickPlusMinusOfBlock = this.clickPlusMinusOfBlock.bind(this);
+    this.clickOverlayActionOfBlock = this.clickOverlayActionOfBlock.bind(this);
+    this.clickOverlayPlusMinusOfBlock = this.clickOverlayPlusMinusOfBlock.bind(this);
     this.clickUpDownOfBlock = this.clickUpDownOfBlock.bind(this);
   }
 
@@ -64,37 +64,34 @@ export class PuppetBase {
     return container;
   };
 
-  /**
-   *
-   * @deprecated DO NOT USE THIS METHOD ANYMORE!
-   */
-  clickActionOfBlock = async (blockIndex: number, action: string, doubleClick = false) => {
+  clickOverlayActionOfBlock = async (blockIndex: number, action: string, doubleClick = false) => {
     const container = await this.getContainer(blockIndex);
     if (!container) {
       return;
     }
-    const buttons = await container.$$("div[role=button]");
-    const button = buttons.length ? buttons[0] : null;
+    const button = await getButtonInElement(container, 0);
     if (!button) {
       console.error("Button not found!");
       return;
     }
 
     // open overlay controls
-    Logger.log(`   Click overlay of clickActionOfBlock...`);
-    await clickElement(button);
+    Logger.log(`   Click overlay of clickOverlayActionOfBlock...`);
+    await clickElement(button, 500);
 
     // click action
-    const actionButton = await getElementByText(this.page, action);
-    Logger.log(`   Click action of clickActionOfBlock...`);
-    await clickElement(actionButton);
+    const actionButton = await getButtonElementByText(this.page, action);
+    Logger.log(`   Click action of clickOverlayActionOfBlock...`);
+    console.log({ actionButton, action });
+
+    await clickElement(actionButton, 250, true);
 
     // close overlay controls
     await this.page.keyboard.press("Escape");
-    await sleep(200);
+    await sleep(500);
   };
 
-  clickPlusMinusOfBlock = async (blockIndex: number, percentToSet: number) => {
+  clickOverlayPlusMinusOfBlock = async (blockIndex: number, percentToSet: number) => {
     const container = await this.getContainer(blockIndex);
     if (!container) {
       return null;
@@ -108,19 +105,19 @@ export class PuppetBase {
       const button = await getButtonInElement(container, 0);
 
       // open overlay controls
-      Logger.log(`   Click overlay of clickPlusMinusOfBlock...`);
-      await clickElement(button);
+      Logger.log(`   Click overlay of clickOverlayPlusMinusOfBlock...`);
+      await clickElement(button, 500);
 
       // click "plus" or "minus" button as many times possible to get it to the desired percent (each click moves it by 10%)
       for (let i = 0; i < toPositive(steps); i++) {
         const actionButton = await getPlusOrMinusElement(this.page, variant);
-        Logger.log(`   Click action of clickPlusMinusOfBlock...`);
-        await clickElement(actionButton, 500);
+        Logger.log(`   Click action of clickOverlayPlusMinusOfBlock...`);
+        await clickElement(actionButton, 800);
       }
 
       // close overlay controls
       await this.page.keyboard.press("Escape");
-      await sleep(200);
+      await sleep(500);
     }
   };
 

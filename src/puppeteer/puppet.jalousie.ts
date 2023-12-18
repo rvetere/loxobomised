@@ -171,9 +171,9 @@ export class PuppetJalousie extends PuppetBase {
     );
 
     if (toPositive(steps) > 0 && (percentToSet === 0 || percentToSet === 100)) {
-      await this.clickActionOfBlock(blockIndex, action);
+      await this.clickOverlayActionOfBlock(blockIndex, action);
     } else if (toPositive(steps) > 3) {
-      await this.clickActionOfBlock(blockIndex, action);
+      await this.clickOverlayActionOfBlock(blockIndex, action);
 
       // calculate exact delay to reach "percentToSet"
       const delay = Math.floor(toPositive(steps) * getJalousieTiming("Markise") * 1000);
@@ -181,7 +181,7 @@ export class PuppetJalousie extends PuppetBase {
       // wait until jalousie is in position and stop it by clicking action again
       setTimeout(async () => {
         console.log(`   Stop markise at exact position "${this.room}:${blockIndex}"`);
-        await this.clickActionOfBlock(blockIndex, action);
+        await this.clickOverlayActionOfBlock(blockIndex, action);
         callback(this.room, blockIndex);
       }, delay);
 

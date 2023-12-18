@@ -20,11 +20,11 @@ export class Apartment518Ventilation {
     const puppetBedroom = new PuppetSimple(this.page, this.category, "Zimmer 1", query);
 
     if (!!query.withBedroom) {
-      await puppetBedroom.clickActionOfBlock(1, query.setBedroom || "Stufe 1");
+      await puppetBedroom.clickOverlayActionOfBlock(1, query.setBedroom || "Stufe 1");
     }
 
     if (!!query.withLivingroom) {
-      await puppetLivingroom.clickActionOfBlock(1, query.setLivingroom || "Stufe 1");
+      await puppetLivingroom.clickOverlayActionOfBlock(1, query.setLivingroom || "Stufe 1");
     }
   }
 }

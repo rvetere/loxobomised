@@ -40,20 +40,20 @@ You can simply add "commands" in the folder `./src/commands/<my-apartment-nr>` a
 Start by adding a folder for your appartment in `./src/commands` and then just add javascript files in there with the following structure:
 
 ```javascript
-const { clickActionOfBlock, getPageInPool } = require("../../lib");
+const { clickOverlayActionOfBlock, getPageInPool } = require("../../lib");
 
 // Set smooth kitchen light
 const run = async (page, query) => {
   const page = getPageInPool(pool, "Küche");
 
   // Turn off head lights
-  await clickActionOfBlock(page, "Beleuchtung", 1, "Switch Off");
+  await clickOverlayActionOfBlock(page, "Beleuchtung", 1, "Switch Off");
 
   // Set spots to a dimmed level
   // -> you can call this command with params too! http://localhost:3000/exec/518/example?percent=60
   const percentStr = query.percent || "40";
   const percent = parseInt(percentStr, 10);
-  await clickPlusMinusOfBlock(page, "Beleuchtung", 2, percent);
+  await clickOverlayPlusMinusOfBlock(page, "Beleuchtung", 2, percent);
 };
 
 module.exports = {

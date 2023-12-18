@@ -37,7 +37,7 @@ export class Apartment518Light {
       let percentStr = query.percentKitchen || "40";
       let percent = parseInt(percentStr, 10);
       if (!isNaN(percent)) {
-        await puppetKitchen.clickPlusMinusOfBlock(2, percent);
+        await puppetKitchen.clickOverlayPlusMinusOfBlock(2, percent);
       } else {
         await puppetKitchen.clickToggleOfBlock(2, percentStr);
       }
@@ -58,7 +58,7 @@ export class Apartment518Light {
       const percentStr = query.percentBathroom || "100";
       const percent = parseInt(percentStr, 10);
       if (!isNaN(percent)) {
-        await puppetBathroom.clickPlusMinusOfBlock(1, percent);
+        await puppetBathroom.clickOverlayPlusMinusOfBlock(1, percent);
       } else {
         await puppetBathroom.clickToggleOfBlock(1, percentStr);
       }
