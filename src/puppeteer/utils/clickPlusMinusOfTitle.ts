@@ -15,7 +15,6 @@ const clickParent = async (element: ElementHandle<Element>) => {
     const parentElement = await element.$x("../..");
 
     if (parentElement && parentElement[0]) {
-      console.log("clickParent", element);
       await element.click();
     }
     return element;
@@ -56,7 +55,6 @@ export const clickPlusMinusOfTitle = async (
   if (!container) {
     return null;
   }
-  console.log("clickPlusMinusOfTitle", { percentToSet });
 
   const texts = await container.$$eval("div", (divs) =>
     divs.map((div) => div.innerText)
@@ -74,7 +72,6 @@ export const clickPlusMinusOfTitle = async (
     const elements = await container.$$("div[role=button]");
 
     // open overlay controls
-    console.log("clickPlusMinusOfTitle", "open overlay controls");
     elements[0].click();
     await sleep(200);
 

@@ -41,14 +41,12 @@ export const clickUpDownOfTitle = async ({
 
   if (element) {
     // click action
-    console.log("clickUpDownOfTitle", "click action");
     element.click();
     await sleep(400);
 
     if (doubleClick) {
       // double click action by starting a timer with a delay of at least 200ms
       setTimeout(() => {
-        console.log("clickUpDownOfTitle", "double click action");
         element.click();
         callback(true, upButton, downButton);
       }, delay);

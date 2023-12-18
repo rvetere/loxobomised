@@ -6,7 +6,6 @@ export const clickOnParent = async (page: Page, text: string) => {
     if (element) {
       const parentElement = await element.$x("..");
       if (parentElement && parentElement[0]) {
-        console.log("clickOnParent", text);
         (element as unknown as HTMLElement).click();
       }
       return element;

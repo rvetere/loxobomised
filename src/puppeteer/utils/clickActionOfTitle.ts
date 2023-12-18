@@ -27,12 +27,10 @@ export const clickActionOfTitle = async (
   }
 
   // open overlay controls
-  console.log("clickActionOfTitle", "open overlay controls");
   element.click();
   await sleep(200);
 
   if (doubleClick) {
-    console.log("clickActionOfTitle", "double click");
     element.click();
     await sleep(200);
   }
