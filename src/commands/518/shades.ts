@@ -3,10 +3,10 @@ import { PuppetJalousie } from "src/puppeteer/puppet.jalousie";
 import { sleep } from "src/utils/sleep";
 
 export class Apartment518Shades {
-  page: Page | null;
+  page: Page;
   jobsRunning: string[] = [];
 
-  constructor(page: Page | null) {
+  constructor(page: Page) {
     this.page = page;
     this.isJobRunning = this.isJobRunning.bind(this);
     this.setJobRunning = this.setJobRunning.bind(this);

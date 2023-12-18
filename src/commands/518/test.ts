@@ -1,19 +1,11 @@
 import { Page } from "puppeteer";
-import { clickActionOfTitle } from "src/puppeteer/utils/clickActionOfTitle";
 
 export class Apartment518Test {
-  page: Page | null;
+  page: Page;
 
-  constructor(page: Page | null) {
+  constructor(page: Page) {
     this.page = page;
   }
 
-  async run(query: Record<string, any>) {
-    await clickActionOfTitle(
-      this.page,
-      "Küche",
-      1,
-      query.actionKitchen || "Switch On"
-    );
-  }
+  async run(query: Record<string, any>) {}
 }

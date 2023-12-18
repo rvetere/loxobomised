@@ -7,7 +7,6 @@ export const getPage = (pool: PuppeteerController[], category: string) => {
     if (page) {
       return page;
     }
-    return null;
   }
 
   return null;

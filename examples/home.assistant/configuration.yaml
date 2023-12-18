@@ -15,10 +15,10 @@
       - 172.30.33.2
 
   shell_command:
-    light_kitchen_headlights_0: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withKitchenHeadlights=1&actionKitchen=Switch Off"'
-    light_kitchen_headlights_1: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withKitchenHeadlights=1&actionKitchen=Switch On"'
-    light_kitchen_0: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withKitchen=1&percentKitchen=Switch Off"'
-    light_kitchen_1: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withKitchen=1&percentKitchen=Switch On"'
+    light_kitchen_headlights_0: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withKitchenHeadlights=1&actionKitchen=Switch%20Off"'
+    light_kitchen_headlights_1: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withKitchenHeadlights=1&actionKitchen=Switch%20On"'
+    light_kitchen_0: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withKitchen=1&percentKitchen=Switch%20Off"'
+    light_kitchen_1: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withKitchen=1&percentKitchen=Switch%20On"'
     light_kitchen_10: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withKitchen=1&percentKitchen=10"'
     light_kitchen_20: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withKitchen=1&percentKitchen=20"'
     light_kitchen_30: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withKitchen=1&percentKitchen=30"'
@@ -30,10 +30,10 @@
     light_kitchen_90: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withKitchen=1&percentKitchen=90"'
     light_kitchen_100: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withKitchen=1&percentKitchen=100"'
     
-    light_bathroom_headlights_0: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withBathroomHeadlights=1&actionBathroom=Switch Off"'
-    light_bathroom_headlights_1: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withBathroomHeadlights=1&actionBathroom=Switch On"'
-    light_bathroom_0: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withBathroom=1&percentBathroom=Switch Off"'
-    light_bathroom_1: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withBathroom=1&percentBathroom=Switch On"'
+    light_bathroom_headlights_0: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withBathroomHeadlights=1&actionBathroom=Switch%20Off"'
+    light_bathroom_headlights_1: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withBathroomHeadlights=1&actionBathroom=Switch%20On"'
+    light_bathroom_0: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withBathroom=1&percentBathroom=Switch%20Off"'
+    light_bathroom_1: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withBathroom=1&percentBathroom=Switch%20On"'
     light_bathroom_10: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withBathroom=1&percentBathroom=10"'
     light_bathroom_20: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withBathroom=1&percentBathroom=20"'
     light_bathroom_30: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withBathroom=1&percentBathroom=30"'
@@ -45,11 +45,11 @@
     light_bathroom_90: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withBathroom=1&percentBathroom=90"'
     light_bathroom_100: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withBathroom=1&percentBathroom=100"'
 
-    light_entrance_0: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withEntrance=1&actionEntrance=Switch Off"'
-    light_entrance_1: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withEntrance=1&actionEntrance=Switch On"'
+    light_entrance_0: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withEntrance=1&actionEntrance=Switch%20Off"'
+    light_entrance_1: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withEntrance=1&actionEntrance=Switch%20On"'
     
-    light_loggia_0: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withLoggia=1&actionLoggia=Switch Off"'
-    light_loggia_1: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withLoggia=1&actionLoggia=Switch On"'
+    light_loggia_0: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withLoggia=1&actionLoggia=Switch%20Off"'
+    light_loggia_1: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withLoggia=1&actionLoggia=Switch%20On"'
 
     ventilation_bedroom_0: 'curl -X GET "http://192.168.1.12:9002/exec/518-ventilation?withBedroom=1&setBedroom=Aus"'
     ventilation_bedroom_1: 'curl -X GET "http://192.168.1.12:9002/exec/518-ventilation?withBedroom=1&setBedroom=Stufe 1"'

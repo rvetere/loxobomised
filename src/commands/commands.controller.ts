@@ -52,13 +52,17 @@ export class CommandsController {
 
   setPool(pool: PuppeteerController[]) {
     this.pool = pool;
+
+    const pageVentilation = getPage(this.pool, "Lüftung");
+    const pageLight = getPage(this.pool, "Beleuchtung");
+    const pageShades = getPage(this.pool, "Beschattung");
+
     this.commands = {
-      "518-test": new Apartment518Test(getPage(this.pool, "Lüftung")),
-      "518-light": new Apartment518Light(getPage(this.pool, "Beleuchtung")),
-      "518-ventilation": new Apartment518Ventilation(
-        getPage(this.pool, "Lüftung")
-      ),
-      "518-shades": new Apartment518Shades(getPage(this.pool, "Beschattung")),
+      "518-test": pageVentilation && new Apartment518Test(pageVentilation),
+      "518-light": pageLight && new Apartment518Light(pageLight),
+      "518-ventilation":
+        pageVentilation && new Apartment518Ventilation(pageVentilation),
+      "518-shades": pageShades && new Apartment518Shades(pageShades),
     };
     this.initialized = true;
 

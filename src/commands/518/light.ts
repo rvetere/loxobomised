@@ -1,11 +1,10 @@
 import { Page } from "puppeteer";
-import { clickActionOfTitle } from "src/puppeteer/utils/clickActionOfTitle";
-import { clickPlusMinusOfTitle } from "src/puppeteer/utils/clickPlusMinusOfTitle";
+import { PuppetSimple } from "src/puppeteer/puppet.simple";
 
 export class Apartment518Light {
-  page: Page | null;
+  page: Page;
 
-  constructor(page: Page | null) {
+  constructor(page: Page) {
     this.page = page;
   }
 
@@ -19,14 +18,15 @@ export class Apartment518Light {
    *
    */
   async run(query: Record<string, any>) {
-    const { page } = this;
+    const puppetKitchen = new PuppetSimple(this.page, "Küche", query);
+    const puppetEntrance = new PuppetSimple(this.page, "Entrée", query);
+    const puppetLoggia = new PuppetSimple(this.page, "Loggia", query);
+    const puppetBathroom = new PuppetSimple(this.page, "WC-Dusche", query);
 
     // 1. Kitchen Headlights
     if (!!query.withKitchenHeadlights) {
       // Turn off head lights
-      await clickActionOfTitle(
-        page,
-        "Küche",
+      await puppetKitchen.clickActionOfBlock(
         1,
         query.actionKitchen || "Switch On"
       );
@@ -38,17 +38,15 @@ export class Apartment518Light {
       let percentStr = query.percentKitchen || "40";
       let percent = parseInt(percentStr, 10);
       if (!isNaN(percent)) {
-        await clickPlusMinusOfTitle(page, "Küche", 2, percent);
+        await puppetKitchen.clickPlusMinusOfBlock(2, percent);
       } else {
-        await clickActionOfTitle(page, "Küche", 2, percentStr);
+        await puppetKitchen.clickActionOfBlock(2, percentStr);
       }
     }
 
     // 3. Entrance
     if (!!query.withEntrance) {
-      await clickActionOfTitle(
-        page,
-        "Entrée",
+      await puppetEntrance.clickActionOfBlock(
         1,
         query.actionEntrance || "Switch On"
       );
@@ -56,9 +54,7 @@ export class Apartment518Light {
 
     // 4. Loggia
     if (!!query.withLoggia) {
-      await clickActionOfTitle(
-        page,
-        "Loggia",
+      await puppetLoggia.clickActionOfBlock(
         1,
         query.actionLoggia || "Switch On"
       );
@@ -69,17 +65,15 @@ export class Apartment518Light {
       const percentStr = query.percentBathroom || "100";
       const percent = parseInt(percentStr, 10);
       if (!isNaN(percent)) {
-        await clickPlusMinusOfTitle(page, "WC-Dusche", 1, percent);
+        await puppetBathroom.clickPlusMinusOfBlock(1, percent);
       } else {
-        await clickActionOfTitle(page, "WC-Dusche", 1, percentStr);
+        await puppetBathroom.clickActionOfBlock(1, percentStr);
       }
     }
 
     // 6. Bathroom Headlights
     if (!!query.withBathroomHeadlights) {
-      await clickActionOfTitle(
-        page,
-        "WC-Dusche",
+      await puppetBathroom.clickActionOfBlock(
         2,
         query.actionBathroom || "Switch On"
       );

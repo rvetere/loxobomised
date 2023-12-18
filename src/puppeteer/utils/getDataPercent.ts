@@ -4,7 +4,9 @@ const percentToInt = (percent: string) =>
   parseInt(
     percent.includes("(")
       ? percent.split("(")[1].split(")")[0]
-      : percent.split("is ")[1].split(" ")[0],
+      : percent.endsWith(" %")
+        ? percent.split("\n")[1]
+        : percent.split("is ")[1].split(" ")[0],
     10
   );
 
