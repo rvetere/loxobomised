@@ -79,6 +79,14 @@ export class PuppeteerController {
         this.refreshLogin.bind(this),
         1000 * 60 * 60 + randomDelay
       );
+
+      this.preventStandbyInterval = setInterval(async () => {
+        if (this.page) {
+          console.log("preventStandby", "move mouse");
+          await this.page.mouse.move(0, 0);
+        }
+      }, 1000 * 30);
+
       console.log(
         `✅ Login successful to Loxone in category "${this.category}"!`
       );
@@ -87,15 +95,6 @@ export class PuppeteerController {
       process.exit(1);
     }
   }
-
-  preventStandby = async () => {
-    this.preventStandbyInterval = setInterval(async () => {
-      if (this.page) {
-        console.log("preventStandby", "move mouse");
-        await this.page.mouse.move(0, 0);
-      }
-    }, 1000 * 30);
-  };
 
   async refreshLogin() {
     if (!login || !password || !miniServerId) {
