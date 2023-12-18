@@ -606,21 +606,21 @@ shades_loggia_side1_100:
   mode: single
   icon: mdi:hammer
 shades_loggia_side2_0:
-  alias: 'Util: Shades Loggia, Side One 0%'
+  alias: 'Util: Shades Loggia, Side Two 0%'
   sequence:
   - service: shell_command.shades_loggia_side2_0
     data: {}
   mode: single
   icon: mdi:hammer
 shades_loggia_side2_60:
-  alias: 'Util: Shades Loggia, Side One 60%'
+  alias: 'Util: Shades Loggia, Side Two 60%'
   sequence:
   - service: shell_command.shades_loggia_side2_60
     data: {}
   mode: single
   icon: mdi:hammer
 shades_loggia_side2_100:
-  alias: 'Util: Shades Loggia, Side One 100%'
+  alias: 'Util: Shades Loggia, Side Two 100%'
   sequence:
   - service: shell_command.shades_loggia_side2_100
     data: {}
