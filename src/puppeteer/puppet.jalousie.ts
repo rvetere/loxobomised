@@ -81,10 +81,9 @@ export class PuppetJalousie extends PuppetBase {
       action: isMovingDown ? "down" : "up",
     };
 
-    console.log("   Run controlJalousie", {
-      room: `${this.room} [${blockIndex}] ${currentPercent}% -> ${percentToSet}% (${steps} steps)`,
-      settings,
-    });
+    console.log(
+      `   Control jalousie "${this.room}:${blockIndex}", ${currentPercent}% -> ${percentToSet}%, ${steps} steps`
+    );
 
     if (percentToSet === 0) {
       await this.clickUpDownOfBlock(props);
@@ -127,8 +126,11 @@ export class PuppetJalousie extends PuppetBase {
     downButton: ElementHandle<Element> | null
   ) => {
     console.log(
-      `   Move jalousie (${this.room}) [${blockIndex}] to final position (tilted=${finalPosition};isMovingDown=${isMovingDown}))`
+      `   Move jalousie blinds "${this.room}:${blockIndex}" to final position "${
+        finalPosition === 0 ? "Closed" : finalPosition === 1 ? "Tilted" : "Open"
+      }"`
     );
+
     if (isMovingDown) {
       if (finalPosition === 0) {
         // nothing to do, the blinds are already closed
@@ -164,12 +166,11 @@ export class PuppetJalousie extends PuppetBase {
     const steps = percentToSet - currentPercent;
     const action = steps > 0 ? actionDown : actionUp;
 
-    console.log("   Run controlJalousieWithAction", {
-      room: `${this.room} [${blockIndex}]`,
-      steps,
-    });
+    console.log(
+      `   Control markise "${this.room}:${blockIndex}", ${currentPercent}% -> ${percentToSet}%, ${steps} steps`
+    );
 
-    if (percentToSet === 0) {
+    if (percentToSet === 0 || percentToSet === 100) {
       await this.clickActionOfBlock(blockIndex, action);
     } else if (toPositive(steps) > 3) {
       await this.clickActionOfBlock(blockIndex, action);
@@ -177,9 +178,9 @@ export class PuppetJalousie extends PuppetBase {
       // calculate exact delay to reach "percentToSet"
       const delay = Math.floor(toPositive(steps) * getJalousieTiming("Markise") * 1000);
 
-      // wait until jalousie is in position
+      // wait until jalousie is in position and stop it by clicking action again
       setTimeout(async () => {
-        console.log(`   Run stopAndMoveToFinalPosition (${blockIndex})`);
+        console.log(`   Stop markise at exact position "${this.room}:${blockIndex}"`);
         await this.clickActionOfBlock(blockIndex, action);
         callback(this.room, blockIndex);
       }, delay);
