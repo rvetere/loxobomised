@@ -25,11 +25,11 @@ export class PuppeteerController {
     this.index = index;
 
     // make the instance "visible" by grabing a screenshot all 350ms
-    setInterval(() => {
-      if (this.initialized) {
-        this.page?.screenshot({ path: `${category}-status.png` });
-      }
-    }, 350);
+    // setInterval(() => {
+    //   if (this.initialized) {
+    //     this.page?.screenshot({ path: `${category}-status.png` });
+    //   }
+    // }, 350);
 
     return this;
   }
