@@ -56,6 +56,7 @@ export const clickPlusMinusOfTitle = async (
   if (!container) {
     return null;
   }
+  console.log("clickPlusMinusOfTitle", { percentToSet });
 
   const texts = await container.$$eval("div", (divs) =>
     divs.map((div) => div.innerText)
@@ -66,6 +67,8 @@ export const clickPlusMinusOfTitle = async (
     : 0;
   const steps = (percentToSet - currentPercent) / 10;
   const kind = steps > 0 ? "plus" : "minus";
+
+  console.log({ currentPercent, steps, kind });
 
   if (toPositive(steps) > 0) {
     const elements = await container.$$("div[role=button]");

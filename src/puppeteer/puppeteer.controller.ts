@@ -16,18 +16,20 @@ export class PuppeteerController {
   category: string;
   page: Page | null | undefined;
   browser: Browser | null | undefined;
-  interval: any | undefined;
+  interval: NodeJS.Timeout | undefined;
+  preventStandbyInterval: NodeJS.Timeout | undefined;
 
   constructor(category: string, index: number) {
     this.category = category;
     this.initialized = false;
     this.index = index;
 
-    // setInterval(() => {
-    //   if (this.initialized) {
-    //     this.page?.screenshot({ path: `${category}-status.png` });
-    //   }
-    // }, 350);
+    // make the instance "visible" by grabing a screenshot all 350ms
+    setInterval(() => {
+      if (this.initialized) {
+        this.page?.screenshot({ path: `${category}-status.png` });
+      }
+    }, 350);
 
     return this;
   }
@@ -85,6 +87,15 @@ export class PuppeteerController {
       process.exit(1);
     }
   }
+
+  preventStandby = async () => {
+    this.preventStandbyInterval = setInterval(async () => {
+      if (this.page) {
+        console.log("preventStandby", "move mouse");
+        await this.page.mouse.move(0, 0);
+      }
+    }, 1000 * 30);
+  };
 
   async refreshLogin() {
     if (!login || !password || !miniServerId) {
