@@ -33,31 +33,31 @@ export class PuppetJalousie extends PuppetBase {
 
     this.settings = {
       ["Wohnzimmer-2"]: {
-        percentToSet: parseInt(query.percent2 || "66", 10),
-        finalPosition: parseInt(query.finalPosition2 || "1", 10),
+        percentToSet: parseInt(query.set2 || "66", 10),
+        finalPosition: parseInt(query.tilt2 || "1", 10),
       },
       ["Wohnzimmer-3"]: {
-        percentToSet: parseInt(query.percent3 || "72", 10),
-        finalPosition: parseInt(query.finalPosition3 || "1", 10),
+        percentToSet: parseInt(query.set3 || "72", 10),
+        finalPosition: parseInt(query.tilt3 || "1", 10),
       },
       ["Wohnzimmer-4"]: {
-        percentToSet: parseInt(query.percent4 || "100", 10),
-        finalPosition: parseInt(query.finalPosition4 || "2", 10),
+        percentToSet: parseInt(query.set4 || "100", 10),
+        finalPosition: parseInt(query.tilt4 || "2", 10),
         rolloType: "Loggia",
       },
       ["Küche-1"]: {
-        percentToSet: parseInt(query.kcPercent || "72", 10),
-        finalPosition: parseInt(query.kcFinalPosition || "1", 10),
+        percentToSet: parseInt(query.setKitchen || "72", 10),
+        finalPosition: parseInt(query.tiltKitchen || "1", 10),
       },
       ["Zimmer 1-1"]: {
-        percentToSet: parseInt(query.brPercent || "45", 10),
-        finalPosition: parseInt(query.brFinalPosition || "1", 10),
+        percentToSet: parseInt(query.setBedroom || "45", 10),
+        finalPosition: parseInt(query.tiltBedroom || "1", 10),
       },
       ["Loggia-1"]: {
-        percentToSet: parseInt(query.lgPercent1 || "50", 10),
+        percentToSet: parseInt(query.setLoggia1 || "50", 10),
       },
       ["Loggia-2"]: {
-        percentToSet: parseInt(query.lgPercent2 || "33", 10),
+        percentToSet: parseInt(query.setLoggia2 || "33", 10),
       },
     };
     this.controlJalousie = this.controlJalousie.bind(this);
@@ -70,11 +70,8 @@ export class PuppetJalousie extends PuppetBase {
     blockIndex,
     callback = () => {},
   }: ControlJalousieProps) => {
-    const {
-      percentToSet,
-      finalPosition = 0,
-      rolloType = "Window",
-    } = this.settings[`${this.room}-${blockIndex}`];
+    const settings = this.settings[`${this.room}-${blockIndex}`];
+    const { percentToSet, finalPosition = 0, rolloType = "Window" } = settings;
 
     const container = await getContainer(this.page, this.room, blockIndex);
     if (!container) {
@@ -90,8 +87,8 @@ export class PuppetJalousie extends PuppetBase {
     };
 
     console.log("   Run controlJalousie", {
-      room: `${this.room} [${blockIndex}]`,
-      steps,
+      room: `${this.room} [${blockIndex}] ${currentPercent}% -> ${percentToSet}% (${steps} steps)`,
+      settings,
     });
 
     if (percentToSet === 0) {

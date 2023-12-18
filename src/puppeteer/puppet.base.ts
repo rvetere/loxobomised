@@ -45,7 +45,6 @@ export class PuppetBase {
     action: string,
     doubleClick = false
   ) => {
-    console.log("clickActionOfBlock", { blockIndex, action, doubleClick });
     const container = await getContainer(this.page, this.room, blockIndex);
     if (!container) {
       return;
@@ -67,7 +66,6 @@ export class PuppetBase {
     }
 
     // click action
-    console.log("Click action button", action);
     await clickButtonByText(this.page, action);
 
     // close overlay controls
