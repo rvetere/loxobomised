@@ -50,7 +50,7 @@ export class CommandsController {
     const counter = this.requestCounter[category] || 0;
     const delay = counter * 1500;
     return {
-      delay: counter === 0 ? delay : delay > 5 ? delay - randomDelay : delay + randomDelay,
+      delay: delay > 5 ? delay - randomDelay : delay + randomDelay,
       formattedDate: `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}.${now.getMilliseconds()}`,
     };
   }
