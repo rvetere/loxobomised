@@ -48,9 +48,9 @@ export class CommandsController {
     const lastRandomDelay = global.lastRandomDelay || 0;
     const randomDelay = this.getRandomDelay(lastRandomDelay);
     const counter = this.requestCounter[category] || 0;
-    const delay = counter * (category === "Beschattung" ? 1600 : 350);
+    const delay = counter * (category === "shades" ? 1800 : 350);
     return {
-      delay: delay > 10 ? delay - randomDelay : delay + randomDelay,
+      delay: delay > 5000 ? delay - randomDelay : delay + randomDelay,
       formattedDate: `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}.${now.getMilliseconds()}`,
     };
   }
