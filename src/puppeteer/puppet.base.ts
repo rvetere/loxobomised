@@ -77,12 +77,12 @@ export class PuppetBase {
 
     // open overlay controls
     Logger.log(`   Click overlay of clickOverlayActionOfBlock...`);
-    await clickElement(button, 500);
+    await clickElement(button, 500, doubleClick);
 
     // click action
     const actionButton = await getButtonElementByText(this.page, action);
     Logger.log(`   Click action of clickOverlayActionOfBlock...`);
-    await clickElement(actionButton, 250, true);
+    await clickElement(actionButton);
 
     // close overlay controls
     await this.page.keyboard.press("Escape");

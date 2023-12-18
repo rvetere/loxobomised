@@ -80,15 +80,21 @@ export class PuppetJalousie extends PuppetBase {
       action: isMovingDown ? "down" : "up",
     };
 
-    console.log(
-      `   Control jalousie "${this.room}:${blockIndex}" ${currentPercent}% -> ${percentToSet}%, ${steps} steps`
-    );
-
     if (toPositive(steps) > 0 && percentToSet === 0) {
+      console.log(
+        `   Control jalousie "${this.room}:${blockIndex}" ${currentPercent}% -> ${percentToSet}% "${
+          finalPosition === 0 ? "Closed" : finalPosition === 1 ? "Tilted" : "Open"
+        }", no stop timer needed`
+      );
       await this.clickUpDownOfBlock(props);
     } else if (toPositive(steps) > 3) {
       // calculate exact delay to reach "percentToSet"
       const delay = Math.floor(toPositive(steps) * getJalousieTiming(rolloType) * 1000);
+      console.log(
+        `   Control jalousie "${this.room}:${blockIndex}" ${currentPercent}% -> ${percentToSet}% "${
+          finalPosition === 0 ? "Closed" : finalPosition === 1 ? "Tilted" : "Open"
+        }", wait ${delay}ms to reach position`
+      );
 
       // click action to move jalousie
       await this.clickUpDownOfBlock({
@@ -112,6 +118,9 @@ export class PuppetJalousie extends PuppetBase {
 
       return delay;
     }
+    console.log(
+      `   Abort control jalousie, "${this.room}:${blockIndex}" already in position ${currentPercent}% -> ${percentToSet}%`
+    );
 
     callback?.(this.room, blockIndex);
     return 0;
@@ -166,17 +175,19 @@ export class PuppetJalousie extends PuppetBase {
     const steps = percentToSet - currentPercent;
     const action = steps > 0 ? actionDown : actionUp;
 
-    console.log(
-      `   Control markise "${this.room}:${blockIndex}" ${currentPercent}% -> ${percentToSet}%, ${steps} steps`
-    );
-
     if (toPositive(steps) > 0 && (percentToSet === 0 || percentToSet === 100)) {
+      console.log(
+        `   Control markise "${this.room}:${blockIndex}" ${currentPercent}% -> ${percentToSet}%, no stop timer needed`
+      );
       await this.clickOverlayActionOfBlock(blockIndex, action);
     } else if (toPositive(steps) > 3) {
       await this.clickOverlayActionOfBlock(blockIndex, action);
 
       // calculate exact delay to reach "percentToSet"
       const delay = Math.floor(toPositive(steps) * getJalousieTiming("Markise") * 1000);
+      console.log(
+        `   Control markise "${this.room}:${blockIndex}" ${currentPercent}% -> ${percentToSet}%, wait ${delay}ms to reach position`
+      );
 
       // wait until jalousie is in position and stop it by clicking action again
       setTimeout(async () => {
@@ -187,6 +198,9 @@ export class PuppetJalousie extends PuppetBase {
 
       return delay;
     }
+    console.log(
+      `   Abort control markise, "${this.room}:${blockIndex}" already in position ${currentPercent}% -> ${percentToSet}%`
+    );
 
     callback(this.room, blockIndex);
     return 0;
