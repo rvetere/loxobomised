@@ -45,9 +45,9 @@ export class CommandsController {
     this.resetTimer = setTimeout(this.resetRequestCounter, 1000 * 4);
 
     const randomDelay = Math.floor(Math.random() * 1000);
-
+    const delay = (this.requestCounter[category] || 0) * 950;
     return {
-      delay: (this.requestCounter[category] || 0) * 650 + randomDelay,
+      delay: delay > 5 ? delay - randomDelay : delay + randomDelay,
       formattedDate: `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}.${now.getMilliseconds()}`,
     };
   }
