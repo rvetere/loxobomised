@@ -82,7 +82,6 @@ export class PuppeteerController {
 
       this.preventStandbyInterval = setInterval(async () => {
         if (this.page) {
-          console.log("preventStandby", "move mouse");
           await this.page.mouse.move(0, 0);
         }
       }, 1000 * 30);
