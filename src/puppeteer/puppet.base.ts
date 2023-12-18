@@ -1,6 +1,5 @@
 import { ElementHandle, Page } from "puppeteer";
 import { sleep } from "src/utils/sleep";
-import { clickButtonByText } from "./utils/clickButtonByText";
 import { getDataPercent } from "./utils/getDataPercent";
 import { toPositive } from "src/utils/toPositive";
 import { getPlusOrMinusElement } from "./utils/getPlusOrMinusElement";
@@ -9,6 +8,7 @@ import { navigate } from "./utils/navigate";
 import { clickElement } from "./utils/clickElement";
 import { getElementByText } from "./utils/getElementByText";
 import { getButtonInElement } from "./utils/getButtonInElement";
+import { Logger } from "src/utils/logger";
 
 interface ClickUpDownOfTitleProps {
   blockIndex: number;
@@ -76,12 +76,12 @@ export class PuppetBase {
     }
 
     // open overlay controls
-    console.log(`   Click overlay of clickActionOfBlock...`);
+    Logger.log(`   Click overlay of clickActionOfBlock...`);
     await clickElement(button);
 
     // click action
     const actionButton = await getElementByText(this.page, action);
-    console.log(`   Click action of clickActionOfBlock...`);
+    Logger.log(`   Click action of clickActionOfBlock...`);
     await clickElement(actionButton);
 
     // close overlay controls
@@ -103,13 +103,13 @@ export class PuppetBase {
       const button = await getButtonInElement(container, 0);
 
       // open overlay controls
-      console.log(`   Click overlay of clickPlusMinusOfBlock...`);
+      Logger.log(`   Click overlay of clickPlusMinusOfBlock...`);
       await clickElement(button);
 
       // click "plus" or "minus" button as many times possible to get it to the desired percent (each click moves it by 10%)
       for (let i = 0; i < toPositive(steps); i++) {
         const actionButton = await getPlusOrMinusElement(this.page, variant);
-        console.log(`   Click action of clickPlusMinusOfBlock...`);
+        Logger.log(`   Click action of clickPlusMinusOfBlock...`);
         await clickElement(actionButton, 500);
       }
 
@@ -132,13 +132,13 @@ export class PuppetBase {
 
     if (button) {
       // click action
-      console.log(`   Click action of clickUpDownOfBlock...`);
+      Logger.log(`   Click action of clickUpDownOfBlock...`);
       await clickElement(button, 400);
 
       if (doubleClick) {
         // double click action by starting a timer with a delay of at least 200ms
         setTimeout(() => {
-          console.log(`   Click markise to stop at final position...`);
+          Logger.log(`   Click markise to stop at final position...`);
           clickElement(button);
           callback(true, upButton, downButton);
         }, delay);

@@ -83,7 +83,7 @@
    
     shades_livingroom_0: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Livingroom&blockIndex=3&set3=0"'
     shades_livingroom_60_1: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Livingroom&blockIndex=3&set3=60"'
-    shades_livingroom_100: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Livingroom&blockIndex=3&set3=100"'
+    shades_livingroom_100: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Livingroom&blockIndex=3&set3=100&tilt3=0"'
     
     shades_loggiawindow_0: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Livingroom&blockIndex=4&set4=0"'
     shades_loggiawindow_60_1: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Livingroom&blockIndex=4&set4=60&titlt4=1"'

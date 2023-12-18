@@ -3,9 +3,9 @@ import { JalousieType, getJalousieTiming } from "./utils/getJalousieTiming";
 import { getDataPercent } from "./utils/getDataPercent";
 import { toPositive } from "src/utils/toPositive";
 import { sleep } from "src/utils/sleep";
-import { clickButton } from "./utils/clickButton";
 import { PuppetBase } from "./puppet.base";
 import { clickElement } from "./utils/clickElement";
+import { Logger } from "src/utils/logger";
 
 interface ControlJalousieProps {
   blockIndex: number;
@@ -132,7 +132,7 @@ export class PuppetJalousie extends PuppetBase {
       }"`
     );
 
-    console.log(`   Click jalousie to move final position...`);
+    Logger.log(`   Click jalousie to move final position...`);
     if (isMovingDown) {
       if (finalPosition === 0) {
         // nothing to do, the blinds are already closed
