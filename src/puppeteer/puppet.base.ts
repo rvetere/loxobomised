@@ -82,8 +82,6 @@ export class PuppetBase {
     // click action
     const actionButton = await getButtonElementByText(this.page, action);
     Logger.log(`   Click action of clickOverlayActionOfBlock...`);
-    console.log({ actionButton, action });
-
     await clickElement(actionButton, 250, true);
 
     // close overlay controls
