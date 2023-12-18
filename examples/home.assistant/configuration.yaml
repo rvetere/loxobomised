@@ -63,8 +63,6 @@
     ventilation_livingroom_3: 'curl -X GET "http://192.168.1.12:9002/exec/518-ventilation?withLivingroom=1&setLivingroom=Stufe 3"'
     ventilation_livingroom_4: 'curl -X GET "http://192.168.1.12:9002/exec/518-ventilation?withLivingroom=1&setLivingroom=Stufe 4"'
     
-    shades_all_0: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=All&blockIndex=2,3,4&set2=0&set3=0&set4=0&lgBlockIndex=1,2&setLoggia1=0&setLoggia2=0&setKitchen=0&setBedroom=0"'
-
     shades_loggia_0: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Loggia&lgBlockIndex=1,2&setLoggia1=0&setLoggia2=0"'
     shades_loggia_60: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Loggia&lgBlockIndex=1,2&setLoggia1=60&setLoggia2=60"'
     shades_loggia_100: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Loggia&lgBlockIndex=1,2&setLoggia1=100&setLoggia2=100"'
