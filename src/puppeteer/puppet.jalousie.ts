@@ -118,9 +118,6 @@ export class PuppetJalousie extends PuppetBase {
 
       return delay;
     }
-    console.log(
-      `   Abort control jalousie, "${this.room}:${blockIndex}" already in position ${currentPercent}% -> ${percentToSet}%`
-    );
 
     callback?.(this.room, blockIndex);
     return 0;
@@ -198,9 +195,6 @@ export class PuppetJalousie extends PuppetBase {
 
       return delay;
     }
-    console.log(
-      `   Abort control markise, "${this.room}:${blockIndex}" already in position ${currentPercent}% -> ${percentToSet}%`
-    );
 
     callback(this.room, blockIndex);
     return 0;

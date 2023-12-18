@@ -48,7 +48,7 @@ export class CommandsController {
     const lastRandomDelay = global.lastRandomDelay || 0;
     const randomDelay = this.getRandomDelay(lastRandomDelay);
     const counter = this.requestCounter[category] || 0;
-    const delay = counter * 1600;
+    const delay = counter * (category === "Beschattung" ? 1600 : 350);
     return {
       delay: delay > 10 ? delay - randomDelay : delay + randomDelay,
       formattedDate: `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}.${now.getMilliseconds()}`,
@@ -56,11 +56,11 @@ export class CommandsController {
   }
 
   /**
-   * Get a random value between 0 and 2500, but at least 700 and with a difference of at least 500 to the last value
+   * Get a random value between 0 and 1500, but at least 500 and with a difference of at least 500 to the last value
    */
   getRandomDelay(lastDelay: number): number {
-    const randomDelay = Math.floor(Math.random() * 2500);
-    if (randomDelay < 700) {
+    const randomDelay = Math.floor(Math.random() * 1500);
+    if (randomDelay < 500) {
       return this.getRandomDelay(lastDelay);
     }
     if (Math.abs(randomDelay - lastDelay) < 500) {
