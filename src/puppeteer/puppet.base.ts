@@ -43,17 +43,19 @@ export class PuppetBase {
     this.clickUpDownOfBlock = this.clickUpDownOfBlock.bind(this);
   }
 
-  getContainer = async (blockIndex: number) => {
+  getContainer = async (blockIndex: number): Promise<ElementHandle<Node> | null> => {
     const containerXPath = `//div[contains(text(),'${this.room}')]/../../following-sibling::div[1]/div/div[${blockIndex}]`;
     const [container] = await this.page.$x(containerXPath);
     if (!container) {
+      // this happens when we somehow landed on the wrong page (probably by pressing one time "Escape" too much)")
       console.error("Container not found!", { containerXPath });
       await this.page.screenshot({ path: "getContainer-error.png" });
 
-      // this happens when we somehow landed on the wrong page (probably by pressing one time "Escape" too much)")
       await navigate(this.page, this.category, "Kategorien");
       await this.page.screenshot({ path: "getContainer-restored.png" });
-      return null;
+
+      const containerTurnover = await this.getContainer(blockIndex);
+      return containerTurnover;
     }
     return container;
   };
