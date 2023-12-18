@@ -6,7 +6,7 @@ import { getContainer } from "./getContainer";
 export const clickActionOfTitle = async (
   page: Page | null,
   title: string,
-  buttonGroupIndex: number,
+  blockIndex: number,
   action: string,
   doubleClick = false
 ) => {
@@ -15,7 +15,7 @@ export const clickActionOfTitle = async (
     return;
   }
 
-  const container = await getContainer(page, title, buttonGroupIndex);
+  const container = await getContainer(page, title, blockIndex);
   if (!container) {
     return;
   }
@@ -27,10 +27,12 @@ export const clickActionOfTitle = async (
   }
 
   // open overlay controls
+  console.log("clickActionOfTitle", "open overlay controls");
   element.click();
   await sleep(200);
 
   if (doubleClick) {
+    console.log("clickActionOfTitle", "double click");
     element.click();
     await sleep(200);
   }

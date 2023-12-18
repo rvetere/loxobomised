@@ -4,7 +4,7 @@ import { getContainer } from "./getContainer";
 export const getUpDownElement = async (
   page: Page | null,
   title: string,
-  buttonGroupIndex: number,
+  blockIndex: number,
   action: string
 ) => {
   if (!page) {
@@ -15,7 +15,7 @@ export const getUpDownElement = async (
       downButton: null,
     };
   }
-  const container = await getContainer(page, title, buttonGroupIndex);
+  const container = await getContainer(page, title, blockIndex);
   if (!container) {
     return {
       element: null,

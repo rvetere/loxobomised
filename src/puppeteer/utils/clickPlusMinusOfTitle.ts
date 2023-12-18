@@ -15,6 +15,7 @@ const clickParent = async (element: ElementHandle<Element>) => {
     const parentElement = await element.$x("../..");
 
     if (parentElement && parentElement[0]) {
+      console.log("clickParent", element);
       await element.click();
     }
     return element;
@@ -44,14 +45,14 @@ const clickPlusMinus = async (page: Page, kind: string) => {
 export const clickPlusMinusOfTitle = async (
   page: Page | null,
   title: string,
-  buttonGroupIndex: number,
+  blockIndex: number,
   percentToSet: number
 ) => {
   if (!page) {
     console.error("Page not found!");
     return;
   }
-  const container = await getContainer(page, title, buttonGroupIndex);
+  const container = await getContainer(page, title, blockIndex);
   if (!container) {
     return null;
   }
@@ -70,6 +71,7 @@ export const clickPlusMinusOfTitle = async (
     const elements = await container.$$("div[role=button]");
 
     // open overlay controls
+    console.log("clickPlusMinusOfTitle", "open overlay controls");
     elements[0].click();
     await sleep(200);
 

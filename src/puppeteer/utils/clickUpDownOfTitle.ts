@@ -6,7 +6,7 @@ import { getUpDownElement } from "./getUpDownElement";
 interface ClickUpDownOfTitleProps {
   page: Page | null;
   title: string;
-  buttonGroupIndex: number;
+  blockIndex: number;
   action?: string;
   doubleClick?: boolean;
   delay?: number;
@@ -26,7 +26,7 @@ const dummyCallback = (
 export const clickUpDownOfTitle = async ({
   page,
   title,
-  buttonGroupIndex,
+  blockIndex,
   action = "down", // "up", "down"
   doubleClick = false,
   delay = 200,
@@ -35,18 +35,20 @@ export const clickUpDownOfTitle = async ({
   const { element, upButton, downButton } = await getUpDownElement(
     page,
     title,
-    buttonGroupIndex,
+    blockIndex,
     action
   );
 
   if (element) {
     // click action
+    console.log("clickUpDownOfTitle", "click action");
     element.click();
     await sleep(400);
 
     if (doubleClick) {
       // double click action by starting a timer with a delay of at least 200ms
       setTimeout(() => {
+        console.log("clickUpDownOfTitle", "double click action");
         element.click();
         callback(true, upButton, downButton);
       }, delay);
