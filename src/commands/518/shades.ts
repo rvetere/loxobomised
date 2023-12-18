@@ -68,27 +68,18 @@ export class Apartment518Shades {
     const room = "Wohnzimmer";
     const puppet = new PuppetJalousie(this.page, this.category, room, query);
     if ((query.blockIndex || "").includes("4") && !this.isJobRunning(room, 4)) {
-      delay4 = await puppet.controlJalousie({
-        blockIndex: 4,
-        callback: this.resetJobRunning,
-      });
+      delay4 = await puppet.controlJalousie(4, this.resetJobRunning);
       this.setJobRunning(room, 4);
       await sleep(800);
     }
 
     if ((query.blockIndex || "").includes("3") && !this.isJobRunning(room, 3)) {
-      delay3 = await puppet.controlJalousie({
-        blockIndex: 3,
-        callback: this.resetJobRunning,
-      });
+      delay3 = await puppet.controlJalousie(3, this.resetJobRunning);
       this.setJobRunning(room, 3);
     }
 
     if ((query.blockIndex || "").includes("2") && !this.isJobRunning(room, 2)) {
-      delay2 = await puppet.controlJalousie({
-        blockIndex: 2,
-        callback: this.resetJobRunning,
-      });
+      delay2 = await puppet.controlJalousie(2, this.resetJobRunning);
       this.setJobRunning(room, 2);
       await sleep(800);
     }
@@ -103,10 +94,7 @@ export class Apartment518Shades {
     }
 
     const puppet = new PuppetJalousie(this.page, this.category, room, query);
-    const delay = await puppet.controlJalousie({
-      blockIndex: 1,
-      callback: this.resetJobRunning,
-    });
+    const delay = await puppet.controlJalousie(1, this.resetJobRunning);
     this.setJobRunning(room, 1);
 
     await sleep(delay);
@@ -119,10 +107,7 @@ export class Apartment518Shades {
     }
 
     const puppet = new PuppetJalousie(this.page, this.category, room, query);
-    const delay = await puppet.controlJalousie({
-      blockIndex: 1,
-      callback: this.resetJobRunning,
-    });
+    const delay = await puppet.controlJalousie(1, this.resetJobRunning);
     this.setJobRunning(room, 1);
 
     await sleep(delay);

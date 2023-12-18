@@ -7,11 +7,6 @@ import { PuppetBase } from "./puppet.base";
 import { clickElement } from "./utils/clickElement";
 import { Logger } from "src/utils/logger";
 
-interface ControlJalousieProps {
-  blockIndex: number;
-  callback?: (room: string, blockIndex: number) => void;
-}
-
 interface ControlJalousieWithActionProps {
   blockIndex: number;
   actionUp?: string;
@@ -65,7 +60,10 @@ export class PuppetJalousie extends PuppetBase {
     this.controlJalousieWithAction = this.controlJalousieWithAction.bind(this);
   }
 
-  controlJalousie = async ({ blockIndex, callback = () => {} }: ControlJalousieProps) => {
+  controlJalousie = async (
+    blockIndex: number,
+    callback?: (room: string, blockIndex: number) => void
+  ) => {
     const settings = this.settings[`${this.room}-${blockIndex}`];
     const { percentToSet, finalPosition = 0, rolloType = "Window" } = settings;
 
@@ -108,14 +106,14 @@ export class PuppetJalousie extends PuppetBase {
               downButton
             );
           }
-          callback(this.room, blockIndex);
+          callback?.(this.room, blockIndex);
         },
       });
 
       return delay;
     }
 
-    callback(this.room, blockIndex);
+    callback?.(this.room, blockIndex);
     return 0;
   };
 

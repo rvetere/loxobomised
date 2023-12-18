@@ -9,6 +9,7 @@ import { clickElement } from "./utils/clickElement";
 import { getElementByText } from "./utils/getElementByText";
 import { getButtonInElement } from "./utils/getButtonInElement";
 import { Logger } from "src/utils/logger";
+import { getToggleButton } from "./utils/getToggleButton";
 
 interface ClickUpDownOfTitleProps {
   blockIndex: number;
@@ -48,6 +49,8 @@ export class PuppetBase {
 
   getContainer = async (blockIndex: number): Promise<ElementHandle<Node> | null> => {
     const containerXPath = `//div[contains(text(),'${this.room}')]/../../following-sibling::div[1]/div/div[${blockIndex}]`;
+    console.log({ containerXPath });
+
     const [container] = await this.page.$x(containerXPath);
     if (!container) {
       // this happens when we somehow landed on the wrong page (probably by pressing one time "Escape" too much)")
@@ -63,6 +66,10 @@ export class PuppetBase {
     return container;
   };
 
+  /**
+   *
+   * @deprecated DO NOT USE THIS METHOD ANYMORE!
+   */
   clickActionOfBlock = async (blockIndex: number, action: string, doubleClick = false) => {
     const container = await this.getContainer(blockIndex);
     if (!container) {
@@ -146,5 +153,20 @@ export class PuppetBase {
       }
     }
     callback(false, upButton, downButton);
+  };
+
+  clickToggleOfBlock = async (
+    blockIndex: number,
+    action = "Switch On" // "Switch On", "Switch Off"
+  ) => {
+    const container = await this.getContainer(blockIndex);
+    const { button, isActive } = await getToggleButton(container);
+
+    if (button) {
+      if ((isActive && action === "Switch Off") || (!isActive && action === "Switch On")) {
+        Logger.log(`   Click action of clickToggleOfBlock...`);
+        await clickElement(button as ElementHandle<Element>, 400);
+      }
+    }
   };
 }

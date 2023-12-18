@@ -28,7 +28,7 @@ export class Apartment518Light {
     // 1. Kitchen Headlights
     if (!!query.withKitchenHeadlights) {
       // Turn off head lights
-      await puppetKitchen.clickActionOfBlock(1, query.actionKitchen || "Switch On");
+      await puppetKitchen.clickToggleOfBlock(1, query.actionKitchen || "Switch On");
     }
 
     // 2. Kitchen
@@ -39,18 +39,18 @@ export class Apartment518Light {
       if (!isNaN(percent)) {
         await puppetKitchen.clickPlusMinusOfBlock(2, percent);
       } else {
-        await puppetKitchen.clickActionOfBlock(2, percentStr);
+        await puppetKitchen.clickToggleOfBlock(2, percentStr);
       }
     }
 
     // 3. Entrance
     if (!!query.withEntrance) {
-      await puppetEntrance.clickActionOfBlock(1, query.actionEntrance || "Switch On");
+      await puppetEntrance.clickToggleOfBlock(1, query.actionEntrance || "Switch On");
     }
 
     // 4. Loggia
     if (!!query.withLoggia) {
-      await puppetLoggia.clickActionOfBlock(1, query.actionLoggia || "Switch On");
+      await puppetLoggia.clickToggleOfBlock(1, query.actionLoggia || "Switch On");
     }
 
     // 5. Bathroom
@@ -60,13 +60,13 @@ export class Apartment518Light {
       if (!isNaN(percent)) {
         await puppetBathroom.clickPlusMinusOfBlock(1, percent);
       } else {
-        await puppetBathroom.clickActionOfBlock(1, percentStr);
+        await puppetBathroom.clickToggleOfBlock(1, percentStr);
       }
     }
 
     // 6. Bathroom Headlights
     if (!!query.withBathroomHeadlights) {
-      await puppetBathroom.clickActionOfBlock(2, query.actionBathroom || "Switch On");
+      await puppetBathroom.clickToggleOfBlock(2, query.actionBathroom || "Switch On");
     }
   }
 }
