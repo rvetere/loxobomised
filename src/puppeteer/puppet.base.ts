@@ -49,8 +49,6 @@ export class PuppetBase {
 
   getContainer = async (blockIndex: number): Promise<ElementHandle<Node> | null> => {
     const containerXPath = `//div[contains(text(),'${this.room}')]/../../following-sibling::div[1]/div/div[${blockIndex}]`;
-    console.log({ containerXPath });
-
     const [container] = await this.page.$x(containerXPath);
     if (!container) {
       // this happens when we somehow landed on the wrong page (probably by pressing one time "Escape" too much)")

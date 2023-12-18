@@ -1,20 +1,18 @@
-  # Loads default set of integrations. Do not remove.
-  default_config:
 
-  # Load frontend themes from the themes folder
-  frontend:
-    themes: !include_dir_merge_named themes
+# Loads default set of integrations. Do not remove.
+default_config:
 
-  automation: !include automations.yaml
-  script: !include scripts.yaml
-  scene: !include scenes.yaml
+# Load frontend themes from the themes folder
+frontend:
+  themes: !include_dir_merge_named themes
 
-  http:
-    use_x_forwarded_for: true
-    trusted_proxies:
-      - 172.30.33.2
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
 
-  shell_command:
+
+# Shell commands
+shell_command:
     light_kitchen_headlights_0: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withKitchenHeadlights=1&actionKitchen=Switch%20Off"'
     light_kitchen_headlights_1: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withKitchenHeadlights=1&actionKitchen=Switch%20On"'
     light_kitchen_0: 'curl -X GET "http://192.168.1.12:9000/exec/518-light?withKitchen=1&percentKitchen=Switch%20Off"'
@@ -63,6 +61,7 @@
     ventilation_livingroom_3: 'curl -X GET "http://192.168.1.12:9002/exec/518-ventilation?withLivingroom=1&setLivingroom=Stufe 3"'
     ventilation_livingroom_4: 'curl -X GET "http://192.168.1.12:9002/exec/518-ventilation?withLivingroom=1&setLivingroom=Stufe 4"'
     
+    shades_loggia: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Loggia&lgBlockIndex=1,2"'
     shades_loggia_0: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Loggia&lgBlockIndex=1,2&setLoggia1=0&setLoggia2=0"'
     shades_loggia_60: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Loggia&lgBlockIndex=1,2&setLoggia1=60&setLoggia2=60"'
     shades_loggia_100: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Loggia&lgBlockIndex=1,2&setLoggia1=100&setLoggia2=100"'
@@ -73,27 +72,33 @@
     shades_loggia_side2_60: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Loggia&lgBlockIndex=2&setLoggia2=60"'
     shades_loggia_side2_100: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Loggia&lgBlockIndex=2&setLoggia2=100"'
     
+    shades_bedroom: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Bedroom"'
     shades_bedroom_0: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Bedroom&setBedroom=0"'
     shades_bedroom_60_1: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Bedroom&setBedroom=60&tiltBedroom=1"'
     shades_bedroom_100: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Bedroom&setBedroom=100&tiltBedroom=0"'    
     
+    shades_kitchen: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Kitchen"'
     shades_kitchen_0: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Kitchen&setKitchen=0"'
     shades_kitchen_60_1: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Kitchen&setKitchen=60&tiltKitchen=1"'
     shades_kitchen_100: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Kitchen&setKitchen=100&tiltKitchen=0"'
    
+    shades_livingroom: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Livingroom&blockIndex=3"'
     shades_livingroom_0: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Livingroom&blockIndex=3&set3=0"'
     shades_livingroom_60_1: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Livingroom&blockIndex=3&set3=60"'
     shades_livingroom_100: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Livingroom&blockIndex=3&set3=100&tilt3=0"'
     
+    shades_loggiawindow: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Livingroom&blockIndex=4"'
     shades_loggiawindow_0: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Livingroom&blockIndex=4&set4=0"'
     shades_loggiawindow_60_1: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Livingroom&blockIndex=4&set4=60&titlt4=1"'
     shades_loggiawindow_100: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Livingroom&blockIndex=4&set4=100&titlt4=0"'
     
+    shades_livingroom_loggia: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Livingroom&blockIndex=3,4"'
     shades_livingroom_0_loggia_0: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Livingroom&blockIndex=3,4&set3=0&set4=0"'
     shades_livingroom_60_1_loggia_60_1: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Livingroom&blockIndex=3,4&set3=60&tilt3=1&set4=60&titlt4=1"'
     shades_livingroom_60_1_loggia_60_2: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Livingroom&blockIndex=3,4&set3=60&tilt3=1&set4=60&titlt4=2"'
     shades_livingroom_100_loggia_100: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Livingroom&blockIndex=3,4&set3=100&tilt3=0&set4=100&titlt4=0"'
     
+    shades_office: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Livingroom&blockIndex=2"'
     shades_office_0: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Livingroom&blockIndex=2&set2=0"'
     shades_office_60_1: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Livingroom&blockIndex=2&set2=60&titlt2=1"'
     shades_office_100: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Livingroom&blockIndex=2&set2=100&titlt2=0"'
