@@ -47,15 +47,22 @@ export class Apartment518Shades {
   async run(query: Record<string, any>) {
     const { room } = query;
     if (room === "Livingroom" || room === "All") {
+      console.log("🌥️ Livingroom Shades...");
       await this.livingroom(query);
+      await sleep(800);
     }
     if (room === "Kitchen" || room === "All") {
+      console.log("🌥️ Kitchen Shades...");
       await this.kitchen(query);
+      await sleep(800);
     }
     if (room === "Loggia" || room === "All") {
+      console.log("🌥️ Loggia Shades...");
       await this.loggia(query);
+      await sleep(800);
     }
     if (room === "Bedroom" || room === "All") {
+      console.log("🌥️ Bedroom Shades...");
       await this.bedroom(query);
     }
   }
