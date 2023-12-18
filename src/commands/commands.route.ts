@@ -9,8 +9,6 @@ initPool().then((pool) => {
   commandsController.setPool(pool);
 });
 
-router
-  .get("/", commandsController.index)
-  .get("/:name", commandsController.execute);
+router.get("/", commandsController.index).get("/:name", commandsController.execute);
 
 export default router;

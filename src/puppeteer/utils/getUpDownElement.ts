@@ -1,21 +1,6 @@
-import { Page } from "puppeteer";
-import { getContainer } from "./getContainer";
+import { ElementHandle } from "puppeteer";
 
-export const getUpDownElement = async (
-  page: Page | null,
-  title: string,
-  blockIndex: number,
-  action: string
-) => {
-  if (!page) {
-    console.error("No page!");
-    return {
-      element: null,
-      upButton: null,
-      downButton: null,
-    };
-  }
-  const container = await getContainer(page, title, blockIndex);
+export const getUpDownElement = async (container: ElementHandle<Node> | null, action: string) => {
   if (!container) {
     return {
       element: null,

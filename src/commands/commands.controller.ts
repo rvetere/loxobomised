@@ -58,11 +58,10 @@ export class CommandsController {
     const pageShades = getPage(this.pool, "Beschattung");
 
     this.commands = {
-      "518-test": pageVentilation && new Apartment518Test(pageVentilation),
-      "518-light": pageLight && new Apartment518Light(pageLight),
-      "518-ventilation":
-        pageVentilation && new Apartment518Ventilation(pageVentilation),
-      "518-shades": pageShades && new Apartment518Shades(pageShades),
+      "518-test": pageVentilation && new Apartment518Test(pageVentilation, "Lüftung"),
+      "518-light": pageLight && new Apartment518Light(pageLight, "Beleuchtung"),
+      "518-ventilation": pageVentilation && new Apartment518Ventilation(pageVentilation, "Lüftung"),
+      "518-shades": pageShades && new Apartment518Shades(pageShades, "Beschattung"),
     };
     this.initialized = true;
 
@@ -82,9 +81,7 @@ export class CommandsController {
     if (name.includes("-")) {
       const [apartment, category] = name.split("-");
       const { formattedDate, delay } = this.rampUp(category);
-      console.log(
-        `🤖 [${formattedDate}] Executing command "${name}" with delay: ${delay}ms`
-      );
+      console.log(`🤖 [${formattedDate}] Executing command "${name}" with delay: ${delay}ms`);
 
       sleep(delay).then(() => {
         const command = this.commands[`${apartment}-${category}`];

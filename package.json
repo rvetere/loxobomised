@@ -26,7 +26,8 @@
     "stop:pm2": "yarn pm2 delete ecosystem.config.js",
     "dev": "tsup src/index.ts --format esm --watch --onSuccess \"node dist/index.mjs\"",
     "build": "tsup src/index.ts --format esm --dts --minify --clean --sourcemap",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "format": "prettier --write \"src/**/*.{ts,json,js}\""
   },
   "keywords": [],
   "author": "Aung Myat Moe",

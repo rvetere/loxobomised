@@ -1,7 +1,6 @@
 import { PuppeteerController } from "src/puppeteer/puppeteer.controller";
 
-const categoriesRaw =
-  process.env.CATEGORIES || "Beleuchtung,Beschattung,Lüftung";
+const categoriesRaw = process.env.CATEGORIES || "Beleuchtung,Beschattung,Lüftung";
 
 const getCategoryFromArgs = () => {
   const args = process.argv;

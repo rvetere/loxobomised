@@ -1,6 +1,5 @@
 import { ElementHandle, Page } from "puppeteer";
 import { JalousieType, getJalousieTiming } from "./utils/getJalousieTiming";
-import { getContainer } from "./utils/getContainer";
 import { getDataPercent } from "./utils/getDataPercent";
 import { toPositive } from "src/utils/toPositive";
 import { sleep } from "src/utils/sleep";
@@ -28,8 +27,8 @@ export class PuppetJalousie extends PuppetBase {
     };
   };
 
-  constructor(page: Page, room: string, query: Record<string, any>) {
-    super(page, room, query);
+  constructor(page: Page, category: string, room: string, query: Record<string, any>) {
+    super(page, category, room, query);
 
     this.settings = {
       ["Wohnzimmer-2"]: {
@@ -61,19 +60,15 @@ export class PuppetJalousie extends PuppetBase {
       },
     };
     this.controlJalousie = this.controlJalousie.bind(this);
-    this.moveJalousieToFinalPosition =
-      this.moveJalousieToFinalPosition.bind(this);
+    this.moveJalousieToFinalPosition = this.moveJalousieToFinalPosition.bind(this);
     this.controlJalousieWithAction = this.controlJalousieWithAction.bind(this);
   }
 
-  controlJalousie = async ({
-    blockIndex,
-    callback = () => {},
-  }: ControlJalousieProps) => {
+  controlJalousie = async ({ blockIndex, callback = () => {} }: ControlJalousieProps) => {
     const settings = this.settings[`${this.room}-${blockIndex}`];
     const { percentToSet, finalPosition = 0, rolloType = "Window" } = settings;
 
-    const container = await getContainer(this.page, this.room, blockIndex);
+    const container = await this.getContainer(blockIndex);
     if (!container) {
       return 0;
     }
@@ -95,9 +90,7 @@ export class PuppetJalousie extends PuppetBase {
       await this.clickUpDownOfBlock(props);
     } else if (toPositive(steps) > 3) {
       // calculate exact delay to reach "percentToSet"
-      const delay = Math.floor(
-        toPositive(steps) * getJalousieTiming(rolloType) * 1000
-      );
+      const delay = Math.floor(toPositive(steps) * getJalousieTiming(rolloType) * 1000);
 
       // click action to move jalousie
       await this.clickUpDownOfBlock({
@@ -162,7 +155,7 @@ export class PuppetJalousie extends PuppetBase {
     callback = () => {},
   }: ControlJalousieWithActionProps) => {
     const { percentToSet } = this.settings[`${this.room}-${blockIndex}`];
-    const container = await getContainer(this.page, this.room, blockIndex);
+    const container = await this.getContainer(blockIndex);
     if (!container) {
       return 0;
     }
@@ -182,9 +175,7 @@ export class PuppetJalousie extends PuppetBase {
       await this.clickActionOfBlock(blockIndex, action);
 
       // calculate exact delay to reach "percentToSet"
-      const delay = Math.floor(
-        toPositive(steps) * getJalousieTiming("Markise") * 1000
-      );
+      const delay = Math.floor(toPositive(steps) * getJalousieTiming("Markise") * 1000);
 
       // wait until jalousie is in position
       setTimeout(async () => {

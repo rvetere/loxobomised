@@ -4,10 +4,12 @@ import { sleep } from "src/utils/sleep";
 
 export class Apartment518Shades {
   page: Page;
+  category: string;
   jobsRunning: string[] = [];
 
-  constructor(page: Page) {
+  constructor(page: Page, category: string) {
     this.page = page;
+    this.category = category;
     this.isJobRunning = this.isJobRunning.bind(this);
     this.setJobRunning = this.setJobRunning.bind(this);
     this.resetJobRunning = this.resetJobRunning.bind(this);
@@ -22,9 +24,7 @@ export class Apartment518Shades {
 
   resetJobRunning = (room: string, blockIndex: number) => {
     setTimeout(() => {
-      const newJobRunning = [
-        ...this.jobsRunning.filter((jr) => jr !== `${room} [${blockIndex}]`),
-      ];
+      const newJobRunning = [...this.jobsRunning.filter((jr) => jr !== `${room} [${blockIndex}]`)];
       this.jobsRunning = newJobRunning;
     }, 400);
   };
@@ -70,7 +70,7 @@ export class Apartment518Shades {
     let delay4 = 0;
 
     const room = "Wohnzimmer";
-    const puppet = new PuppetJalousie(this.page, room, query);
+    const puppet = new PuppetJalousie(this.page, this.category, room, query);
     if (query.blockIndex.includes("4") && !this.isJobRunning(room, 4)) {
       delay4 = await puppet.controlJalousie({
         blockIndex: 4,
@@ -106,7 +106,7 @@ export class Apartment518Shades {
       return;
     }
 
-    const puppet = new PuppetJalousie(this.page, room, query);
+    const puppet = new PuppetJalousie(this.page, this.category, room, query);
     const delay = await puppet.controlJalousie({
       blockIndex: 1,
       callback: this.resetJobRunning,
@@ -122,7 +122,7 @@ export class Apartment518Shades {
       return;
     }
 
-    const puppet = new PuppetJalousie(this.page, room, query);
+    const puppet = new PuppetJalousie(this.page, this.category, room, query);
     const delay = await puppet.controlJalousie({
       blockIndex: 1,
       callback: this.resetJobRunning,
@@ -137,7 +137,7 @@ export class Apartment518Shades {
     let delay1 = 0;
     let delay2 = 0;
 
-    const puppet = new PuppetJalousie(this.page, room, query);
+    const puppet = new PuppetJalousie(this.page, this.category, room, query);
     if (query.lgBlockIndex.includes("1") && !this.isJobRunning(room, 1)) {
       delay1 = await puppet.controlJalousieWithAction({
         blockIndex: 1,

@@ -1,11 +1,11 @@
 import { ElementHandle, Page } from "puppeteer";
-import { getContainer } from "./utils/getContainer";
 import { sleep } from "src/utils/sleep";
 import { clickButtonByText } from "./utils/clickButtonByText";
 import { getDataPercent } from "./utils/getDataPercent";
 import { toPositive } from "src/utils/toPositive";
 import { getPlusOrMinusButtons } from "./utils/getPlusOrMinusButtons";
 import { getUpDownElement } from "./utils/getUpDownElement";
+import { navigate } from "./utils/navigate";
 
 interface ClickUpDownOfTitleProps {
   blockIndex: number;
@@ -29,23 +29,37 @@ export class PuppetBase {
   page: Page;
   room: string;
   query: Record<string, any>;
+  category: string;
 
-  constructor(page: Page, room: string, query: Record<string, any>) {
+  constructor(page: Page, category: string, room: string, query: Record<string, any>) {
     this.page = page;
+    this.category = category;
     this.room = room;
     this.query = query;
 
+    this.getContainer = this.getContainer.bind(this);
     this.clickActionOfBlock = this.clickActionOfBlock.bind(this);
     this.clickPlusMinusOfBlock = this.clickPlusMinusOfBlock.bind(this);
     this.clickUpDownOfBlock = this.clickUpDownOfBlock.bind(this);
   }
 
-  clickActionOfBlock = async (
-    blockIndex: number,
-    action: string,
-    doubleClick = false
-  ) => {
-    const container = await getContainer(this.page, this.room, blockIndex);
+  getContainer = async (blockIndex: number) => {
+    const containerXPath = `//div[contains(text(),'${this.room}')]/../../following-sibling::div[1]/div/div[${blockIndex}]`;
+    const [container] = await this.page.$x(containerXPath);
+    if (!container) {
+      console.error("Container not found!", { containerXPath });
+      await this.page.screenshot({ path: "getContainer-error.png" });
+
+      // this happens when we somehow landed on the wrong page (probably by pressing one time "Escape" too much)")
+      await navigate(this.page, this.category, "Kategorien");
+      await this.page.screenshot({ path: "getContainer-restored.png" });
+      return null;
+    }
+    return container;
+  };
+
+  clickActionOfBlock = async (blockIndex: number, action: string, doubleClick = false) => {
+    const container = await this.getContainer(blockIndex);
     if (!container) {
       return;
     }
@@ -74,7 +88,7 @@ export class PuppetBase {
   };
 
   clickPlusMinusOfBlock = async (blockIndex: number, percentToSet: number) => {
-    const container = await getContainer(this.page, this.room, blockIndex);
+    const container = await this.getContainer(blockIndex);
     if (!container) {
       return null;
     }
@@ -113,12 +127,8 @@ export class PuppetBase {
     delay = 200,
     callback = dummyCallback,
   }: ClickUpDownOfTitleProps) => {
-    const { element, upButton, downButton } = await getUpDownElement(
-      this.page,
-      this.room,
-      blockIndex,
-      action
-    );
+    const container = await this.getContainer(blockIndex);
+    const { element, upButton, downButton } = await getUpDownElement(container, action);
 
     if (element) {
       // click action

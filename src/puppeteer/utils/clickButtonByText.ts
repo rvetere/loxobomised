@@ -3,9 +3,7 @@ import { sleep } from "src/utils/sleep";
 
 export const clickButtonByText = async (page: Page, text: string) => {
   try {
-    const divsWithText = await page.$$(
-      `xpath///div[contains(text(),'${text}')]`
-    );
+    const divsWithText = await page.$$(`xpath///div[contains(text(),'${text}')]`);
     divsWithText[0]?.click();
     await sleep(200);
 

@@ -75,10 +75,7 @@ export class PuppeteerController {
       // random number between 0 and 60 seconds
       const randomDelay = Math.floor(Math.random() * 1000 * 60);
 
-      this.interval = setInterval(
-        this.refreshLogin.bind(this),
-        1000 * 60 * 60 + randomDelay
-      );
+      this.interval = setInterval(this.refreshLogin.bind(this), 1000 * 60 * 60 + randomDelay);
 
       this.preventStandbyInterval = setInterval(async () => {
         if (this.page) {
@@ -86,9 +83,7 @@ export class PuppeteerController {
         }
       }, 1000 * 30);
 
-      console.log(
-        `✅ Login successful to Loxone in category "${this.category}"!`
-      );
+      console.log(`✅ Login successful to Loxone in category "${this.category}"!`);
     } catch (e) {
       console.error("Error during login! We probably hit the rate limit..");
       process.exit(1);
@@ -122,9 +117,9 @@ export class PuppeteerController {
       const timeElapsed = new Date().getTime() - timestamp;
       // log success with time elapsed in seconds
       console.log(
-        `✅ Successfully refreshed login in category "${
-          this.category
-        }" in ${Math.floor(timeElapsed / 1000)} seconds!`
+        `✅ Successfully refreshed login in category "${this.category}" in ${Math.floor(
+          timeElapsed / 1000
+        )} seconds!`
       );
     } catch (e) {
       console.error("Error during login: ", e);
