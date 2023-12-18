@@ -44,13 +44,29 @@ export class CommandsController {
     }
     this.resetTimer = setTimeout(this.resetRequestCounter, 1000 * 4);
 
-    const randomDelay = Math.floor(Math.random() * 1000);
+    // @ts-expect-error
+    const lastRandomDelay = global.lastRandomDelay || 0;
+    const randomDelay = this.getRandomDelay(lastRandomDelay);
     const counter = this.requestCounter[category] || 0;
-    const delay = counter * 1350;
+    const delay = counter * 1500;
     return {
       delay: counter === 0 ? delay : delay > 5 ? delay - randomDelay : delay + randomDelay,
       formattedDate: `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}.${now.getMilliseconds()}`,
     };
+  }
+
+  /**
+   * Get a random value between 0 and 2500, but at least 700 and with a difference of at least 500 to the last value
+   */
+  getRandomDelay(lastDelay: number): number {
+    const randomDelay = Math.floor(Math.random() * 2500);
+    if (randomDelay < 700) {
+      return this.getRandomDelay(lastDelay);
+    }
+    if (Math.abs(randomDelay - lastDelay) < 500) {
+      return this.getRandomDelay(lastDelay);
+    }
+    return randomDelay;
   }
 
   setPool(pool: PuppeteerController[]) {
