@@ -3,9 +3,12 @@ import { sleep } from "src/utils/sleep";
 import { clickButtonByText } from "./utils/clickButtonByText";
 import { getDataPercent } from "./utils/getDataPercent";
 import { toPositive } from "src/utils/toPositive";
-import { getPlusOrMinusButtons } from "./utils/getPlusOrMinusButtons";
+import { getPlusOrMinusElement } from "./utils/getPlusOrMinusElement";
 import { getUpDownElement } from "./utils/getUpDownElement";
 import { navigate } from "./utils/navigate";
+import { clickElement } from "./utils/clickElement";
+import { getElementByText } from "./utils/getElementByText";
+import { getButtonInElement } from "./utils/getButtonInElement";
 
 interface ClickUpDownOfTitleProps {
   blockIndex: number;
@@ -73,16 +76,13 @@ export class PuppetBase {
     }
 
     // open overlay controls
-    button.click();
-    await sleep(200);
-
-    if (doubleClick) {
-      button.click();
-      await sleep(200);
-    }
+    console.log(`   Click overlay of clickActionOfBlock...`);
+    await clickElement(button);
 
     // click action
-    await clickButtonByText(this.page, action);
+    const actionButton = await getElementByText(this.page, action);
+    console.log(`   Click action of clickActionOfBlock...`);
+    await clickElement(actionButton);
 
     // close overlay controls
     await this.page.keyboard.press("Escape");
@@ -100,17 +100,17 @@ export class PuppetBase {
     const variant = steps > 0 ? "plus" : "minus";
 
     if (toPositive(steps) > 0) {
-      const elements = await container.$$("div[role=button]");
+      const button = await getButtonInElement(container, 0);
 
       // open overlay controls
-      elements[0].click();
-      await sleep(200);
+      console.log(`   Click overlay of clickPlusMinusOfBlock...`);
+      await clickElement(button);
 
       // click "plus" or "minus" button as many times possible to get it to the desired percent (each click moves it by 10%)
       for (let i = 0; i < toPositive(steps); i++) {
-        const actionButtons = await getPlusOrMinusButtons(this.page, variant);
-        actionButtons[0]?.click();
-        await sleep(500);
+        const actionButton = await getPlusOrMinusElement(this.page, variant);
+        console.log(`   Click action of clickPlusMinusOfBlock...`);
+        await clickElement(actionButton, 500);
       }
 
       // close overlay controls
@@ -132,13 +132,14 @@ export class PuppetBase {
 
     if (button) {
       // click action
-      button.click();
-      await sleep(400);
+      console.log(`   Click action of clickUpDownOfBlock...`);
+      await clickElement(button, 400);
 
       if (doubleClick) {
         // double click action by starting a timer with a delay of at least 200ms
         setTimeout(() => {
-          button.click();
+          console.log(`   Click markise to stop at final position...`);
+          clickElement(button);
           callback(true, upButton, downButton);
         }, delay);
         return;

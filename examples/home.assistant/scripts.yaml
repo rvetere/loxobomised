@@ -1,0 +1,728 @@
+cinema_power_on:
+  alias: Cinema Power On
+  sequence:
+  - service: hue.activate_scene
+    target:
+      entity_id: scene.home_cinema
+    data:
+      transition: 50
+  - parallel:
+    - service: script.loxone_cinema_on
+      data: {}
+    - service: script.canvas_decline
+      data: {}
+    - service: script.projector_on
+      data: {}
+  mode: single
+  icon: mdi:projector
+cinema_power_off:
+  alias: Cinema Power Off
+  sequence:
+  - type: turn_off
+    device_id: 353d80fd5e985b364bb5ad6e83e0129f
+    entity_id: b378064cffc4e8ba1f13d1fe5a1bfc14
+    domain: remote
+  - service: remote.send_command
+    target:
+      entity_id: remote.wi_fi_universal_remote
+    data:
+      num_repeats: 1
+      delay_secs: 0.4
+      hold_secs: 0
+      device: Projector
+      command: canvas_rise
+    alias: Rise Canvas
+  mode: single
+  icon: mdi:projector-off
+shade_on:
+  alias: Jalousie Fully Down
+  sequence:
+  - parallel:
+    - service: shell_command.shades_kitchen_100_0
+      data: {}
+    - service: shell_command.shades_livingroom_100_0_loggia_100_0
+      data: {}
+    - service: shell_command.shades_loggia_100
+      data: {}
+    - service: shell_command.shades_bedroom_100_0
+      data: {}
+  mode: single
+  icon: mdi:blinds
+shade_off:
+  alias: Jalousie Fully Up
+  sequence:
+  - parallel:
+    - service: shell_command.shades_kitchen_0
+      data: {}
+    - service: shell_command.shades_livingroom_0_loggia_0
+      data: {}
+    - service: shell_command.shades_loggia_0
+      data: {}
+    - service: shell_command.shades_bedroom_0
+      data: {}
+  mode: single
+  icon: mdi:blinds-open
+cinema_power_on_shade_on:
+  alias: Cinema Power On (Shade On)
+  sequence:
+  - service: hue.activate_scene
+    target:
+      entity_id: scene.home_cinema
+    data:
+      transition: 50
+  - parallel:
+    - service: script.loxone_cinema_on
+      data: {}
+    - service: script.canvas_decline
+      data: {}
+    - service: script.projector_on
+      data: {}
+    - service: script.shade_on
+      data: {}
+  mode: single
+  icon: mdi:projector
+dimm_kitchen:
+  alias: Dimm Kitchen
+  sequence:
+  - service: shell_command.light_kitchen_40
+    data: {}
+  mode: single
+  icon: mdi:lightbulb-alert-outline
+sleep:
+  alias: Sleep
+  sequence:
+  - type: turn_off
+    device_id: f8a330dc2bdef46852af282c85f3b892
+    entity_id: 18909c8bf081a06c3cd4cd6ee3ce6345
+    domain: light
+  - parallel:
+    - service: shell_command.ventilation_bedroom_0
+      data: {}
+    - service: shell_command.ventilation_livingroom_2
+      data: {}
+    - service: script.full_light_off
+      data: {}
+  mode: single
+  icon: mdi:chat-sleep
+easy:
+  alias: Easy
+  sequence:
+  - service: hue.activate_scene
+    target:
+      entity_id: scene.home_easy
+    data: {}
+  - parallel:
+    - service: shell_command.light_kitchen_40
+      data: {}
+    - service: shell_command.ventilation_bedroom_1
+      data: {}
+    - service: shell_command.ventilation_livingroom_1
+      data: {}
+  mode: single
+  icon: mdi:alarm-light
+bathroom_full_light:
+  alias: Bathroom Light On
+  sequence:
+  - service: shell_command.light_bathroom_100
+    data: {}
+  - service: shell_command.light_bathroom_headlights_1
+    data: {}
+  mode: single
+  icon: mdi:alarm-light-outline
+bathroom_light_off:
+  alias: Bathroom Light Off
+  sequence:
+  - service: shell_command.light_bathroom_0
+    data: {}
+  - service: shell_command.light_bathroom_headlights_0
+    data: {}
+  mode: single
+  icon: mdi:alarm-light-off
+projector_on:
+  alias: Projector On
+  sequence:
+  - if:
+    - condition: device
+      device_id: 353d80fd5e985b364bb5ad6e83e0129f
+      domain: media_player
+      entity_id: bdea1812519e56d775a86b983846459f
+      type: is_off
+    then:
+    - service: media_player.turn_on
+      target:
+        device_id: c8e87e61c24d5ff1c243983ac26af705
+        entity_id: media_player.living_room
+      data: {}
+      alias: Start AppleTV & Projector
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 5
+        milliseconds: 0
+    - if:
+      - condition: device
+        device_id: 353d80fd5e985b364bb5ad6e83e0129f
+        domain: media_player
+        entity_id: bdea1812519e56d775a86b983846459f
+        type: is_off
+      then:
+      - service: remote.send_command
+        target:
+          device_id: e7a42fba10808550daaddd508bdf1767
+        data:
+          num_repeats: 1
+          delay_secs: 0.4
+          hold_secs: 0
+          device: Projector
+          command: power
+        alias: Send IR Power On
+  mode: single
+  icon: mdi:projector
+canvas_decline:
+  alias: Canvas Decline
+  sequence:
+  - if:
+    - condition: device
+      device_id: 353d80fd5e985b364bb5ad6e83e0129f
+      domain: media_player
+      entity_id: bdea1812519e56d775a86b983846459f
+      type: is_off
+    then:
+    - service: remote.send_command
+      target:
+        device_id: e7a42fba10808550daaddd508bdf1767
+      data:
+        num_repeats: 1
+        delay_secs: 0.4
+        hold_secs: 0
+        device: Projector
+        command: canvas_decline
+      alias: Canvas Decline
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 34
+        milliseconds: 200
+    - service: remote.send_command
+      target:
+        device_id: e7a42fba10808550daaddd508bdf1767
+      data:
+        num_repeats: 1
+        delay_secs: 0.4
+        hold_secs: 0
+        device: Projector
+        command: canvas_stop
+      alias: Canvas Stop
+  mode: single
+  icon: mdi:blinds
+full_light_on:
+  alias: Full Light On
+  sequence:
+  - service: hue.activate_scene
+    data:
+      transition: 15
+    target:
+      entity_id: scene.home_konzentrieren
+  - parallel:
+    - service: shell_command.light_loggia_1
+      data: {}
+    - service: shell_command.light_kitchen_100
+      data: {}
+    - service: shell_command.light_kitchen_headlights_1
+      data: {}
+    - service: shell_command.light_entrance_1
+      data: {}
+  mode: single
+  icon: mdi:alarm-light
+full_light_off:
+  alias: Full Light Off
+  sequence:
+  - service: hue.activate_scene
+    data:
+      transition: 15
+    target:
+      entity_id: scene.home_easy
+  - parallel:
+    - service: shell_command.light_loggia_0
+      data: {}
+    - service: shell_command.light_kitchen_0
+      data: {}
+    - service: shell_command.light_kitchen_headlights_0
+      data: {}
+    - service: shell_command.light_entrance_0
+      data: {}
+  mode: single
+  icon: mdi:alarm-light
+loxone_cinema_on:
+  alias: Loxone Cinema On
+  sequence:
+  - parallel:
+    - service: shell_command.light_kitchen_20
+      data: {}
+    - service: shell_command.ventilation_livingroom_1
+      data: {}
+    - service: shell_command.light_kitchen_headlights_0
+      data: {}
+    - service: shell_command.light_entrance_0
+      data: {}
+    - service: shell_command.light_loggia_0
+      data: {}
+  mode: single
+  icon: mdi:paperclip
+
+# Utilty scripts for loxona lights
+light_kitchen_headlights_0:
+  alias: 'Util: Light Kitchen Headlights Off'
+  sequence:
+  - service: shell_command.light_kitchen_headlights_0
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_kitchen_headlights_1:
+  alias: 'Util: Light Kitchen Headlights On'
+  sequence:
+  - service: shell_command.light_kitchen_headlights_1
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_kitchen_0:
+  alias: 'Util: Light Kitchen Off'
+  sequence:
+  - service: shell_command.light_kitchen_0
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_kitchen_1:
+  alias: 'Util: Light Kitchen On'
+  sequence:
+  - service: shell_command.light_kitchen_1
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_kitchen_10:
+  alias: 'Util: Light Kitchen 10%'
+  sequence:
+  - service: shell_command.light_kitchen_10
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_kitchen_20:
+  alias: 'Util: Light Kitchen 20%'
+  sequence:
+  - service: shell_command.light_kitchen_20
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_kitchen_30:
+  alias: 'Util: Light Kitchen 30%'
+  sequence:
+  - service: shell_command.light_kitchen_30
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_kitchen_40:
+  alias: 'Util: Light Kitchen 40%'
+  sequence:
+  - service: shell_command.light_kitchen_40
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_kitchen_50:
+  alias: 'Util: Light Kitchen 50%'
+  sequence:
+  - service: shell_command.light_kitchen_50
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_kitchen_60:
+  alias: 'Util: Light Kitchen 60%'
+  sequence:
+  - service: shell_command.light_kitchen_60
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_kitchen_70:
+  alias: 'Util: Light Kitchen 70%'
+  sequence:
+  - service: shell_command.light_kitchen_70
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_kitchen_80:
+  alias: 'Util: Light Kitchen 80%'
+  sequence:
+  - service: shell_command.light_kitchen_80
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_kitchen_90:
+  alias: 'Util: Light Kitchen 90%'
+  sequence:
+  - service: shell_command.light_kitchen_90
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_kitchen_100:
+  alias: 'Util: Light Kitchen 100%'
+  sequence:
+  - service: shell_command.light_kitchen_100
+    data: {}
+  mode: single
+  icon: mdi:hammer
+
+light_bathroom_headlights_0:
+  alias: 'Util: Light Bathroom Headlights Off'
+  sequence:
+  - service: shell_command.light_bathroom_headlights_0
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_bathroom_headlights_1:
+  alias: 'Util: Light Bathroom Headlights On'
+  sequence:
+  - service: shell_command.light_bathroom_headlights_1
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_bathroom_0:
+  alias: 'Util: Light Bathroom Off'
+  sequence:
+  - service: shell_command.light_bathroom_0
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_bathroom_1:
+  alias: 'Util: Light Bathroom On'
+  sequence:
+  - service: shell_command.light_bathroom_1
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_bathroom_10:
+  alias: 'Util: Light Bathroom 10%'
+  sequence:
+  - service: shell_command.light_bathroom_10
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_bathroom_20:
+  alias: 'Util: Light Bathroom 20%'
+  sequence:
+  - service: shell_command.light_bathroom_20
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_bathroom_30:
+  alias: 'Util: Light Bathroom 30%'
+  sequence:
+  - service: shell_command.light_bathroom_30
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_bathroom_40:
+  alias: 'Util: Light Bathroom 40%'
+  sequence:
+  - service: shell_command.light_bathroom_40
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_bathroom_50:
+  alias: 'Util: Light Bathroom 50%'
+  sequence:
+  - service: shell_command.light_bathroom_50
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_bathroom_60:
+  alias: 'Util: Light Bathroom 60%'
+  sequence:
+  - service: shell_command.light_bathroom_60
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_bathroom_70:
+  alias: 'Util: Light Bathroom 70%'
+  sequence:
+  - service: shell_command.light_bathroom_70
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_bathroom_80:
+  alias: 'Util: Light Bathroom 80%'
+  sequence:
+  - service: shell_command.light_bathroom_80
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_bathroom_90:
+  alias: 'Util: Light Bathroom 90%'
+  sequence:
+  - service: shell_command.light_bathroom_90
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_bathroom_100:
+  alias: 'Util: Light Bathroom 100%'
+  sequence:
+  - service: shell_command.light_bathroom_100
+    data: {}
+  mode: single
+  icon: mdi:hammer
+
+light_entrance_0:
+  alias: 'Util: Light Entrance Off'
+  sequence:
+  - service: shell_command.light_entrance_0
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_entrance_1:
+  alias: 'Util: Light Entrance On'
+  sequence:
+  - service: shell_command.light_entrance_1
+    data: {}
+  mode: single
+  icon: mdi:hammer
+
+light_loggia_0:
+  alias: 'Util: Light Loggia Off'
+  sequence:
+  - service: shell_command.light_loggia_0
+    data: {}
+  mode: single
+  icon: mdi:hammer
+light_loggia_1:
+  alias: 'Util: Light Loggia On'
+  sequence:
+  - service: shell_command.light_loggia_1
+    data: {}
+  mode: single
+  icon: mdi:hammer
+
+# Utilty scripts for loxona ventilation
+ventilation_bedroom_0:
+  alias: 'Util: Ventilation Bedroom Off'
+  sequence:
+  - service: shell_command.ventilation_bedroom_0
+    data: {}
+  mode: single
+  icon: mdi:hammer
+ventilation_bedroom_1:
+  alias: 'Util: Ventilation Bedroom Level 1'
+  sequence:
+  - service: shell_command.ventilation_bedroom_1
+    data: {}
+  mode: single
+  icon: mdi:hammer
+ventilation_bedroom_2:
+  alias: 'Util: Ventilation Bedroom Level 2'
+  sequence:
+  - service: shell_command.ventilation_bedroom_2
+    data: {}
+  mode: single
+  icon: mdi:hammer
+ventilation_bedroom_3:
+  alias: 'Util: Ventilation Bedroom Level 3'
+  sequence:
+  - service: shell_command.ventilation_bedroom_3
+    data: {}
+  mode: single
+  icon: mdi:hammer
+ventilation_bedroom_4:
+  alias: 'Util: Ventilation Bedroom Level 4'
+  sequence:
+  - service: shell_command.ventilation_bedroom_4
+    data: {}
+  mode: single
+  icon: mdi:hammer
+ventilation_livingroom_0:
+  alias: 'Util: Ventilation Livingroom Off'
+  sequence:
+  - service: shell_command.ventilation_livingroom_0
+    data: {}
+  mode: single
+  icon: mdi:hammer
+ventilation_livingroom_1:
+  alias: 'Util: Ventilation Livingroom Level 1'
+  sequence:
+  - service: shell_command.ventilation_livingroom_1
+    data: {}
+  mode: single
+  icon: mdi:hammer
+ventilation_livingroom_2:
+  alias: 'Util: Ventilation Livingroom Level 2'
+  sequence:
+  - service: shell_command.ventilation_livingroom_2
+    data: {}
+  mode: single
+  icon: mdi:hammer
+ventilation_livingroom_3:
+  alias: 'Util: Ventilation Livingroom Level 3'
+  sequence:
+  - service: shell_command.ventilation_livingroom_3
+    data: {}
+  mode: single
+  icon: mdi:hammer
+ventilation_livingroom_4:
+  alias: 'Util: Ventilation Livingroom Level 4'
+  sequence:
+  - service: shell_command.ventilation_livingroom_4
+    data: {}
+  mode: single
+  icon: mdi:hammer
+
+# Utilty scripts for loxona shades
+shades_loggia_0:
+  alias: 'Util: Shades Loggia 0%'
+  sequence:
+  - service: shell_command.shades_loggia_0
+    data: {}
+  mode: single
+  icon: mdi:hammer
+shades_loggia_60:
+  alias: 'Util: Shades Loggia 60%'
+  sequence:
+  - service: shell_command.shades_loggia_60
+    data: {}
+  mode: single
+  icon: mdi:hammer
+shades_loggia_100:
+  alias: 'Util: Shades Loggia 100%'
+  sequence:
+  - service: shell_command.shades_loggia_100
+    data: {}
+  mode: single
+  icon: mdi:hammer
+shades_bedroom_0:
+  alias: 'Util: Shades Bedroom 0%'
+  sequence:
+  - service: shell_command.shades_bedroom_0
+    data: {}
+  mode: single
+  icon: mdi:hammer
+shades_bedroom_60_1:
+  alias: 'Util: Shades Bedroom 60% - Tilted'
+  sequence:
+  - service: shell_command.shades_bedroom_60_1
+    data: {}
+  mode: single
+  icon: mdi:hammer
+shades_bedroom_100:
+  alias: 'Util: Shades Bedroom 100%'
+  sequence:
+  - service: shell_command.shades_bedroom_100
+    data: {}
+  mode: single
+  icon: mdi:hammer
+shades_kitchen_0:
+  alias: 'Util: Shades Kitchen 0%'
+  sequence:
+  - service: shell_command.shades_kitchen_0
+    data: {}
+  mode: single
+  icon: mdi:hammer
+shades_kitchen_60_1:
+  alias: 'Util: Shades Kitchen 60% - Tilted'
+  sequence:
+  - service: shell_command.shades_kitchen_60_1
+    data: {}
+  mode: single
+  icon: mdi:hammer
+shades_kitchen_100:
+  alias: 'Util: Shades Kitchen 100%'
+  sequence:
+  - service: shell_command.shades_kitchen_100
+    data: {}
+  mode: single
+  icon: mdi:hammer
+shades_livingroom_0:
+  alias: 'Util: Shades Livingroom 0%'
+  sequence:
+  - service: shell_command.shades_livingroom_0
+    data: {}
+  mode: single
+  icon: mdi:hammer
+shades_livingroom_60_1:
+  alias: 'Util: Shades Livingroom 60% - Tilted'
+  sequence:
+  - service: shell_command.shades_livingroom_60_1
+    data: {}
+  mode: single
+  icon: mdi:hammer
+shades_livingroom_100:
+  alias: 'Util: Shades Livingroom 100%'
+  sequence:
+  - service: shell_command.shades_livingroom_100
+    data: {}
+  mode: single
+  icon: mdi:hammer
+shades_loggiawindow_0:
+  alias: 'Util: Shades Loggia-Window 0%'
+  sequence:
+  - service: shell_command.shades_loggiawindow_0
+    data: {}
+  mode: single
+  icon: mdi:hammer
+shades_loggiawindow_60_1:
+  alias: 'Util: Shades Loggia-Window 60% - Tilted'
+  sequence:
+  - service: shell_command.shades_loggiawindow_60_1
+    data: {}
+  mode: single
+  icon: mdi:hammer
+shades_loggiawindow_100:
+  alias: 'Util: Shades Loggia-Window 100%'
+  sequence:
+  - service: shell_command.shades_loggiawindow_100
+    data: {}
+  mode: single
+  icon: mdi:hammer
+shades_office_0:
+  alias: 'Util: Shades Office 0%'
+  sequence:
+  - service: shell_command.shades_office_0
+    data: {}
+  mode: single
+  icon: mdi:hammer
+shades_office_60_1:
+  alias: 'Util: Shades Office 60% - Tilted'
+  sequence:
+  - service: shell_command.shades_office_60_1
+    data: {}
+  mode: single
+  icon: mdi:hammer
+shades_office_100:
+  alias: 'Util: Shades Office 100%'
+  sequence:
+  - service: shell_command.shades_office_100
+    data: {}
+  mode: single
+  icon: mdi:hammer
+shades_livingroom_0_loggia_0:
+  alias: 'Util: Shades Livingroom & Loggia-Window 0%'
+  sequence:
+  - service: shell_command.shades_livingroom_0_loggia_0
+    data: {}
+  mode: single
+  icon: mdi:hammer
+shades_livingroom_60_1_loggia_60_1:
+  alias: 'Util: Shades Livingroom & Loggia-Window 60% - Tilted/Tilted'
+  sequence:
+  - service: shell_command.shades_livingroom_60_1_loggia_60_1
+    data: {}
+  mode: single
+  icon: mdi:hammer
+shades_livingroom_60_1_loggia_60_2:
+  alias: 'Util: Shades Livingroom & Loggia-Window 60% - Tilted/Open'
+  sequence:
+  - service: shell_command.shades_livingroom_60_1_loggia_60_2
+    data: {}
+  mode: single
+  icon: mdi:hammer
+shades_livingroom_100_loggia_100:
+  alias: 'Util: Shades Livingroom & Loggia-Window 100%'
+  sequence:
+  - service: shell_command.shades_livingroom_100_loggia_100
+    data: {}
+  mode: single
+  icon: mdi:hammer

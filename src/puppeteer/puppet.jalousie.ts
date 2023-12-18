@@ -5,6 +5,7 @@ import { toPositive } from "src/utils/toPositive";
 import { sleep } from "src/utils/sleep";
 import { clickButton } from "./utils/clickButton";
 import { PuppetBase } from "./puppet.base";
+import { clickElement } from "./utils/clickElement";
 
 interface ControlJalousieProps {
   blockIndex: number;
@@ -131,21 +132,22 @@ export class PuppetJalousie extends PuppetBase {
       }"`
     );
 
+    console.log(`   Click jalousie to move final position...`);
     if (isMovingDown) {
       if (finalPosition === 0) {
         // nothing to do, the blinds are already closed
       } else if (finalPosition === 1) {
-        await clickButton(upButton, 400);
+        await clickElement(upButton, 400, true);
       } else if (finalPosition === 2) {
-        await clickButton(upButton, 900);
+        await clickElement(upButton, 900, true);
       }
     } else {
       if (finalPosition === 0) {
-        await clickButton(downButton, 1200);
+        await clickElement(downButton, 1200, true);
       } else if (finalPosition === 1) {
-        await clickButton(downButton, 850);
+        await clickElement(downButton, 850, true);
       } else if (finalPosition === 2) {
-        await clickButton(downButton, 400);
+        await clickElement(downButton, 400, true);
       }
     }
   };
