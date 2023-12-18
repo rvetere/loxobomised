@@ -81,6 +81,7 @@ export class CommandsController {
       console.log(
         `🤖 [${formattedDate}] Executing command "${name}" with delay: ${delay}ms`
       );
+      console.log(`   Query: ${JSON.stringify(req.query)}`);
 
       sleep(delay).then(() => {
         const command = this.commands[`${apartment}-${category}`];
