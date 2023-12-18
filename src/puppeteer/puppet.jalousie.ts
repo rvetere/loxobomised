@@ -86,7 +86,7 @@ export class PuppetJalousie extends PuppetBase {
       `   Control jalousie "${this.room}:${blockIndex}" ${currentPercent}% -> ${percentToSet}%, ${steps} steps`
     );
 
-    if (percentToSet === 0) {
+    if (toPositive(steps) > 0 && percentToSet === 0) {
       await this.clickUpDownOfBlock(props);
     } else if (toPositive(steps) > 3) {
       // calculate exact delay to reach "percentToSet"
@@ -172,7 +172,7 @@ export class PuppetJalousie extends PuppetBase {
       `   Control markise "${this.room}:${blockIndex}" ${currentPercent}% -> ${percentToSet}%, ${steps} steps`
     );
 
-    if (percentToSet === 0 || percentToSet === 100) {
+    if (toPositive(steps) > 0 && (percentToSet === 0 || percentToSet === 100)) {
       await this.clickActionOfBlock(blockIndex, action);
     } else if (toPositive(steps) > 3) {
       await this.clickActionOfBlock(blockIndex, action);

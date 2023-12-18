@@ -38,13 +38,13 @@ shade_on:
   alias: Jalousie Fully Down
   sequence:
   - parallel:
-    - service: shell_command.shades_kitchen_100_0
+    - service: shell_command.shades_kitchen_100
       data: {}
-    - service: shell_command.shades_livingroom_100_0_loggia_100_0
+    - service: shell_command.shades_livingroom_100_loggia_100
       data: {}
     - service: shell_command.shades_loggia_100
       data: {}
-    - service: shell_command.shades_bedroom_100_0
+    - service: shell_command.shades_bedroom_100
       data: {}
   mode: single
   icon: mdi:blinds
@@ -226,12 +226,12 @@ full_light_on:
   - parallel:
     - service: shell_command.light_loggia_1
       data: {}
-    - service: shell_command.light_kitchen_100
-      data: {}
     - service: shell_command.light_kitchen_headlights_1
       data: {}
     - service: shell_command.light_entrance_1
       data: {}
+  - service: script.light_kitchen_100
+    data: {}
   mode: single
   icon: mdi:alarm-light
 full_light_off:
@@ -269,8 +269,6 @@ loxone_cinema_on:
       data: {}
   mode: single
   icon: mdi:paperclip
-
-# Utilty scripts for loxona lights
 light_kitchen_headlights_0:
   alias: 'Util: Light Kitchen Headlights Off'
   sequence:
@@ -369,7 +367,6 @@ light_kitchen_100:
     data: {}
   mode: single
   icon: mdi:hammer
-
 light_bathroom_headlights_0:
   alias: 'Util: Light Bathroom Headlights Off'
   sequence:
@@ -468,7 +465,6 @@ light_bathroom_100:
     data: {}
   mode: single
   icon: mdi:hammer
-
 light_entrance_0:
   alias: 'Util: Light Entrance Off'
   sequence:
@@ -483,7 +479,6 @@ light_entrance_1:
     data: {}
   mode: single
   icon: mdi:hammer
-
 light_loggia_0:
   alias: 'Util: Light Loggia Off'
   sequence:
@@ -498,8 +493,6 @@ light_loggia_1:
     data: {}
   mode: single
   icon: mdi:hammer
-
-# Utilty scripts for loxona ventilation
 ventilation_bedroom_0:
   alias: 'Util: Ventilation Bedroom Off'
   sequence:
@@ -570,8 +563,6 @@ ventilation_livingroom_4:
     data: {}
   mode: single
   icon: mdi:hammer
-
-# Utilty scripts for loxona shades
 shades_loggia_0:
   alias: 'Util: Shades Loggia 0%'
   sequence:
@@ -590,6 +581,48 @@ shades_loggia_100:
   alias: 'Util: Shades Loggia 100%'
   sequence:
   - service: shell_command.shades_loggia_100
+    data: {}
+  mode: single
+  icon: mdi:hammer
+shades_loggia_side1_0:
+  alias: 'Util: Shades Loggia, Side One 0%'
+  sequence:
+  - service: shell_command.shades_loggia_side1_0
+    data: {}
+  mode: single
+  icon: mdi:hammer
+shades_loggia_side1_60:
+  alias: 'Util: Shades Loggia, Side One 60%'
+  sequence:
+  - service: shell_command.shades_loggia_side1_60
+    data: {}
+  mode: single
+  icon: mdi:hammer
+shades_loggia_side1_100:
+  alias: 'Util: Shades Loggia, Side One 100%'
+  sequence:
+  - service: shell_command.shades_loggia_side1_100
+    data: {}
+  mode: single
+  icon: mdi:hammer
+shades_loggia_side2_0:
+  alias: 'Util: Shades Loggia, Side One 0%'
+  sequence:
+  - service: shell_command.shades_loggia_side2_0
+    data: {}
+  mode: single
+  icon: mdi:hammer
+shades_loggia_side2_60:
+  alias: 'Util: Shades Loggia, Side One 60%'
+  sequence:
+  - service: shell_command.shades_loggia_side2_60
+    data: {}
+  mode: single
+  icon: mdi:hammer
+shades_loggia_side2_100:
+  alias: 'Util: Shades Loggia, Side One 100%'
+  sequence:
+  - service: shell_command.shades_loggia_side2_100
     data: {}
   mode: single
   icon: mdi:hammer
@@ -726,3 +759,21 @@ shades_livingroom_100_loggia_100:
     data: {}
   mode: single
   icon: mdi:hammer
+privacy_2:
+  alias: Privacy
+  sequence:
+  - parallel:
+    - service: script.shades_kitchen_60_1
+      data: {}
+    - service: script.shades_livingroom_100
+      data: {}
+    - service: script.shades_office_60_1
+      data: {}
+    - service: script.shades_bedroom_60_1
+      data: {}
+    - service: script.shades_loggia_100
+      data: {}
+    - service: script.shades_loggiawindow_0
+      data: {}
+  mode: single
+  icon: mdi:eye-off

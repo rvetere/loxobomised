@@ -66,6 +66,12 @@
     shades_loggia_0: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Loggia&lgBlockIndex=1,2&setLoggia1=0&setLoggia2=0"'
     shades_loggia_60: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Loggia&lgBlockIndex=1,2&setLoggia1=60&setLoggia2=60"'
     shades_loggia_100: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Loggia&lgBlockIndex=1,2&setLoggia1=100&setLoggia2=100"'
+    shades_loggia_side1_0: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Loggia&lgBlockIndex=1&setLoggia1=0"'
+    shades_loggia_side1_60: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Loggia&lgBlockIndex=1&setLoggia1=60"'
+    shades_loggia_side1_100: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Loggia&lgBlockIndex=1&setLoggia1=100"'
+    shades_loggia_side2_0: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Loggia&lgBlockIndex=2&setLoggia2=0"'
+    shades_loggia_side2_60: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Loggia&lgBlockIndex=2&setLoggia2=60"'
+    shades_loggia_side2_100: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Loggia&lgBlockIndex=2&setLoggia2=100"'
     
     shades_bedroom_0: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Bedroom&setBedroom=0"'
     shades_bedroom_60_1: 'curl -X GET "http://192.168.1.12:9001/exec/518-shades?room=Bedroom&setBedroom=60&tiltBedroom=1"'
