@@ -45,6 +45,7 @@ export class PuppetBase {
     action: string,
     doubleClick = false
   ) => {
+    console.log("clickActionOfBlock", { blockIndex, action, doubleClick });
     const container = await getContainer(this.page, this.room, blockIndex);
     if (!container) {
       return;
@@ -66,6 +67,7 @@ export class PuppetBase {
     }
 
     // click action
+    console.log("Click action button", action);
     await clickButtonByText(this.page, action);
 
     // close overlay controls
@@ -83,6 +85,8 @@ export class PuppetBase {
     const steps = (percentToSet - currentPercent) / 10;
     const variant = steps > 0 ? "plus" : "minus";
 
+    console.log({ steps, variant });
+
     if (toPositive(steps) > 0) {
       const elements = await container.$$("div[role=button]");
 
@@ -91,9 +95,11 @@ export class PuppetBase {
       await sleep(200);
 
       // click "plus" or "minus" button as many times possible to get it to the desired percent (each click moves it by 10%)
-      const actionButtons = await getPlusOrMinusButtons(this.page, variant);
       for (let i = 0; i < toPositive(steps); i++) {
+        const actionButtons = await getPlusOrMinusButtons(this.page, variant);
+        console.log("   Click", variant, "button", i + 1, "times");
         actionButtons[0]?.click();
+        await sleep(500);
       }
 
       // close overlay controls
