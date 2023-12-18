@@ -82,7 +82,7 @@ export class PuppetJalousie extends PuppetBase {
     };
 
     console.log(
-      `   Control jalousie "${this.room}:${blockIndex}", ${currentPercent}% -> ${percentToSet}%, ${steps} steps`
+      `   Control jalousie "${this.room}:${blockIndex}" ${currentPercent}% -> ${percentToSet}%, ${steps} steps`
     );
 
     if (percentToSet === 0) {
@@ -167,7 +167,7 @@ export class PuppetJalousie extends PuppetBase {
     const action = steps > 0 ? actionDown : actionUp;
 
     console.log(
-      `   Control markise "${this.room}:${blockIndex}", ${currentPercent}% -> ${percentToSet}%, ${steps} steps`
+      `   Control markise "${this.room}:${blockIndex}" ${currentPercent}% -> ${percentToSet}%, ${steps} steps`
     );
 
     if (percentToSet === 0 || percentToSet === 100) {
