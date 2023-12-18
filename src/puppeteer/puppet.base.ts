@@ -65,19 +65,19 @@ export class PuppetBase {
     if (!container) {
       return;
     }
-    const elements = await container.$$("div[role=button]");
-    const element = elements.length ? elements[0] : null;
-    if (!element) {
-      console.error("Element not found!");
+    const buttons = await container.$$("div[role=button]");
+    const button = buttons.length ? buttons[0] : null;
+    if (!button) {
+      console.error("Button not found!");
       return;
     }
 
     // open overlay controls
-    element.click();
+    button.click();
     await sleep(200);
 
     if (doubleClick) {
-      element.click();
+      button.click();
       await sleep(200);
     }
 
@@ -99,8 +99,6 @@ export class PuppetBase {
     const steps = (percentToSet - currentPercent) / 10;
     const variant = steps > 0 ? "plus" : "minus";
 
-    console.log({ steps, variant });
-
     if (toPositive(steps) > 0) {
       const elements = await container.$$("div[role=button]");
 
@@ -111,7 +109,6 @@ export class PuppetBase {
       // click "plus" or "minus" button as many times possible to get it to the desired percent (each click moves it by 10%)
       for (let i = 0; i < toPositive(steps); i++) {
         const actionButtons = await getPlusOrMinusButtons(this.page, variant);
-        console.log("   Click", variant, "button", i + 1, "times");
         actionButtons[0]?.click();
         await sleep(500);
       }
@@ -130,17 +127,18 @@ export class PuppetBase {
     callback = dummyCallback,
   }: ClickUpDownOfTitleProps) => {
     const container = await this.getContainer(blockIndex);
-    const { element, upButton, downButton } = await getUpDownElement(container, action);
+    const { upButton, downButton } = await getUpDownElement(container, action);
+    const button = action === "up" ? upButton : downButton;
 
-    if (element) {
+    if (button) {
       // click action
-      element.click();
+      button.click();
       await sleep(400);
 
       if (doubleClick) {
         // double click action by starting a timer with a delay of at least 200ms
         setTimeout(() => {
-          element.click();
+          button.click();
           callback(true, upButton, downButton);
         }, delay);
         return;
