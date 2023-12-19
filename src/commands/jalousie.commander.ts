@@ -40,7 +40,7 @@ export class JalousieCommander {
   /**
    * http://localhost:9001/exec/05.18/livingroom/shades/2?percent2=33&finalPosition2=2
    */
-  async run(room: string, blockIndex: string, value: string, query: Record<string, any>) {
+  async run(room: string, blockIndex: string, givenValue: string, query: Record<string, any>) {
     const page = this.controller.getPage();
     if (!page) {
       console.log(`   🚨 Puppeteer page not available! 🚨`);
@@ -48,13 +48,15 @@ export class JalousieCommander {
     }
 
     console.log(
-      `   JalousieCommander.run(${room}, ${blockIndex}, ${value}, ${JSON.stringify(query)})`
+      `   JalousieCommander.run(${room}, ${blockIndex}, ${givenValue}, ${JSON.stringify(query)})`
     );
 
     const puppet = new PuppetJalousie(this.controller, page, this.category, room, query);
-    const jalousiesToControl = blockIndex.includes(",") ? blockIndex.split(",") : [blockIndex];
-    for (const indexStr of jalousiesToControl) {
+    const blockIndexes = blockIndex.includes(",") ? blockIndex.split(",") : [blockIndex];
+    const values = givenValue.includes(",") ? givenValue.split(",") : [givenValue];
+    for (const indexStr of blockIndexes) {
       const index = parseInt(indexStr, 10);
+      const value = values[index] ? values[index] : values[0];
       if (!this.isJobRunning(room, index)) {
         const _delay = !!query.tilt
           ? await puppet.controlJalousie(

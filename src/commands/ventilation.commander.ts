@@ -16,7 +16,7 @@ export class VentilationCommander {
    * http://localhost:9002/exec/518/ventilation?withLivingroom=1&setLivingroom=Aus
    * http://localhost:9002/exec/518/ventilation?withBedroom=1&setBedroom=Aus&withLivingroom=1&setLivingroom=Aus
    */
-  async run(room: string, blockIndex: string, value: string, query: Record<string, any>) {
+  async run(room: string, blockIndex: string, givenValue: string, query: Record<string, any>) {
     const page = this.controller.getPage();
     if (!page) {
       console.log(`   🚨 Puppeteer page not available! 🚨`);
@@ -24,12 +24,14 @@ export class VentilationCommander {
     }
 
     console.log(
-      `   VentilationCommander.run(${room}, ${blockIndex}, ${value}, ${JSON.stringify(query)})`
+      `   VentilationCommander.run(${room}, ${blockIndex}, ${givenValue}, ${JSON.stringify(query)})`
     );
     const puppet = new PuppetSimple(this.controller, page, this.category, room, query);
-    const ventsToControl = blockIndex.includes(",") ? blockIndex.split(",") : [blockIndex];
-    for (const indexStr of ventsToControl) {
+    const blockIndexes = blockIndex.includes(",") ? blockIndex.split(",") : [blockIndex];
+    const values = givenValue.includes(",") ? givenValue.split(",") : [givenValue];
+    for (const indexStr of blockIndexes) {
       const index = parseInt(indexStr, 10);
+      const value = values[index] ? values[index] : values[0];
       await puppet.clickOverlayActionOfBlock(index, value);
       await sleep(2000);
     }
