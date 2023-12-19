@@ -7,7 +7,7 @@ export const clickButtonByText = async (page: Page, text: string) => {
     const divsWithText = await page.$$(`xpath///div[contains(text(),'${text}')]`);
     Logger.log(`   Click button with text ${text}...`);
     divsWithText[0]?.click();
-    await sleep(200);
+    await sleep(500);
 
     if (!divsWithText.length || !divsWithText[0]) {
       await page.screenshot({

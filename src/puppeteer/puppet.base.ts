@@ -11,6 +11,7 @@ import { getButtonInElement } from "./utils/getButtonInElement";
 import { Logger } from "src/utils/logger";
 import { getToggleButton } from "./utils/getToggleButton";
 import { isJalousieActive } from "./utils/isJalousieActive";
+import { clickButtonByText } from "./utils/clickButtonByText";
 
 interface ClickUpDownOfTitleProps {
   blockIndex: number;
@@ -72,13 +73,6 @@ export class PuppetBase {
     return container as ElementHandle<Element>;
   };
 
-  openOverlay = async (container: ElementHandle<Element>) => {
-    // just click on the first button found in the container, this will open the overlay controls
-    const button = await getButtonInElement(container, 0);
-    Logger.log(`   Click button to open overlay...`);
-    await clickElement(button, 500);
-  };
-
   closeOverlay = async () => {
     // close overlay controls
     await this.page.keyboard.press("Escape");
@@ -110,7 +104,7 @@ export class PuppetBase {
     if (!container) {
       return;
     }
-    await this.openOverlay(container);
+    await clickButtonByText(this.page, `Markise ${blockIndex}`);
 
     // click action
     const actionButton = await getButtonElementByText(this.page, action);
@@ -133,8 +127,10 @@ export class PuppetBase {
     const variant = steps > 0 ? "plus" : "minus";
 
     if (toPositive(steps) > 0) {
-      // open overlay controls
-      await this.openOverlay(container);
+      // just click on the first button found in the container, this will open the overlay controls
+      const button = await getButtonInElement(container, 0);
+      Logger.log(`   Click button to open overlay...`);
+      await clickElement(button, 500);
 
       // click "plus" or "minus" button as many times possible to get it to the desired percent (each click moves it by 10%)
       for (let i = 0; i < toPositive(steps); i++) {
