@@ -21,7 +21,7 @@ export class LightCommander {
    */
   async run(room: string, blockIndex: string, value: string, query: Record<string, any>) {
     console.log(
-      `   VentilationCommander.run(${room}, ${blockIndex}, ${value}, ${JSON.stringify(query)})`
+      `   LightCommander.run(${room}, ${blockIndex}, ${value}, ${JSON.stringify(query)})`
     );
     const puppet = new PuppetSimple(this.page, this.category, room, query);
     const ventsToControl = blockIndex.includes(",") ? blockIndex.split(",") : [blockIndex];

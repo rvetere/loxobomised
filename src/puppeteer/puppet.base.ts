@@ -181,6 +181,8 @@ export class PuppetBase {
         Logger.log(`   Click action of clickToggleOfBlock...`);
         await clickElement(button as ElementHandle<Element>, 400);
       }
+    } else {
+      console.error("Button not found!");
     }
   };
 }
