@@ -155,38 +155,49 @@ export class PuppetJalousie extends PuppetBase {
 
   moveJalousieToFinalPosition = async (
     blockIndex: number,
-    tilt: number,
+    givenTilt: number | string,
     isMovingDown: boolean,
     upButton: ElementHandle<Element> | null,
     downButton: ElementHandle<Element> | null,
     container: ElementHandle<Element> | null,
     reTryCounter = 0
   ) => {
-    console.log(
-      `   Move jalousie blinds "${this.room}:${blockIndex}" to final position "${
-        tilt === 0 ? "Closed" : tilt === 1 ? "Tilted" : "Open"
-      }"`
-    );
+    const tilt = typeof givenTilt === "string" ? parseInt(givenTilt, 10) : givenTilt;
+    console.log(`   Move jalousie blinds "${this.room}:${blockIndex}" to final position "${tilt}"`);
+
+    const isActiveNow_ = await isJalousieActive(container);
+    console.log({ isMovingDown, tilt, isActiveNow_ });
 
     if (isMovingDown) {
+      if (isActiveNow_) {
+        await clickElement(downButton);
+      }
       if (tilt === 0) {
         console.log(`   Nothing to do, the blinds are already closed`);
         return;
       } else if (tilt === 1) {
+        console.log(`   Double click up button with delay of 400ms (tilt=${tilt})})`);
         await clickElement(upButton, 400, true);
       } else if (tilt === 2) {
+        console.log(`   Double click up button with delay of 900ms (tilt=${tilt})})`);
         await clickElement(upButton, 900, true);
       }
     } else {
+      if (isActiveNow_) {
+        await clickElement(upButton);
+      }
       if (tilt === 0) {
+        console.log(`   Double click down button with delay of 1200ms (tilt=${tilt})})`);
         await clickElement(downButton, 1200, true);
       } else if (tilt === 1) {
+        console.log(`   Double click down button with delay of 850ms (tilt=${tilt})})`);
         await clickElement(downButton, 850, true);
       } else if (tilt === 2) {
+        console.log(`   Double click down button with delay of 400ms (tilt=${tilt})})`);
         await clickElement(downButton, 400, true);
       }
     }
-    await sleep(1500);
+    await sleep(2500);
     const isActiveNow = await isJalousieActive(container);
     if (isActiveNow) {
       if (reTryCounter === 0) {
