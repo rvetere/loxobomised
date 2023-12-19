@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
-import { Apartment518Shades } from "./518/shades";
+import { JalousieCommander } from "./jalousie.commander";
 import { PuppeteerController } from "src/puppeteer/puppeteer.controller";
-import { Apartment518Ventilation } from "./518/ventilation";
-import { Apartment518Light } from "./518/light";
-import { Apartment518Test } from "./518/test";
+import { VentilationCommander } from "./ventilation.commander";
+import { LightCommander } from "./light.commander";
 import { sleep } from "src/utils/sleep";
 import { getPage } from "src/utils/getPage";
 
@@ -14,9 +13,15 @@ export class CommandsController {
   requestTstamp: number | undefined;
   requestCounter: Record<string, number> = {};
   resetTimer: any | null = null;
+  lightCommander: LightCommander | null;
+  jalousieCommander: JalousieCommander | null;
+  ventilationCommander: VentilationCommander | null;
 
   constructor() {
     this.pool = [];
+    this.lightCommander = null;
+    this.jalousieCommander = null;
+    this.ventilationCommander = null;
 
     this.index = this.index.bind(this);
     this.execute = this.execute.bind(this);
@@ -76,15 +81,13 @@ export class CommandsController {
     const pageLight = getPage(this.pool, "Beleuchtung");
     const pageShades = getPage(this.pool, "Beschattung");
 
-    this.commands = {
-      "518-test": pageVentilation && new Apartment518Test(pageVentilation, "Lüftung"),
-      "518-light": pageLight && new Apartment518Light(pageLight, "Beleuchtung"),
-      "518-ventilation": pageVentilation && new Apartment518Ventilation(pageVentilation, "Lüftung"),
-      "518-shades": pageShades && new Apartment518Shades(pageShades, "Beschattung"),
-    };
-    this.initialized = true;
+    this.lightCommander = pageLight && new LightCommander(pageLight, "Beleuchtung");
+    this.ventilationCommander =
+      pageVentilation && new VentilationCommander(pageVentilation, "Lüftung");
+    this.jalousieCommander = pageShades && new JalousieCommander(pageShades, "Beschattung");
 
-    console.log("🤖 Commands initialized");
+    this.initialized = true;
+    console.log("🤖 All commanders initialized");
   }
 
   index(req: Request, res: Response) {
@@ -96,32 +99,34 @@ export class CommandsController {
       return res.json({ message: "🚨 Not initialized yet!" });
     }
 
-    const { name } = req.params;
-    if (name.includes("-")) {
-      const [apartment, category] = name.split("-");
-      const { formattedDate, delay } = this.rampUp(category);
-      console.log(`🤖 [${formattedDate}] Executing command "${name}" with delay: ${delay}ms`);
+    const { room, device, blockIndex, value } = req.params;
+    const { formattedDate, delay } = this.rampUp(device);
+    console.log(
+      `🤖 [${formattedDate}] Executing command "${room}(${device}) [${blockIndex}]" with delay: ${delay}ms`
+    );
 
-      sleep(delay).then(() => {
-        const command = this.commands[`${apartment}-${category}`];
-        if (!command) {
-          console.log(
-            `🚨 Command "${name}" not found! active pool: [${this.pool
-              .map((p) => p.getCategory())
-              .join(", ")}]`
-          );
+    sleep(delay).then(
+      (() => {
+        switch (device) {
+          case "jalousie":
+            this.jalousieCommander?.run(room, blockIndex, value, req.query);
+            res.json({ message: `✅ Executed successful!` });
+            break;
+          case "ventilation":
+            this.ventilationCommander?.run(room, blockIndex, value, req.query);
+            res.json({ message: `✅ Executed successful!` });
+            break;
+          case "light":
+            this.lightCommander?.run(room, blockIndex, value, req.query);
+            res.json({ message: `✅ Executed successful!` });
+            break;
+          default:
+            res.json({ message: `🚨 Unknown device! ${device}` });
+            break;
         }
+      }).bind(this)
+    );
 
-        command?.run(req.query).then(() => {
-          res.json({ message: `✅ Executed "${name}" successfully!` });
-        });
-      });
-
-      return;
-    }
-
-    return res.json({
-      message: `Incorrect format for parameter "${name}", must be "111-category"`,
-    });
+    return;
   }
 }

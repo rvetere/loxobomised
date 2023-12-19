@@ -10,23 +10,27 @@ import { getButtonElementByText } from "./utils/getButtonElementByText";
 import { getButtonInElement } from "./utils/getButtonInElement";
 import { Logger } from "src/utils/logger";
 import { getToggleButton } from "./utils/getToggleButton";
+import { isJalousieActive } from "./utils/isJalousieActive";
 
 interface ClickUpDownOfTitleProps {
   blockIndex: number;
+  device?: string;
   action?: string;
   doubleClick?: boolean;
   delay?: number;
   callback?: (
     afterDoubleClick: boolean,
-    upButton: ElementHandle | null,
-    downButton: ElementHandle | null
+    upButton: ElementHandle<Element> | null,
+    downButton: ElementHandle<Element> | null,
+    container: ElementHandle<Element> | null
   ) => void;
 }
 
 const dummyCallback = (
   _afterDoubleClick: boolean,
   _upButton: ElementHandle<Element> | null,
-  _downButton: ElementHandle<Element> | null
+  _downButton: ElementHandle<Element> | null,
+  _container: ElementHandle<Element> | null
 ) => {};
 
 export class PuppetBase {
@@ -47,8 +51,10 @@ export class PuppetBase {
     this.clickUpDownOfBlock = this.clickUpDownOfBlock.bind(this);
   }
 
-  getContainer = async (blockIndex: number): Promise<ElementHandle<Node> | null> => {
-    const containerXPath = `//div[contains(text(),'${this.room}')]/../../following-sibling::div[1]/div/div[${blockIndex}]`;
+  getContainer = async (blockIndex: number): Promise<ElementHandle<Element> | null> => {
+    const containerXPath = `//div[contains(text(),'${decodeURIComponent(
+      this.room
+    )}')]/../../following-sibling::div[1]/div/div[${blockIndex}]`;
     const [container] = await this.page.$x(containerXPath);
     if (!container) {
       // this happens when we somehow landed on the wrong page (probably by pressing one time "Escape" too much)")
@@ -61,7 +67,8 @@ export class PuppetBase {
       const containerTurnover = await this.getContainer(blockIndex);
       return containerTurnover;
     }
-    return container;
+
+    return container as ElementHandle<Element>;
   };
 
   clickOverlayActionOfBlock = async (blockIndex: number, action: string, doubleClick = false) => {
@@ -110,7 +117,7 @@ export class PuppetBase {
       for (let i = 0; i < toPositive(steps); i++) {
         const actionButton = await getPlusOrMinusElement(this.page, variant);
         Logger.log(`   Click action of clickOverlayPlusMinusOfBlock...`);
-        await clickElement(actionButton, 800);
+        await clickElement(actionButton, 500);
       }
 
       // close overlay controls
@@ -121,11 +128,12 @@ export class PuppetBase {
 
   clickUpDownOfBlock = async ({
     blockIndex,
+    device = "jalousie",
     action = "down", // "up", "down"
     doubleClick = false,
     delay = 200,
     callback = dummyCallback,
-  }: ClickUpDownOfTitleProps) => {
+  }: ClickUpDownOfTitleProps): Promise<void> => {
     const container = await this.getContainer(blockIndex);
     const { upButton, downButton } = await getUpDownElement(container, action);
     const button = action === "up" ? upButton : downButton;
@@ -134,18 +142,31 @@ export class PuppetBase {
       // click action
       Logger.log(`   Click action of clickUpDownOfBlock...`);
       await clickElement(button, 400);
+      const isActiveNow = device === "jalousie" ? await isJalousieActive(container) : true;
+      console.log(`   isActiveNow: ${isActiveNow ? "✅" : "❌"}`);
 
-      if (doubleClick) {
+      if (doubleClick && isActiveNow) {
         // double click action by starting a timer with a delay of at least 200ms
-        setTimeout(() => {
-          Logger.log(`   Click markise to stop at final position...`);
-          clickElement(button);
-          callback(true, upButton, downButton);
+        setTimeout(async () => {
+          Logger.log(`   Click double click after timeout to stop motion...`);
+          await clickElement(button);
+          callback(true, upButton, downButton, container);
         }, delay);
         return;
+      } else if (doubleClick && !isActiveNow) {
+        console.error(`   Initial action did not happen ❌, abort doubleClick and try again!`);
+        await sleep(500);
+        return this.clickUpDownOfBlock({
+          blockIndex,
+          device,
+          action,
+          doubleClick,
+          delay,
+          callback,
+        });
       }
     }
-    callback(false, upButton, downButton);
+    callback(false, upButton, downButton, container);
   };
 
   clickToggleOfBlock = async (

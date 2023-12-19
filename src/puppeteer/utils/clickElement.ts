@@ -3,7 +3,7 @@ import { sleep } from "src/utils/sleep";
 
 export const clickElement = async (
   element: ElementHandle<Element> | null,
-  delay = 250,
+  delay = 500,
   doubleClick = false,
   clickOnParent = false
 ) => {
@@ -34,5 +34,7 @@ export const clickElement = async (
       console.error(`🚨 Exception in "clickElement"! (${catchCounter})`);
       console.error(e);
     }
+  } else {
+    console.error("clickElement", "element not found");
   }
 };

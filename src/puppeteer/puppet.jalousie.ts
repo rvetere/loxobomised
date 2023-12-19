@@ -6,6 +6,7 @@ import { sleep } from "src/utils/sleep";
 import { PuppetBase } from "./puppet.base";
 import { clickElement } from "./utils/clickElement";
 import { Logger } from "src/utils/logger";
+import { isJalousieActive } from "src/puppeteer/utils/isJalousieActive";
 
 interface ControlJalousieWithActionProps {
   blockIndex: number;
@@ -14,47 +15,11 @@ interface ControlJalousieWithActionProps {
   callback?: (room: string, blockIndex: number) => void;
 }
 
-export class PuppetJalousie extends PuppetBase {
-  settings: {
-    [key: string]: {
-      percentToSet: number;
-      finalPosition?: number;
-      rolloType?: JalousieType;
-    };
-  };
+type JalousieTilt = 0 | 1 | 2;
 
+export class PuppetJalousie extends PuppetBase {
   constructor(page: Page, category: string, room: string, query: Record<string, any>) {
     super(page, category, room, query);
-
-    this.settings = {
-      ["Wohnzimmer-2"]: {
-        percentToSet: parseInt(query.set2 || "66", 10),
-        finalPosition: parseInt(query.tilt2 || "1", 10),
-      },
-      ["Wohnzimmer-3"]: {
-        percentToSet: parseInt(query.set3 || "72", 10),
-        finalPosition: parseInt(query.tilt3 || "1", 10),
-      },
-      ["Wohnzimmer-4"]: {
-        percentToSet: parseInt(query.set4 || "100", 10),
-        finalPosition: parseInt(query.tilt4 || "2", 10),
-        rolloType: "Loggia",
-      },
-      ["Küche-1"]: {
-        percentToSet: parseInt(query.setKitchen || "72", 10),
-        finalPosition: parseInt(query.tiltKitchen || "1", 10),
-      },
-      ["Zimmer 1-1"]: {
-        percentToSet: parseInt(query.setBedroom || "45", 10),
-        finalPosition: parseInt(query.tiltBedroom || "1", 10),
-      },
-      ["Loggia-1"]: {
-        percentToSet: parseInt(query.setLoggia1 || "50", 10),
-      },
-      ["Loggia-2"]: {
-        percentToSet: parseInt(query.setLoggia2 || "33", 10),
-      },
-    };
     this.controlJalousie = this.controlJalousie.bind(this);
     this.moveJalousieToFinalPosition = this.moveJalousieToFinalPosition.bind(this);
     this.controlJalousieWithAction = this.controlJalousieWithAction.bind(this);
@@ -62,17 +27,20 @@ export class PuppetJalousie extends PuppetBase {
 
   controlJalousie = async (
     blockIndex: number,
+    {
+      percentToSet,
+      tilt = 0,
+      jalousieType = "Window",
+    }: { percentToSet: number; tilt?: JalousieTilt; jalousieType?: JalousieType },
     callback?: (room: string, blockIndex: number) => void
   ) => {
-    const settings = this.settings[`${this.room}-${blockIndex}`];
-    const { percentToSet, finalPosition = 0, rolloType = "Window" } = settings;
-
     const container = await this.getContainer(blockIndex);
     if (!container) {
       return 0;
     }
 
     const currentPercent = await getDataPercent(container);
+
     const steps = percentToSet - currentPercent;
     const isMovingDown = steps > 0;
     const props = {
@@ -83,16 +51,16 @@ export class PuppetJalousie extends PuppetBase {
     if (toPositive(steps) > 0 && percentToSet === 0) {
       console.log(
         `   Control jalousie "${this.room}:${blockIndex}" ${currentPercent}% -> ${percentToSet}% "${
-          finalPosition === 0 ? "Closed" : finalPosition === 1 ? "Tilted" : "Open"
+          tilt === 0 ? "Closed" : tilt === 1 ? "Tilted" : "Open"
         }", no stop timer needed`
       );
       await this.clickUpDownOfBlock(props);
     } else if (toPositive(steps) > 3) {
       // calculate exact delay to reach "percentToSet"
-      const delay = Math.floor(toPositive(steps) * getJalousieTiming(rolloType) * 1000);
+      const delay = Math.floor(toPositive(steps) * getJalousieTiming(jalousieType) * 1000);
       console.log(
         `   Control jalousie "${this.room}:${blockIndex}" ${currentPercent}% -> ${percentToSet}% "${
-          finalPosition === 0 ? "Closed" : finalPosition === 1 ? "Tilted" : "Open"
+          tilt === 0 ? "Closed" : tilt === 1 ? "Tilted" : "Open"
         }", wait ${delay}ms to reach position`
       );
 
@@ -101,15 +69,16 @@ export class PuppetJalousie extends PuppetBase {
         ...props,
         delay,
         doubleClick: true,
-        callback: async (afterDoubleClick, upButton, downButton) => {
+        callback: async (afterDoubleClick, upButton, downButton, container) => {
           await sleep(400);
-          if (afterDoubleClick && rolloType !== "Markise") {
+          if (afterDoubleClick && jalousieType !== "Markise") {
             this.moveJalousieToFinalPosition(
               blockIndex,
-              finalPosition,
+              tilt,
               isMovingDown,
               upButton,
-              downButton
+              downButton,
+              container
             );
           }
           callback?.(this.room, blockIndex);
@@ -125,44 +94,58 @@ export class PuppetJalousie extends PuppetBase {
 
   moveJalousieToFinalPosition = async (
     blockIndex: number,
-    finalPosition: number,
+    tilt: number,
     isMovingDown: boolean,
     upButton: ElementHandle<Element> | null,
-    downButton: ElementHandle<Element> | null
+    downButton: ElementHandle<Element> | null,
+    container: ElementHandle<Element> | null
   ) => {
     console.log(
       `   Move jalousie blinds "${this.room}:${blockIndex}" to final position "${
-        finalPosition === 0 ? "Closed" : finalPosition === 1 ? "Tilted" : "Open"
+        tilt === 0 ? "Closed" : tilt === 1 ? "Tilted" : "Open"
       }"`
     );
 
-    Logger.log(`   Click jalousie to move final position...`);
     if (isMovingDown) {
-      if (finalPosition === 0) {
+      if (tilt === 0) {
         // nothing to do, the blinds are already closed
-      } else if (finalPosition === 1) {
+      } else if (tilt === 1) {
         await clickElement(upButton, 400, true);
-      } else if (finalPosition === 2) {
+      } else if (tilt === 2) {
         await clickElement(upButton, 900, true);
       }
     } else {
-      if (finalPosition === 0) {
+      if (tilt === 0) {
         await clickElement(downButton, 1200, true);
-      } else if (finalPosition === 1) {
+      } else if (tilt === 1) {
         await clickElement(downButton, 850, true);
-      } else if (finalPosition === 2) {
+      } else if (tilt === 2) {
         await clickElement(downButton, 400, true);
       }
     }
+    await sleep(400);
+    const isActiveNow = await isJalousieActive(container);
+    if (isActiveNow) {
+      console.error(`   Is still active ❌, final action did not happen, try again!`);
+      await sleep(400);
+      await this.moveJalousieToFinalPosition(
+        blockIndex,
+        tilt,
+        isMovingDown,
+        upButton,
+        downButton,
+        container
+      );
+    } else {
+      console.error(`   Not active anymore: ✅`);
+    }
   };
 
-  controlJalousieWithAction = async ({
-    blockIndex,
-    actionUp = "Fully In",
-    actionDown = "Fully Out",
-    callback = () => {},
-  }: ControlJalousieWithActionProps) => {
-    const { percentToSet } = this.settings[`${this.room}-${blockIndex}`];
+  controlJalousieWithAction = async (
+    blockIndex: number,
+    percentToSet: number,
+    callback: (room: string, blockIndex: number) => void = () => {}
+  ) => {
     const container = await this.getContainer(blockIndex);
     if (!container) {
       return 0;
@@ -170,7 +153,7 @@ export class PuppetJalousie extends PuppetBase {
 
     const currentPercent = await getDataPercent(container, "Fully extended");
     const steps = percentToSet - currentPercent;
-    const action = steps > 0 ? actionDown : actionUp;
+    const action = steps > 0 ? "Fully Out" : "Fully In";
 
     if (toPositive(steps) > 0 && (percentToSet === 0 || percentToSet === 100)) {
       console.log(
