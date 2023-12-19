@@ -1,14 +1,14 @@
-import { Page } from "puppeteer";
 import { PuppetJalousie } from "src/puppeteer/puppet.jalousie";
+import { PuppeteerController } from "src/puppeteer/puppeteer.controller";
 import { sleep } from "src/utils/sleep";
 
 export class JalousieCommander {
-  page: Page;
+  controller: PuppeteerController;
   category: string;
   jobsRunning: string[] = [];
 
-  constructor(page: Page, category: string) {
-    this.page = page;
+  constructor(controller: PuppeteerController, category: string) {
+    this.controller = controller;
     this.category = category;
     this.isJobRunning = this.isJobRunning.bind(this);
     this.setJobRunning = this.setJobRunning.bind(this);
@@ -41,11 +41,17 @@ export class JalousieCommander {
    * http://localhost:9001/exec/05.18/livingroom/shades/2?percent2=33&finalPosition2=2
    */
   async run(room: string, blockIndex: string, value: string, query: Record<string, any>) {
+    const page = this.controller.getPage();
+    if (!page) {
+      console.log(`   🚨 Puppeteer page not available! 🚨`);
+      return;
+    }
+
     console.log(
       `   JalousieCommander.run(${room}, ${blockIndex}, ${value}, ${JSON.stringify(query)})`
     );
 
-    const puppet = new PuppetJalousie(this.page, this.category, room, query);
+    const puppet = new PuppetJalousie(page, this.category, room, query);
     const jalousiesToControl = blockIndex.includes(",") ? blockIndex.split(",") : [blockIndex];
     for (const indexStr of jalousiesToControl) {
       const index = parseInt(indexStr, 10);

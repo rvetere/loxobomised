@@ -5,8 +5,8 @@ import { toPositive } from "src/utils/toPositive";
 import { sleep } from "src/utils/sleep";
 import { PuppetBase } from "./puppet.base";
 import { clickElement } from "./utils/clickElement";
-import { Logger } from "src/utils/logger";
 import { isJalousieActive } from "src/puppeteer/utils/isJalousieActive";
+import { PuppeteerController } from "./puppeteer.controller";
 
 interface ControlJalousieWithActionProps {
   blockIndex: number;
@@ -18,8 +18,14 @@ interface ControlJalousieWithActionProps {
 type JalousieTilt = 0 | 1 | 2;
 
 export class PuppetJalousie extends PuppetBase {
-  constructor(page: Page, category: string, room: string, query: Record<string, any>) {
-    super(page, category, room, query);
+  constructor(
+    controller: PuppeteerController,
+    page: Page,
+    category: string,
+    room: string,
+    query: Record<string, any>
+  ) {
+    super(controller, page, category, room, query);
     this.controlJalousie = this.controlJalousie.bind(this);
     this.moveJalousieToFinalPosition = this.moveJalousieToFinalPosition.bind(this);
     this.controlJalousieWithAction = this.controlJalousieWithAction.bind(this);

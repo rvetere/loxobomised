@@ -12,6 +12,7 @@ import { Logger } from "src/utils/logger";
 import { getToggleButton } from "./utils/getToggleButton";
 import { isJalousieActive } from "./utils/isJalousieActive";
 import { clickButtonByText } from "./utils/clickButtonByText";
+import { PuppeteerController } from "./puppeteer.controller";
 
 interface ClickUpDownOfTitleProps {
   blockIndex: number;
@@ -40,8 +41,16 @@ export class PuppetBase {
   room: string;
   query: Record<string, any>;
   category: string;
+  controller: PuppeteerController;
 
-  constructor(page: Page, category: string, room: string, query: Record<string, any>) {
+  constructor(
+    controller: PuppeteerController,
+    page: Page,
+    category: string,
+    room: string,
+    query: Record<string, any>
+  ) {
+    this.controller = controller;
     this.page = page;
     this.category = category;
     this.room = room;
@@ -61,12 +70,15 @@ export class PuppetBase {
     if (!container) {
       // this happens when we somehow landed on the wrong page (probably by pressing one time "Escape" too much)")
       console.error("Container not found!", { containerXPath });
-      await this.page.screenshot({ path: "getContainer-error.png" });
-
       await navigate(this.page, this.category, "Kategorien");
-      await this.page.screenshot({ path: "getContainer-restored.png" });
+      let containerTurnover = await this.getContainer(blockIndex);
+      if (!containerTurnover) {
+        // refresh page and login again
+        await this.controller.refreshLogin();
+        containerTurnover = await this.getContainer(blockIndex);
+        return containerTurnover;
+      }
 
-      const containerTurnover = await this.getContainer(blockIndex);
       return containerTurnover;
     }
 
@@ -83,14 +95,17 @@ export class PuppetBase {
     const [container] = await this.page.$x(containerXPath);
     if (!container) {
       // if not found, we navigated back to the overview page and need to move back to the category!
-      console.error(`🚨 Landed on overview page after overlay close! navigate back to category...`);
+      console.error(`🚨 Landed on wrong page after closing overlay!`);
       await navigate(this.page, this.category, "Kategorien");
-      await this.page.screenshot({ path: "closeOverlay-restored.png" });
-
-      const [container2] = await this.page.$x(containerXPath);
-      if (!container2) {
-        await navigate(this.page, this.category, "Kategorien");
+      const [containerTurnover] = await this.page.$x(containerXPath);
+      if (!containerTurnover) {
+        // refresh page and login again
+        await this.controller.refreshLogin();
+        const [containerTurnover2] = await this.page.$x(containerXPath);
+        return containerTurnover2;
       }
+
+      return containerTurnover;
     }
   };
 

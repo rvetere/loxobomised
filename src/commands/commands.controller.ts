@@ -75,17 +75,27 @@ export class CommandsController {
     return randomDelay;
   }
 
+  getController = (category: string) => {
+    const instance = this.pool.find((p) => p.category === category);
+    if (instance) {
+      return instance;
+    }
+
+    return null;
+  };
+
   setPool(pool: PuppeteerController[]) {
     this.pool = pool;
 
-    const pageVentilation = getPage(this.pool, "Lüftung");
-    const pageLight = getPage(this.pool, "Beleuchtung");
-    const pageShades = getPage(this.pool, "Beschattung");
+    const ventilationController = this.getController("Lüftung");
+    const lightController = this.getController("Beleuchtung");
+    const shadesController = this.getController("Beschattung");
 
-    this.lightCommander = pageLight && new LightCommander(pageLight, "Beleuchtung");
+    this.lightCommander = lightController && new LightCommander(lightController, "Beleuchtung");
     this.ventilationCommander =
-      pageVentilation && new VentilationCommander(pageVentilation, "Lüftung");
-    this.jalousieCommander = pageShades && new JalousieCommander(pageShades, "Beschattung");
+      ventilationController && new VentilationCommander(ventilationController, "Lüftung");
+    this.jalousieCommander =
+      shadesController && new JalousieCommander(shadesController, "Beschattung");
 
     this.initialized = true;
     console.log("🤖 All commanders initialized");
