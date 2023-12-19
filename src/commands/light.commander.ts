@@ -1,5 +1,6 @@
 import { PuppetSimple } from "src/puppeteer/puppet.simple";
 import { PuppeteerController } from "src/puppeteer/puppeteer.controller";
+import { sleep } from "src/utils/sleep";
 
 export class LightCommander {
   controller: PuppeteerController;
@@ -29,9 +30,9 @@ export class LightCommander {
     console.log(
       `   LightCommander.run(${room}, ${blockIndex}, ${value}, ${JSON.stringify(query)})`
     );
-    const puppet = new PuppetSimple(page, this.category, room, query);
+    const puppet = new PuppetSimple(this.controller, page, this.category, room, query);
     const ventsToControl = blockIndex.includes(",") ? blockIndex.split(",") : [blockIndex];
-    const promises = ventsToControl.map(async (indexStr: string) => {
+    for (const indexStr of ventsToControl) {
       const index = parseInt(indexStr, 10);
       const valuePercent = parseInt(value, 10);
       if (isNaN(valuePercent)) {
@@ -40,7 +41,7 @@ export class LightCommander {
       }
 
       await puppet.clickOverlayPlusMinusOfBlock(index, valuePercent);
-    });
-    await Promise.all(promises);
+      await sleep(2000);
+    }
   }
 }

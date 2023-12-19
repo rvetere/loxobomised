@@ -1,5 +1,6 @@
 import { PuppetSimple } from "src/puppeteer/puppet.simple";
 import { PuppeteerController } from "src/puppeteer/puppeteer.controller";
+import { sleep } from "src/utils/sleep";
 
 export class VentilationCommander {
   controller: PuppeteerController;
@@ -27,10 +28,10 @@ export class VentilationCommander {
     );
     const puppet = new PuppetSimple(this.controller, page, this.category, room, query);
     const ventsToControl = blockIndex.includes(",") ? blockIndex.split(",") : [blockIndex];
-    const promises = ventsToControl.map(async (indexStr: string) => {
+    for (const indexStr of ventsToControl) {
       const index = parseInt(indexStr, 10);
       await puppet.clickOverlayActionOfBlock(index, value);
-    });
-    await Promise.all(promises);
+      await sleep(2000);
+    }
   }
 }

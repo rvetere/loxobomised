@@ -69,7 +69,7 @@ export class JalousieCommander {
               this.resetJobRunning
             );
 
-        await sleep(2500);
+        await sleep(2000);
       }
     }
   }
