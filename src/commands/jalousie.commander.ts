@@ -56,7 +56,6 @@ export class JalousieCommander {
     for (const indexStr of jalousiesToControl) {
       const index = parseInt(indexStr, 10);
       if (!this.isJobRunning(room, index)) {
-        this.setJobRunning(room, index);
         const _delay = !!query.tilt
           ? await puppet.controlJalousie(
               index,
@@ -68,6 +67,7 @@ export class JalousieCommander {
               parseInt(value, 10),
               this.resetJobRunning
             );
+        this.setJobRunning(room, index);
 
         await sleep(2000);
       }
