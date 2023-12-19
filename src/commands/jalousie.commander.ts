@@ -47,27 +47,24 @@ export class JalousieCommander {
 
     const puppet = new PuppetJalousie(this.page, this.category, room, query);
     const jalousiesToControl = blockIndex.includes(",") ? blockIndex.split(",") : [blockIndex];
-    const promises = jalousiesToControl.map(
-      (async (indexStr: string) => {
-        const index = parseInt(indexStr, 10);
-        if (!this.isJobRunning(room, index)) {
-          const delay = !!query.tilt
-            ? await puppet.controlJalousie(
-                index,
-                { percentToSet: parseInt(value, 10), tilt: query.tilt },
-                this.resetJobRunning
-              )
-            : await puppet.controlJalousieWithAction(
-                index,
-                parseInt(value, 10),
-                this.resetJobRunning
-              );
-          this.setJobRunning(room, index);
-          await sleep(800);
-          return delay;
-        }
-      }).bind(this)
-    );
-    await Promise.all(promises);
+    for (const indexStr of jalousiesToControl) {
+      const index = parseInt(indexStr, 10);
+      if (!this.isJobRunning(room, index)) {
+        this.setJobRunning(room, index);
+        const _delay = !!query.tilt
+          ? await puppet.controlJalousie(
+              index,
+              { percentToSet: parseInt(value, 10), tilt: query.tilt },
+              this.resetJobRunning
+            )
+          : await puppet.controlJalousieWithAction(
+              index,
+              parseInt(value, 10),
+              this.resetJobRunning
+            );
+
+        await sleep(2500);
+      }
+    }
   }
 }
