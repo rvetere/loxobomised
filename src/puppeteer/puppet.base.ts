@@ -18,6 +18,7 @@ interface ClickUpDownOfTitleProps {
   action?: string;
   doubleClick?: boolean;
   delay?: number;
+  reTryCounter?: number;
   callback?: (
     afterDoubleClick: boolean,
     upButton: ElementHandle<Element> | null,
@@ -71,29 +72,54 @@ export class PuppetBase {
     return container as ElementHandle<Element>;
   };
 
-  clickOverlayActionOfBlock = async (blockIndex: number, action: string, doubleClick = false) => {
+  openOverlay = async (container: ElementHandle<Element>) => {
+    // just click on the first button found in the container, this will open the overlay controls
+    const button = await getButtonInElement(container, 0);
+    Logger.log(`   Click button to open overlay...`);
+    await clickElement(button, 500);
+  };
+
+  closeOverlay = async () => {
+    // close overlay controls
+    await this.page.keyboard.press("Escape");
+    await sleep(500);
+
+    // check if we still can find the "category-room" combo on the page
+    const containerXPath = `//div[contains(text(),'${decodeURIComponent(this.room)}')]`;
+    const [container] = await this.page.$x(containerXPath);
+    if (!container) {
+      // if not found, we navigated back to the overview page and need to move back to the category!
+      console.error(`🚨 Landed on overview page after overlay close! navigate back to category...`);
+      await navigate(this.page, this.category, "Kategorien");
+      await this.page.screenshot({ path: "closeOverlay-restored.png" });
+
+      const [container2] = await this.page.$x(containerXPath);
+      if (!container2) {
+        await navigate(this.page, this.category, "Kategorien");
+      }
+    }
+  };
+
+  clickOverlayActionOfBlock = async (
+    blockIndex: number,
+    action: string,
+    doubleClick = false,
+    device = "jalousie"
+  ) => {
     const container = await this.getContainer(blockIndex);
     if (!container) {
       return;
     }
-    const button = await getButtonInElement(container, 0);
-    if (!button) {
-      console.error("Button not found!");
-      return;
-    }
-
-    // open overlay controls
-    Logger.log(`   Click overlay of clickOverlayActionOfBlock...`);
-    await clickElement(button, 500, doubleClick);
+    await this.openOverlay(container);
 
     // click action
     const actionButton = await getButtonElementByText(this.page, action);
     Logger.log(`   Click action of clickOverlayActionOfBlock...`);
-    await clickElement(actionButton);
+    await clickElement(actionButton, 500, doubleClick);
 
-    // close overlay controls
-    await this.page.keyboard.press("Escape");
-    await sleep(500);
+    await this.closeOverlay();
+    const isActiveNow = device === "jalousie" ? await isJalousieActive(container) : true;
+    return isActiveNow;
   };
 
   clickOverlayPlusMinusOfBlock = async (blockIndex: number, percentToSet: number) => {
@@ -107,11 +133,8 @@ export class PuppetBase {
     const variant = steps > 0 ? "plus" : "minus";
 
     if (toPositive(steps) > 0) {
-      const button = await getButtonInElement(container, 0);
-
       // open overlay controls
-      Logger.log(`   Click overlay of clickOverlayPlusMinusOfBlock...`);
-      await clickElement(button, 500);
+      await this.openOverlay(container);
 
       // click "plus" or "minus" button as many times possible to get it to the desired percent (each click moves it by 10%)
       for (let i = 0; i < toPositive(steps); i++) {
@@ -120,9 +143,7 @@ export class PuppetBase {
         await clickElement(actionButton, 500);
       }
 
-      // close overlay controls
-      await this.page.keyboard.press("Escape");
-      await sleep(500);
+      await this.closeOverlay();
     }
   };
 
@@ -132,6 +153,7 @@ export class PuppetBase {
     action = "down", // "up", "down"
     doubleClick = false,
     delay = 200,
+    reTryCounter = 0,
     callback = dummyCallback,
   }: ClickUpDownOfTitleProps): Promise<void> => {
     const container = await this.getContainer(blockIndex);
@@ -154,16 +176,22 @@ export class PuppetBase {
         }, delay);
         return;
       } else if (doubleClick && !isActiveNow) {
-        console.error(`   Initial action did not happen ❌, abort doubleClick and try again!`);
-        await sleep(500);
-        return this.clickUpDownOfBlock({
-          blockIndex,
-          device,
-          action,
-          doubleClick,
-          delay,
-          callback,
-        });
+        if (reTryCounter < 2) {
+          console.error(
+            `   Initial action did not happen ❌, abort doubleClick and try again! - retry counter is ${reTryCounter}`
+          );
+          const randomDelay = Math.floor(Math.random() * 600) + 500;
+          await sleep(randomDelay);
+          return this.clickUpDownOfBlock({
+            blockIndex,
+            device,
+            action,
+            doubleClick,
+            delay,
+            reTryCounter: reTryCounter + 1,
+            callback,
+          });
+        }
       }
     }
     callback(false, upButton, downButton, container);

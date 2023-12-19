@@ -23,11 +23,12 @@ export class CommandsController {
     this.jalousieCommander = null;
     this.ventilationCommander = null;
 
-    this.index = this.index.bind(this);
-    this.execute = this.execute.bind(this);
+    this.getCommander = this.getCommander.bind(this);
     this.setPool = this.setPool.bind(this);
     this.rampUp = this.rampUp.bind(this);
     this.resetRequestCounter = this.resetRequestCounter.bind(this);
+    this.index = this.index.bind(this);
+    this.execute = this.execute.bind(this);
   }
 
   private resetRequestCounter() {
@@ -90,43 +91,46 @@ export class CommandsController {
     console.log("🤖 All commanders initialized");
   }
 
+  getCommander(req: Request) {
+    switch (req.params.device) {
+      case "jalousie":
+        return this.jalousieCommander;
+      case "ventilation":
+        return this.ventilationCommander;
+      case "light":
+        return this.lightCommander;
+      default: {
+        console.log(`🚨 Unknown device "${req.params.device}"`);
+        return null;
+      }
+    }
+  }
+
   index(req: Request, res: Response) {
     return res.json({ message: "🤖 Commands List" });
   }
 
-  execute(req: Request, res: Response) {
+  execute = async (req: Request, res: Response) => {
     if (!this.initialized) {
       return res.json({ message: "🚨 Not initialized yet!" });
     }
 
     const { room, device, blockIndex, value } = req.params;
-    const { formattedDate, delay } = this.rampUp(device);
-    console.log(
-      `🤖 [${formattedDate}] Executing command "${room}(${device}) [${blockIndex}]" with delay: ${delay}ms`
-    );
+    const commander = this.getCommander(req);
+    if (commander) {
+      const { formattedDate, delay } = this.rampUp(device);
+      console.log(
+        `🤖 [${formattedDate}] Executing command "${room}(${device}) [${blockIndex}]" with delay: ${delay}ms`
+      );
+      await sleep(delay);
+      await commander.run(room, blockIndex, value, req.query);
 
-    sleep(delay).then(
-      (() => {
-        switch (device) {
-          case "jalousie":
-            this.jalousieCommander?.run(room, blockIndex, value, req.query);
-            res.json({ message: `✅ Executed successful!` });
-            break;
-          case "ventilation":
-            this.ventilationCommander?.run(room, blockIndex, value, req.query);
-            res.json({ message: `✅ Executed successful!` });
-            break;
-          case "light":
-            this.lightCommander?.run(room, blockIndex, value, req.query);
-            res.json({ message: `✅ Executed successful!` });
-            break;
-          default:
-            res.json({ message: `🚨 Unknown device! ${device}` });
-            break;
-        }
-      }).bind(this)
-    );
-
-    return;
-  }
+      return res.json({ message: `✅ Command executed successful!` });
+    }
+    return res.json({
+      message: `🚨 Commander not found for device "${device}", active pool: ${this.pool
+        .map((p) => p.category)
+        .join(", ")}`,
+    });
+  };
 }

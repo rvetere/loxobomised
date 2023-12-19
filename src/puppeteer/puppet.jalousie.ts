@@ -92,55 +92,6 @@ export class PuppetJalousie extends PuppetBase {
     return 0;
   };
 
-  moveJalousieToFinalPosition = async (
-    blockIndex: number,
-    tilt: number,
-    isMovingDown: boolean,
-    upButton: ElementHandle<Element> | null,
-    downButton: ElementHandle<Element> | null,
-    container: ElementHandle<Element> | null
-  ) => {
-    console.log(
-      `   Move jalousie blinds "${this.room}:${blockIndex}" to final position "${
-        tilt === 0 ? "Closed" : tilt === 1 ? "Tilted" : "Open"
-      }"`
-    );
-
-    if (isMovingDown) {
-      if (tilt === 0) {
-        // nothing to do, the blinds are already closed
-      } else if (tilt === 1) {
-        await clickElement(upButton, 400, true);
-      } else if (tilt === 2) {
-        await clickElement(upButton, 900, true);
-      }
-    } else {
-      if (tilt === 0) {
-        await clickElement(downButton, 1200, true);
-      } else if (tilt === 1) {
-        await clickElement(downButton, 850, true);
-      } else if (tilt === 2) {
-        await clickElement(downButton, 400, true);
-      }
-    }
-    await sleep(400);
-    const isActiveNow = await isJalousieActive(container);
-    if (isActiveNow) {
-      console.error(`   Is still active ❌, final action did not happen, try again!`);
-      await sleep(400);
-      await this.moveJalousieToFinalPosition(
-        blockIndex,
-        tilt,
-        isMovingDown,
-        upButton,
-        downButton,
-        container
-      );
-    } else {
-      console.error(`   Not active anymore: ✅`);
-    }
-  };
-
   controlJalousieWithAction = async (
     blockIndex: number,
     percentToSet: number,
@@ -159,9 +110,21 @@ export class PuppetJalousie extends PuppetBase {
       console.log(
         `   Control markise "${this.room}:${blockIndex}" ${currentPercent}% -> ${percentToSet}%, no stop timer needed`
       );
-      await this.clickOverlayActionOfBlock(blockIndex, action);
+      let isActiveNow = await this.clickOverlayActionOfBlock(blockIndex, action);
+      console.log(`   isActiveNow: ${isActiveNow ? "✅" : "❌"}`);
+      if (!isActiveNow) {
+        await sleep(1500);
+        isActiveNow = await this.clickOverlayActionOfBlock(blockIndex, action);
+        console.log(`   isActiveNow: ${isActiveNow ? "✅" : "❌"}`);
+      }
     } else if (toPositive(steps) > 3) {
-      await this.clickOverlayActionOfBlock(blockIndex, action);
+      let isActiveNow = await this.clickOverlayActionOfBlock(blockIndex, action);
+      console.log(`   isActiveNow: ${isActiveNow ? "✅" : "❌"}`);
+      if (!isActiveNow) {
+        await sleep(1500);
+        isActiveNow = await this.clickOverlayActionOfBlock(blockIndex, action);
+        console.log(`   isActiveNow: ${isActiveNow ? "✅" : "❌"}`);
+      }
 
       // calculate exact delay to reach "percentToSet"
       const delay = Math.floor(toPositive(steps) * getJalousieTiming("Markise") * 1000);
@@ -172,7 +135,8 @@ export class PuppetJalousie extends PuppetBase {
       // wait until jalousie is in position and stop it by clicking action again
       setTimeout(async () => {
         console.log(`   Stop markise at exact position "${this.room}:${blockIndex}"`);
-        await this.clickOverlayActionOfBlock(blockIndex, action);
+        const isActiveNow = await this.clickOverlayActionOfBlock(blockIndex, action);
+        console.log(`   hasStopped: ${!isActiveNow ? "✅" : "❌"}`);
         callback(this.room, blockIndex);
       }, delay);
 
@@ -181,5 +145,59 @@ export class PuppetJalousie extends PuppetBase {
 
     callback(this.room, blockIndex);
     return 0;
+  };
+
+  moveJalousieToFinalPosition = async (
+    blockIndex: number,
+    tilt: number,
+    isMovingDown: boolean,
+    upButton: ElementHandle<Element> | null,
+    downButton: ElementHandle<Element> | null,
+    container: ElementHandle<Element> | null,
+    reTryCounter = 0
+  ) => {
+    console.log(
+      `   Move jalousie blinds "${this.room}:${blockIndex}" to final position "${
+        tilt === 0 ? "Closed" : tilt === 1 ? "Tilted" : "Open"
+      }"`
+    );
+
+    if (isMovingDown) {
+      if (tilt === 0) {
+        console.log(`   Nothing to do, the blinds are already closed`);
+        return;
+      } else if (tilt === 1) {
+        await clickElement(upButton, 400, true);
+      } else if (tilt === 2) {
+        await clickElement(upButton, 900, true);
+      }
+    } else {
+      if (tilt === 0) {
+        await clickElement(downButton, 1200, true);
+      } else if (tilt === 1) {
+        await clickElement(downButton, 850, true);
+      } else if (tilt === 2) {
+        await clickElement(downButton, 400, true);
+      }
+    }
+    await sleep(1500);
+    const isActiveNow = await isJalousieActive(container);
+    if (isActiveNow) {
+      if (reTryCounter === 0) {
+        console.error(`   Is still active ❌, final action did not happen, try again!`);
+        await sleep(400);
+        await this.moveJalousieToFinalPosition(
+          blockIndex,
+          tilt,
+          isMovingDown,
+          upButton,
+          downButton,
+          container,
+          1
+        );
+      }
+    } else {
+      console.error(`   Not active anymore: ✅`);
+    }
   };
 }
