@@ -51,7 +51,7 @@ export class JalousieCommander {
       `   JalousieCommander.run(${room}, ${blockIndex}, ${value}, ${JSON.stringify(query)})`
     );
 
-    const puppet = new PuppetJalousie(page, this.category, room, query);
+    const puppet = new PuppetJalousie(this.controller, page, this.category, room, query);
     const jalousiesToControl = blockIndex.includes(",") ? blockIndex.split(",") : [blockIndex];
     for (const indexStr of jalousiesToControl) {
       const index = parseInt(indexStr, 10);

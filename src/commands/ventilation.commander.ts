@@ -25,7 +25,7 @@ export class VentilationCommander {
     console.log(
       `   VentilationCommander.run(${room}, ${blockIndex}, ${value}, ${JSON.stringify(query)})`
     );
-    const puppet = new PuppetSimple(page, this.category, room, query);
+    const puppet = new PuppetSimple(this.controller, page, this.category, room, query);
     const ventsToControl = blockIndex.includes(",") ? blockIndex.split(",") : [blockIndex];
     const promises = ventsToControl.map(async (indexStr: string) => {
       const index = parseInt(indexStr, 10);
