@@ -180,7 +180,7 @@ export class PuppetBase {
           console.error(
             `   Initial action did not happen ❌, abort doubleClick and try again! - retry counter is ${reTryCounter}`
           );
-          const randomDelay = Math.floor(Math.random() * 600) + 500;
+          const randomDelay = Math.floor(Math.random() * 5000) + 800;
           await sleep(randomDelay);
           return this.clickUpDownOfBlock({
             blockIndex,
