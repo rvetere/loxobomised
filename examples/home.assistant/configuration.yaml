@@ -61,9 +61,7 @@ shell_command:
     ventilation_livingroom_3: 'curl -X GET "http://192.168.1.12:9002/exec/ventilation/Wohnzimmer/1/Stufe%203"'
     ventilation_livingroom_4: 'curl -X GET "http://192.168.1.12:9002/exec/ventilation/Wohnzimmer/1/Stufe%204"'
     
-    shades_loggia_easy: 'curl -X GET "http://192.168.1.12:9001/exec/jalousie/Loggia/1,2/30"'
-    shades_loggia_easy_1: 'curl -X GET "http://192.168.1.12:9001/exec/jalousie/Loggia/1/50"'
-    shades_loggia_easy_2: 'curl -X GET "http://192.168.1.12:9001/exec/jalousie/Loggia/2/30"'
+    shades_loggia_easy: 'curl -X GET "http://192.168.1.12:9001/exec/jalousie/Loggia/1,2/50,30"'
     shades_loggia_0: 'curl -X GET "http://192.168.1.12:9001/exec/jalousie/Loggia/1,2/0"'
     shades_loggia_60: 'curl -X GET "http://192.168.1.12:9001/exec/jalousie/Loggia/1,2/60"'
     shades_loggia_100: 'curl -X GET "http://192.168.1.12:9001/exec/jalousie/Loggia/1,2/100"'
