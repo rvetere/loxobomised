@@ -24,6 +24,5 @@ export const getBlindTiltPosition = async (container: ElementHandle<Node>) => {
     return 2;
   }
 
-  console.log("🚨 No idea!");
-  return 0;
+  return -1;
 };
