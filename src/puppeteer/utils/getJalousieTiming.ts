@@ -1,4 +1,4 @@
-export const LoggiaRolloTiming = 58 / 100;
+export const LoggiaRolloTiming = 64 / 100;
 export const WindowRolloTiming = 40 / 100;
 export const MarkiseTiming = 19 / 100;
 
