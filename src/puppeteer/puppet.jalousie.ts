@@ -7,6 +7,8 @@ import { PuppetBase } from "./puppet.base";
 import { clickElement } from "./utils/clickElement";
 import { isJalousieActive } from "src/puppeteer/utils/isJalousieActive";
 import { PuppeteerController } from "./puppeteer.controller";
+import { getBlindTiltPosition } from "./utils/getBlindTiltPosition";
+import { getUpDownElement } from "./utils/getUpDownElement";
 
 interface ControlJalousieWithActionProps {
   blockIndex: number;
@@ -38,12 +40,15 @@ export class PuppetJalousie extends PuppetBase {
       tilt = 0,
       jalousieType = "Window",
     }: { percentToSet: number; tilt?: JalousieTilt; jalousieType?: JalousieType },
+    activeTimer: NodeJS.Timeout | undefined,
     callback?: (room: string, blockIndex: number) => void
   ) => {
+    let timer: NodeJS.Timeout | null = null;
     const container = await this.getContainer(blockIndex);
     if (!container) {
-      return 0;
+      return { delay: 0, timer };
     }
+    await this.stopIfStillMoving(blockIndex, activeTimer);
 
     const currentPercent = await getDataPercent(container);
 
@@ -54,24 +59,24 @@ export class PuppetJalousie extends PuppetBase {
       action: isMovingDown ? "down" : "up",
     };
 
-    if (toPositive(steps) > 0 && percentToSet === 0) {
+    const stepsToTarget = toPositive(steps);
+
+    if (stepsToTarget > 0 && percentToSet === 0) {
       console.log(
-        `   Control jalousie "${this.room}:${blockIndex}" ${currentPercent}% -> ${percentToSet}% "${
-          tilt === 0 ? "Closed" : tilt === 1 ? "Tilted" : "Open"
-        }", no stop timer needed`
+        `🕹️ Move jalousie "${this.room}:${blockIndex}" fully up from ${currentPercent}% -> ${percentToSet}%, no stop timer needed`
       );
       await this.clickUpDownOfBlock(props);
-    } else if (toPositive(steps) > 3) {
+    } else if (stepsToTarget > 3) {
       // calculate exact delay to reach "percentToSet"
-      const delay = Math.floor(toPositive(steps) * getJalousieTiming(jalousieType) * 1000);
+      const delay = Math.floor(stepsToTarget * getJalousieTiming(jalousieType) * 1000);
       console.log(
-        `   Control jalousie "${this.room}:${blockIndex}" ${currentPercent}% -> ${percentToSet}% "${
+        `🕹️ Control jalousie "${this.room}:${blockIndex}" ${currentPercent}% -> ${percentToSet}% "${
           tilt === 0 ? "Closed" : tilt === 1 ? "Tilted" : "Open"
         }", wait ${delay}ms to reach position`
       );
 
       // click action to move jalousie
-      await this.clickUpDownOfBlock({
+      timer = await this.clickUpDownOfBlock({
         ...props,
         delay,
         doubleClick: true,
@@ -90,23 +95,59 @@ export class PuppetJalousie extends PuppetBase {
           callback?.(this.room, blockIndex);
         },
       });
-
-      return delay;
+      return { delay, timer };
+    } else {
+      console.log(
+        `👍 Control jalousie "${this.room}:${blockIndex}" nothing to do, we are already at the target position`
+      );
+      this.checkBlindsPosition(container, tilt);
     }
 
     callback?.(this.room, blockIndex);
-    return 0;
+    return { delay: 0, timer };
+  };
+
+  stopIfStillMoving = async (
+    blockIndex: number,
+    activeTimer: NodeJS.Timeout | undefined,
+    type: "jalousie" | "markise" = "jalousie"
+  ) => {
+    const container = await this.getContainer(blockIndex);
+    const isActiveNow = await isJalousieActive(container);
+    if (isActiveNow) {
+      console.log(
+        `🚨 ${type === "jalousie" ? "Jalousie" : "Markise"} still moving, stop first "${
+          this.room
+        }:${blockIndex}"`
+      );
+      if (activeTimer) {
+        console.log(`   Clear active timer of last job`);
+        clearTimeout(activeTimer);
+      }
+      if (type === "jalousie") {
+        await this.clickUpDownOfBlock({
+          blockIndex,
+          action: "up",
+          delay: 800,
+        });
+      } else {
+        await this.clickOverlayActionOfBlock(blockIndex, "In");
+      }
+    }
   };
 
   controlJalousieWithAction = async (
     blockIndex: number,
     percentToSet: number,
+    activeTimer: NodeJS.Timeout | undefined,
     callback: (room: string, blockIndex: number) => void = () => {}
   ) => {
+    let timer: NodeJS.Timeout | null = null;
     const container = await this.getContainer(blockIndex);
     if (!container) {
-      return 0;
+      return { delay: 0 };
     }
+    await this.stopIfStillMoving(blockIndex, activeTimer);
 
     const currentPercent = await getDataPercent(container, "Fully extended");
     const steps = percentToSet - currentPercent;
@@ -114,7 +155,7 @@ export class PuppetJalousie extends PuppetBase {
 
     if (toPositive(steps) > 0 && (percentToSet === 0 || percentToSet === 100)) {
       console.log(
-        `   Control markise "${this.room}:${blockIndex}" ${currentPercent}% -> ${percentToSet}%, no stop timer needed`
+        `🕹️ Control markise "${this.room}:${blockIndex}" ${currentPercent}% -> ${percentToSet}%, no stop timer needed`
       );
       let isActiveNow = await this.clickOverlayActionOfBlock(blockIndex, action);
       console.log(`   isActiveNow: ${isActiveNow ? "✅" : "❌"}`);
@@ -135,22 +176,22 @@ export class PuppetJalousie extends PuppetBase {
       // calculate exact delay to reach "percentToSet"
       const delay = Math.floor(toPositive(steps) * getJalousieTiming("Markise") * 1000);
       console.log(
-        `   Control markise "${this.room}:${blockIndex}" ${currentPercent}% -> ${percentToSet}%, wait ${delay}ms to reach position`
+        `🕹️ Control markise "${this.room}:${blockIndex}" ${currentPercent}% -> ${percentToSet}%, wait ${delay}ms to reach position`
       );
 
       // wait until jalousie is in position and stop it by clicking action again
-      setTimeout(async () => {
-        console.log(`   Stop markise at exact position "${this.room}:${blockIndex}"`);
+      timer = setTimeout(async () => {
+        console.log(`🕹️ Stop markise at exact position "${this.room}:${blockIndex}"`);
         const isActiveNow = await this.clickOverlayActionOfBlock(blockIndex, action);
         console.log(`   hasStopped: ${!isActiveNow ? "✅" : "❌"}`);
         callback(this.room, blockIndex);
       }, delay);
 
-      return delay;
+      return { delay, timer };
     }
 
     callback(this.room, blockIndex);
-    return 0;
+    return { delay: 0, timer };
   };
 
   moveJalousieToFinalPosition = async (
@@ -163,23 +204,22 @@ export class PuppetJalousie extends PuppetBase {
     reTryCounter = 0
   ) => {
     const tilt = typeof givenTilt === "string" ? parseInt(givenTilt, 10) : givenTilt;
-    console.log(`   Move jalousie blinds "${this.room}:${blockIndex}" to final position "${tilt}"`);
+    console.log(`🕹️ Move jalousie blinds "${this.room}:${blockIndex}" to final position "${tilt}"`);
 
     const isActiveNow_ = await isJalousieActive(container);
-    console.log({ isMovingDown, tilt, isActiveNow_ });
 
     if (isMovingDown) {
       if (isActiveNow_) {
         await clickElement(downButton);
       }
       if (tilt === 0) {
-        console.log(`   Nothing to do, the blinds are already closed`);
+        console.log(`👍 Nothing to do, the blinds are already closed`);
         return;
       } else if (tilt === 1) {
-        console.log(`   Double click up button with delay of 400ms (tilt=${tilt})})`);
-        await clickElement(upButton, 400, true);
+        console.log(`🕹️ Double click "up" button with delay of 400ms (tilt=${tilt})})`);
+        await clickElement(upButton, 280, true);
       } else if (tilt === 2) {
-        console.log(`   Double click up button with delay of 900ms (tilt=${tilt})})`);
+        console.log(`🕹️ Double click "up" button with delay of 900ms (tilt=${tilt})})`);
         await clickElement(upButton, 900, true);
       }
     } else {
@@ -187,21 +227,21 @@ export class PuppetJalousie extends PuppetBase {
         await clickElement(upButton);
       }
       if (tilt === 0) {
-        console.log(`   Double click down button with delay of 1200ms (tilt=${tilt})})`);
+        console.log(`🕹️ Double click "down" button with delay of 1200ms (tilt=${tilt})})`);
         await clickElement(downButton, 1200, true);
       } else if (tilt === 1) {
-        console.log(`   Double click down button with delay of 850ms (tilt=${tilt})})`);
+        console.log(`🕹️ Double click "down" button with delay of 850ms (tilt=${tilt})})`);
         await clickElement(downButton, 850, true);
       } else if (tilt === 2) {
-        console.log(`   Double click down button with delay of 400ms (tilt=${tilt})})`);
+        console.log(`🕹️ Double click "down" button with delay of 400ms (tilt=${tilt})})`);
         await clickElement(downButton, 400, true);
       }
     }
-    await sleep(2500);
+    await sleep(1500);
     const isActiveNow = await isJalousieActive(container);
     if (isActiveNow) {
       if (reTryCounter === 0) {
-        console.error(`   Is still active ❌, final action did not happen, try again!`);
+        console.error(`❌ Jalousie is still active - try again!`);
         await sleep(400);
         await this.moveJalousieToFinalPosition(
           blockIndex,
@@ -214,7 +254,50 @@ export class PuppetJalousie extends PuppetBase {
         );
       }
     } else {
-      console.error(`   Not active anymore: ✅`);
+      console.log(`✅ Job finished successfully, jalousie not moving anymore`);
+    }
+  };
+
+  checkBlindsPosition = async (container: ElementHandle<Node>, givenTilt: number) => {
+    const currentPosition = await getBlindTiltPosition(container);
+    let tilt = givenTilt;
+    if (typeof givenTilt === "string") {
+      tilt = parseInt(givenTilt, 10);
+    }
+
+    if (currentPosition !== tilt) {
+      console.log(`🕹️ Set blinds tilt position (tilt=${tilt})})`);
+      const { upButton, downButton } = await getUpDownElement(container);
+
+      switch (currentPosition) {
+        case 0:
+          {
+            if (tilt === 1) {
+              await clickElement(upButton, 280, true);
+            } else if (tilt === 2) {
+              await clickElement(upButton, 900, true);
+            }
+          }
+          break;
+        case 1:
+          {
+            if (tilt === 0) {
+              await clickElement(downButton, 700, true);
+            } else if (tilt === 2) {
+              await clickElement(upButton, 500, true);
+            }
+          }
+          break;
+        case 2:
+          {
+            if (tilt === 0) {
+              await clickElement(downButton, 1000, true);
+            } else if (tilt === 1) {
+              await clickElement(downButton, 500, true);
+            }
+          }
+          break;
+      }
     }
   };
 }

@@ -1,6 +1,6 @@
-export const LoggiaRolloTiming = 64 / 100;
-export const WindowRolloTiming = 45 / 100;
-export const MarkiseTiming = 20 / 100;
+export const LoggiaRolloTiming = 58 / 100;
+export const WindowRolloTiming = 40 / 100;
+export const MarkiseTiming = 19 / 100;
 
 export type JalousieType = "Loggia" | "Window" | "Markise";
 

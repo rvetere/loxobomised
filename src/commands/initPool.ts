@@ -1,6 +1,7 @@
 import { PuppeteerController } from "src/puppeteer/puppeteer.controller";
 
 const categoriesRaw = process.env.CATEGORIES || "Beleuchtung,Beschattung,Lüftung";
+const disableOverlay = (process.env.DISABLE_OVERLAY || "0") === "1";
 
 const getCategoryFromArgs = () => {
   const args = process.argv;
@@ -23,8 +24,10 @@ export async function initPool() {
     let instanceForDirectControls = new PuppeteerController(category);
     let instanceForOverlayControls = new PuppeteerController(category, "overlay");
 
-    await instanceForOverlayControls.init();
-    instances.push(instanceForOverlayControls);
+    if (!disableOverlay) {
+      await instanceForOverlayControls.init();
+      instances.push(instanceForOverlayControls);
+    }
 
     if (category !== "Lüftung") {
       await instanceForDirectControls.init();

@@ -28,7 +28,7 @@ export class LightCommander {
     }
 
     console.log(
-      `   LightCommander.run(${room}, ${blockIndex}, ${givenValue}, ${JSON.stringify(query)})`
+      `🤖 LightCommander.run(${room}, ${blockIndex}, ${givenValue}, ${JSON.stringify(query)})`
     );
     const puppet = new PuppetSimple(this.controller, page, this.category, room, query);
     const blockIndexes = blockIndex.includes(",") ? blockIndex.split(",") : [blockIndex];

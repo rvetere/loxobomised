@@ -1,6 +1,6 @@
 import { ElementHandle } from "puppeteer";
 
-export const getUpDownElement = async (container: ElementHandle<Node> | null, action: string) => {
+export const getUpDownElement = async (container: ElementHandle<Node> | null) => {
   if (!container) {
     return {
       upButton: null,

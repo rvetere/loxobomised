@@ -166,9 +166,10 @@ export class PuppetBase {
     delay = 200,
     reTryCounter = 0,
     callback = dummyCallback,
-  }: ClickUpDownOfTitleProps): Promise<void> => {
+  }: ClickUpDownOfTitleProps): Promise<NodeJS.Timeout | null> => {
+    let timer: NodeJS.Timeout | null = null;
     const container = await this.getContainer(blockIndex);
-    const { upButton, downButton } = await getUpDownElement(container, action);
+    const { upButton, downButton } = await getUpDownElement(container);
     const button = action === "up" ? upButton : downButton;
 
     if (button) {
@@ -180,12 +181,12 @@ export class PuppetBase {
 
       if (doubleClick && isActiveNow) {
         // double click action by starting a timer with a delay of at least 200ms
-        setTimeout(async () => {
+        timer = setTimeout(async () => {
           Logger.log(`   Click double click after timeout to stop motion...`);
           await clickElement(button);
           callback(true, upButton, downButton, container);
         }, delay);
-        return;
+        return timer;
       } else if (doubleClick && !isActiveNow) {
         if (reTryCounter < 2) {
           console.error(
@@ -206,6 +207,7 @@ export class PuppetBase {
       }
     }
     callback(false, upButton, downButton, container);
+    return timer;
   };
 
   clickToggleOfBlock = async (

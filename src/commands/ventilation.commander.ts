@@ -24,7 +24,7 @@ export class VentilationCommander {
     }
 
     console.log(
-      `   VentilationCommander.run(${room}, ${blockIndex}, ${givenValue}, ${JSON.stringify(query)})`
+      `🤖 VentilationCommander.run(${room}, ${blockIndex}, ${givenValue}, ${JSON.stringify(query)})`
     );
     const puppet = new PuppetSimple(this.controller, page, this.category, room, query);
     const blockIndexes = blockIndex.includes(",") ? blockIndex.split(",") : [blockIndex];
