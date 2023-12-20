@@ -56,29 +56,12 @@ export class CommandsController {
     }
     this.resetTimer = setTimeout(this.resetRequestCounter, 1000 * 4);
 
-    // @ts-expect-error
-    const lastRandomDelay = global.lastRandomDelay || 0;
-    const randomDelay = this.getRandomDelay(lastRandomDelay);
     const counter = this.requestCounter[category] || 0;
     const delay = counter * (category === "shades" ? 1800 : 350);
     return {
-      delay: delay > 5000 ? delay - randomDelay : delay + randomDelay,
+      delay: delay,
       formattedDate: `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}.${now.getMilliseconds()}`,
     };
-  }
-
-  /**
-   * Get a random value between 0 and 1500, but at least 500 and with a difference of at least 500 to the last value
-   */
-  getRandomDelay(lastDelay: number): number {
-    const randomDelay = Math.floor(Math.random() * 1500);
-    if (randomDelay < 500) {
-      return this.getRandomDelay(lastDelay);
-    }
-    if (Math.abs(randomDelay - lastDelay) < 500) {
-      return this.getRandomDelay(lastDelay);
-    }
-    return randomDelay;
   }
 
   getController = (category: string, type: ControllerType = "direct") => {
