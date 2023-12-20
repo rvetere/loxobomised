@@ -92,10 +92,10 @@ shell_command:
     shades_livingroom_60_1: 'curl -X GET "http://192.168.1.12:9001/exec/jalousie/Wohnzimmer/3/60?tilt=1"'
     shades_livingroom_100: 'curl -X GET "http://192.168.1.12:9001/exec/jalousie/Wohnzimmer/3/100?tilt=0"'
     
-    shades_loggiawindow_easy: 'curl -X GET "http://192.168.1.12:9001/exec/jalousie/Wohnzimmer/4/80?tilt=2"'
-    shades_loggiawindow_0: 'curl -X GET "http://192.168.1.12:9001/exec/jalousie/Wohnzimmer/4/0?tilt=0"'
-    shades_loggiawindow_60_1: 'curl -X GET "http://192.168.1.12:9001/exec/jalousie/Wohnzimmer/4/60?tilt=1"'
-    shades_loggiawindow_100: 'curl -X GET "http://192.168.1.12:9001/exec/jalousie/Wohnzimmer/4/100?tilt=0"'
+    shades_loggiawindow_easy: 'curl -X GET "http://192.168.1.12:9001/exec/jalousie/Wohnzimmer/4/80?tilt=2&type=Loggia"'
+    shades_loggiawindow_0: 'curl -X GET "http://192.168.1.12:9001/exec/jalousie/Wohnzimmer/4/0?tilt=0&type=Loggia"'
+    shades_loggiawindow_60_1: 'curl -X GET "http://192.168.1.12:9001/exec/jalousie/Wohnzimmer/4/60?tilt=1&type=Loggia"'
+    shades_loggiawindow_100: 'curl -X GET "http://192.168.1.12:9001/exec/jalousie/Wohnzimmer/4/100?tilt=0&type=Loggia"'
     
     shades_livingroom_loggia_easy: 'curl -X GET "http://192.168.1.12:9001/exec/jalousie/Wohnzimmer/3,4/50?tilt=1"'
     shades_livingroom_0_loggia_0: 'curl -X GET "http://192.168.1.12:9001/exec/jalousie/Wohnzimmer/3,4/0?tilt=0"'

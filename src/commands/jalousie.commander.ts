@@ -61,7 +61,7 @@ export class JalousieCommander {
         const _delay = !!query.tilt
           ? await puppet.controlJalousie(
               index,
-              { percentToSet: parseInt(value, 10), tilt: query.tilt },
+              { percentToSet: parseInt(value, 10), tilt: query.tilt, jalousieType: query.type },
               this.resetJobRunning
             )
           : await puppet.controlJalousieWithAction(

@@ -112,8 +112,6 @@ export class PuppetJalousie extends PuppetBase {
     const steps = percentToSet - currentPercent;
     const action = steps > 0 ? "Fully Out" : "Fully In";
 
-    console.log({ currentPercent, steps, action, percentToSet });
-
     if (toPositive(steps) > 0 && (percentToSet === 0 || percentToSet === 100)) {
       console.log(
         `   Control markise "${this.room}:${blockIndex}" ${currentPercent}% -> ${percentToSet}%, no stop timer needed`
