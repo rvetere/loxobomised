@@ -4,5 +4,4 @@ dist/
 .idea
 .vscode
 .vercel
-*.png
 server.js
