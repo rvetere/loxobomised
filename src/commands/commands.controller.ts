@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { JalousieCommander } from "./jalousie.commander";
-import { PuppeteerController } from "src/puppeteer/puppeteer.controller";
+import { ControllerType, PuppeteerController } from "src/puppeteer/puppeteer.controller";
 import { VentilationCommander } from "./ventilation.commander";
 import { LightCommander } from "./light.commander";
 import { sleep } from "src/utils/sleep";
@@ -16,12 +16,18 @@ export class CommandsController {
   lightCommander: LightCommander | null;
   jalousieCommander: JalousieCommander | null;
   ventilationCommander: VentilationCommander | null;
+  lightCommanderOverlay: LightCommander | null;
+  ventilationCommanderOverlay: VentilationCommander | null;
+  jalousieCommanderOverlay: JalousieCommander | null;
 
   constructor() {
     this.pool = [];
     this.lightCommander = null;
     this.jalousieCommander = null;
     this.ventilationCommander = null;
+    this.lightCommanderOverlay = null;
+    this.jalousieCommanderOverlay = null;
+    this.ventilationCommanderOverlay = null;
 
     this.getCommander = this.getCommander.bind(this);
     this.setPool = this.setPool.bind(this);
@@ -75,8 +81,8 @@ export class CommandsController {
     return randomDelay;
   }
 
-  getController = (category: string) => {
-    const instance = this.pool.find((p) => p.category === category);
+  getController = (category: string, type: ControllerType = "direct") => {
+    const instance = this.pool.find((p) => p.category === category && p.type === type);
     if (instance) {
       return instance;
     }
@@ -90,27 +96,37 @@ export class CommandsController {
     const ventilationController = this.getController("Lüftung");
     const lightController = this.getController("Beleuchtung");
     const shadesController = this.getController("Beschattung");
+    const ventilationControllerOverlay = this.getController("Lüftung", "overlay");
+    const lightControllerOverlay = this.getController("Beleuchtung", "overlay");
+    const shadesControllerOverlay = this.getController("Beschattung", "overlay");
 
     this.lightCommander = lightController && new LightCommander(lightController, "Beleuchtung");
     this.ventilationCommander =
       ventilationController && new VentilationCommander(ventilationController, "Lüftung");
     this.jalousieCommander =
       shadesController && new JalousieCommander(shadesController, "Beschattung");
+    this.lightCommanderOverlay =
+      lightControllerOverlay && new LightCommander(lightControllerOverlay, "Beleuchtung");
+    this.ventilationCommanderOverlay =
+      ventilationControllerOverlay &&
+      new VentilationCommander(ventilationControllerOverlay, "Lüftung");
+    this.jalousieCommanderOverlay =
+      shadesControllerOverlay && new JalousieCommander(shadesControllerOverlay, "Beschattung");
 
     this.initialized = true;
     console.log("🤖 All commanders initialized");
   }
 
-  getCommander(req: Request) {
-    switch (req.params.device) {
+  getCommander(device: string, type: ControllerType = "direct") {
+    switch (device) {
       case "jalousie":
-        return this.jalousieCommander;
+        return type === "direct" ? this.jalousieCommander : this.jalousieCommanderOverlay;
       case "ventilation":
-        return this.ventilationCommander;
+        return type === "direct" ? this.ventilationCommander : this.ventilationCommanderOverlay;
       case "light":
-        return this.lightCommander;
+        return type === "direct" ? this.lightCommander : this.lightCommanderOverlay;
       default: {
-        console.log(`🚨 Unknown device "${req.params.device}"`);
+        console.log(`🚨 Unknown device "${device}"`);
         return null;
       }
     }
@@ -126,21 +142,37 @@ export class CommandsController {
     }
 
     const { room, device, blockIndex, value } = req.params;
-    const commander = this.getCommander(req);
+
+    // jalousie with blinds and on-off toggles of lights can be controlled trough directly, without opening overlays
+    let type: ControllerType = "direct";
+    if (device === "jalousie" && !req.query.tilt) {
+      // no "?tilt=n" means it is a "markise" which can only be controlled trough overlay controls
+      type = "overlay";
+    } else if (device === "light" && !isNaN(parseInt(value))) {
+      // if value is a number, it is a dimmer which can only be controlled trough overlay controls
+      type = "overlay";
+    } else if (device === "ventilation") {
+      // ventilation can only be controlled trough overlay controls
+      type = "overlay";
+    }
+
+    const commander = this.getCommander(device, type);
     if (commander) {
-      const { formattedDate, delay } = this.rampUp(device);
+      const { formattedDate, delay } = this.rampUp(`${device}-${type}`);
       console.log(
-        `🤖 [${formattedDate}] Executing command "${room}(${device}) [${blockIndex}]" with delay: ${delay}ms`
+        `🤖 [${formattedDate}] Executing command "${room}(${device}) [${blockIndex}], ${type}" with delay: ${delay}ms`
       );
       await sleep(delay);
       await commander.run(room, blockIndex, value, req.query);
 
       return res.json({ message: `✅ Command executed successful!` });
     }
+    const message = `🚨 Commander not found for device "${device}", active pool: ${this.pool
+      .map((p) => p.category)
+      .join(", ")}`;
+    console.error(message);
     return res.json({
-      message: `🚨 Commander not found for device "${device}", active pool: ${this.pool
-        .map((p) => p.category)
-        .join(", ")}`,
+      message,
     });
   };
 }

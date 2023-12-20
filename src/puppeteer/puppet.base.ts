@@ -119,7 +119,7 @@ export class PuppetBase {
     if (!container) {
       return;
     }
-    await clickButtonByText(this.page, `Markise ${blockIndex}`);
+    await clickButtonByText(this.page, device === "jalousie" ? `Markise ${blockIndex}` : device);
 
     // click action
     const actionButton = await getButtonElementByText(this.page, action);

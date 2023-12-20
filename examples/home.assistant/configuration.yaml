@@ -10,7 +10,11 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 
-
+http:
+    use_x_forwarded_for: true
+    trusted_proxies:
+      - 172.30.33.2
+      
 # Shell commands
 shell_command:
     light_kitchen_headlights_0: 'curl -X GET "http://192.168.1.12:9000/exec/light/Küche/1/Switch%20Off"'
@@ -61,7 +65,8 @@ shell_command:
     ventilation_livingroom_3: 'curl -X GET "http://192.168.1.12:9002/exec/ventilation/Wohnzimmer/1/Stufe%203"'
     ventilation_livingroom_4: 'curl -X GET "http://192.168.1.12:9002/exec/ventilation/Wohnzimmer/1/Stufe%204"'
     
-    shades_loggia_easy: 'curl -X GET "http://192.168.1.12:9001/exec/jalousie/Loggia/1,2/50,30"'
+    shades_loggia_easy: 'curl -X GET "http://192.168.1.12:9001/exec/jalousie/Loggia/1,2/20,40"'
+    shades_loggia_privacy: 'curl -X GET "http://192.168.1.12:9001/exec/jalousie/Loggia/1,2/100,50"'
     shades_loggia_0: 'curl -X GET "http://192.168.1.12:9001/exec/jalousie/Loggia/1,2/0"'
     shades_loggia_60: 'curl -X GET "http://192.168.1.12:9001/exec/jalousie/Loggia/1,2/60"'
     shades_loggia_100: 'curl -X GET "http://192.168.1.12:9001/exec/jalousie/Loggia/1,2/100"'

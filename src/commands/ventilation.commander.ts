@@ -32,7 +32,7 @@ export class VentilationCommander {
     for (const indexStr of blockIndexes) {
       const index = parseInt(indexStr, 10);
       const value = values[index] ? values[index] : values[0];
-      await puppet.clickOverlayActionOfBlock(index, value);
+      await puppet.clickOverlayActionOfBlock(index, value, false, "Lüfter");
       await sleep(2000);
     }
   }

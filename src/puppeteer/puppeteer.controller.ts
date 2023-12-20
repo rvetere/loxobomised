@@ -10,24 +10,25 @@ const apartment = process.env.APARTMENT || "05.18";
 const serverUrl = `https://dns.loxonecloud.com/${miniServerId}`;
 const loginDelay = parseInt(process.env.LOGIN_DELAY_SECONDS || "0", 10);
 
+export type ControllerType = "direct" | "overlay";
 export class PuppeteerController {
   initialized: boolean;
-  index: number;
+  type: ControllerType;
   category: string;
   page: Page | null | undefined;
   browser: Browser | null | undefined;
   interval: NodeJS.Timeout | undefined;
   preventStandbyInterval: NodeJS.Timeout | undefined;
 
-  constructor(category: string, index: number) {
+  constructor(category: string, type: ControllerType = "direct") {
     this.category = category;
     this.initialized = false;
-    this.index = index;
+    this.type = type;
 
     // make the instance "visible" by grabing a screenshot all 350ms
     // setInterval(() => {
     //   if (this.initialized) {
-    //     this.page?.screenshot({ path: `${category}-status.png` });
+    //     this.page?.screenshot({ path: `${category}-${type}status.png` });
     //   }
     // }, 350);
 
@@ -40,7 +41,7 @@ export class PuppeteerController {
     }
 
     await sleep(loginDelay * 1000);
-    console.log(`🔗 Open URL "${serverUrl}"`);
+    console.log(`🔗 Open URL "${serverUrl}", type: ${this.type}`);
     const browser = await puppeteer.launch({ headless: "new" });
     this.browser = browser;
     this.page = await browser.newPage();
@@ -60,7 +61,6 @@ export class PuppeteerController {
       await this.page.type("input[type=password]", password);
 
       await this.page.click("button[type=submit]");
-      // this.page.screenshot({ path: `${this.category}-status.png` });
       await this.page.waitForNavigation();
 
       await this.page.waitForFunction(
@@ -68,7 +68,6 @@ export class PuppeteerController {
       );
       await sleep(1000 * 2);
 
-      // this.page.screenshot({ path: `${this.category}-status.png` });
       await navigate(this.page, this.category, "Kategorien");
       this.initialized = true;
 

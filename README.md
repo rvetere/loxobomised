@@ -20,7 +20,7 @@ PORT=3000
 ```
 
 2. Install all dependencies by running `npm install` (or just `yarn`)
-3. Start it with `npm start` (or `yarn start`)
+3. Start it with `npm start:pm2` (or `yarn start:pm2`)
 
 #### Where to find the mini server ID?
 
@@ -33,37 +33,13 @@ After you logged in succesful into the loxone web interface, you can simply chec
 ## How to use
 
 The project will start an express server and a pool of singleton puppeteer instances logged-in to the loxone web interface.
-The pool will hold one puppeteer `page` instance per room you define in the `.env` file.
+The pool will hold one puppeteer `page` instance per category.
 
-You can simply add "commands" in the folder `./src/commands/<my-apartment-nr>` and execute them with the route `http://localhost:3000/exec/path-of-your-command`.
+You can simply make fetch requests i the format:
 
-Start by adding a folder for your appartment in `./src/commands` and then just add javascript files in there with the following structure:
+`/exec/jalousie/Wohnzimmer/1/50?tilt=1`
 
-```javascript
-const { clickOverlayActionOfBlock, getPageInPool } = require("../../lib");
-
-// Set smooth kitchen light
-const run = async (page, query) => {
-  const page = getPageInPool(pool, "Küche");
-
-  // Turn off head lights
-  await clickOverlayActionOfBlock(page, "Beleuchtung", 1, "Switch Off");
-
-  // Set spots to a dimmed level
-  // -> you can call this command with params too! http://localhost:3000/exec/518/example?percent=60
-  const percentStr = query.percent || "40";
-  const percent = parseInt(percentStr, 10);
-  await clickOverlayPlusMinusOfBlock(page, "Beleuchtung", 2, percent);
-};
-
-module.exports = {
-  run,
-};
-```
-
-So after adding a file for the apartment "518" (`./src/commands/518/example.js`) i can call it with the following GET `http://localhost:3000/exec/518/example`
-
-Check out the two example commands to get an idea how it works!
+This would control the jalousie index 1 in room "Wohnzimmer", moving it to 50% and tilt the blinds a little bit (tilt=1).
 
 ## Integration with Home Assistant
 

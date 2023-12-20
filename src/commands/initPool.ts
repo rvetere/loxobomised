@@ -19,12 +19,17 @@ export async function initPool() {
   console.log(`🤖 Initializing pool with categories "${categories}"`);
   const instances = [];
 
-  let i = 0;
-  for (let c of categories) {
-    let instance = new PuppeteerController(c, i);
-    await instance.init();
-    instances.push(instance);
-    i = i + 1;
+  for (let category of categories) {
+    let instanceForDirectControls = new PuppeteerController(category);
+    let instanceForOverlayControls = new PuppeteerController(category, "overlay");
+
+    await instanceForOverlayControls.init();
+    instances.push(instanceForOverlayControls);
+
+    if (category !== "Lüftung") {
+      await instanceForDirectControls.init();
+      instances.push(instanceForDirectControls);
+    }
   }
 
   return instances;
