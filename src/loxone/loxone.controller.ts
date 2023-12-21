@@ -4,9 +4,8 @@ import { ControllerType, PuppeteerController } from "src/puppeteer/puppeteer.con
 import { VentilationCommander } from "./ventilation.commander";
 import { LightCommander } from "./light.commander";
 import { sleep } from "src/utils/sleep";
-import { getPage } from "src/utils/getPage";
 
-export class CommandsController {
+export class LoxoneController {
   initialized = false;
   pool: PuppeteerController[];
   commands: Record<string, any> = {};
@@ -33,7 +32,7 @@ export class CommandsController {
     this.setPool = this.setPool.bind(this);
     this.rampUp = this.rampUp.bind(this);
     this.resetRequestCounter = this.resetRequestCounter.bind(this);
-    this.index = this.index.bind(this);
+    this.state = this.state.bind(this);
     this.execute = this.execute.bind(this);
   }
 
@@ -115,9 +114,25 @@ export class CommandsController {
     }
   }
 
-  index(req: Request, res: Response) {
-    return res.json({ message: "🤖 Commands List" });
-  }
+  state = async (req: Request, res: Response) => {
+    if (!this.initialized) {
+      return res.json({ message: "🚨 Not initialized yet!" });
+    }
+
+    const { room, device, blockIndex } = req.params;
+    const commander = this.getCommander(device, "direct");
+    if (commander) {
+      const isOn = await commander.getState(room, blockIndex);
+      return res.send(isOn ? "1" : "0");
+    }
+    const message = `🚨 Commander not found for device "${device}", active pool: ${this.pool
+      .map((p) => p.category)
+      .join(", ")}`;
+    console.error(message);
+    return res.json({
+      message,
+    });
+  };
 
   execute = async (req: Request, res: Response) => {
     if (!this.initialized) {

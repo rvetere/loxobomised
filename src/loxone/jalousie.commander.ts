@@ -1,6 +1,7 @@
 import { PuppetJalousie } from "src/puppeteer/puppet.jalousie";
 import { PuppeteerController } from "src/puppeteer/puppeteer.controller";
 import { sleep } from "src/utils/sleep";
+import { BaseCommander } from "./base.commander";
 
 type ActiveTimer = {
   timer: NodeJS.Timeout;
@@ -8,15 +9,12 @@ type ActiveTimer = {
   blockIndex: number;
 };
 
-export class JalousieCommander {
-  controller: PuppeteerController;
-  category: string;
+export class JalousieCommander extends BaseCommander {
   jobsRunning: string[] = [];
   activeTimers: ActiveTimer[] = [];
 
   constructor(controller: PuppeteerController, category: string) {
-    this.controller = controller;
-    this.category = category;
+    super(controller, category);
     this.removeActiveTimer = this.removeActiveTimer.bind(this);
     this.run = this.run.bind(this);
   }
@@ -28,9 +26,6 @@ export class JalousieCommander {
     this.activeTimers = newActiveTimers;
   };
 
-  /**
-   * http://localhost:9001/exec/05.18/livingroom/shades/2?percent2=33&finalPosition2=2
-   */
   async run(room: string, blockIndex: string, givenValue: string, query: Record<string, any>) {
     const page = this.controller.getPage();
     if (!page) {

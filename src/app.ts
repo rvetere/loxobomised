@@ -10,7 +10,7 @@ app.use(morgan("dev"));
 app.use(helmet());
 app.use(express.json());
 app.use(cors());
-app.use("/exec", require("./commands/commands.route").default);
+app.use("/loxone", require("./loxone/loxone.route").default);
 
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);

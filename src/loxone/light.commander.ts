@@ -1,21 +1,13 @@
 import { PuppetSimple } from "src/puppeteer/puppet.simple";
 import { PuppeteerController } from "src/puppeteer/puppeteer.controller";
 import { sleep } from "src/utils/sleep";
+import { BaseCommander } from "./base.commander";
 
-export class VentilationCommander {
-  controller: PuppeteerController;
-  category: string;
-
+export class LightCommander extends BaseCommander {
   constructor(controller: PuppeteerController, category: string) {
-    this.controller = controller;
-    this.category = category;
+    super(controller, category);
   }
 
-  /**
-   * http://localhost:9002/exec/518/ventilation?withBedroom=1&setBedroom=Aus
-   * http://localhost:9002/exec/518/ventilation?withLivingroom=1&setLivingroom=Aus
-   * http://localhost:9002/exec/518/ventilation?withBedroom=1&setBedroom=Aus&withLivingroom=1&setLivingroom=Aus
-   */
   async run(room: string, blockIndex: string, givenValue: string, query: Record<string, any>) {
     const page = this.controller.getPage();
     if (!page) {
@@ -24,7 +16,7 @@ export class VentilationCommander {
     }
 
     console.log(
-      `🤖 VentilationCommander.run(${room}, ${blockIndex}, ${givenValue}, ${JSON.stringify(query)})`
+      `🤖 LightCommander.run(${room}, ${blockIndex}, ${givenValue}, ${JSON.stringify(query)})`
     );
     const puppet = new PuppetSimple(this.controller, page, this.category, room, query);
     const blockIndexes = blockIndex.includes(",") ? blockIndex.split(",") : [blockIndex];
@@ -32,7 +24,13 @@ export class VentilationCommander {
     for (const indexStr of blockIndexes) {
       const index = parseInt(indexStr, 10);
       const value = values[index] ? values[index] : values[0];
-      await puppet.clickOverlayActionOfBlock(index, value, false, "Lüfter");
+      const valuePercent = parseInt(value, 10);
+      if (isNaN(valuePercent)) {
+        await puppet.clickToggleOfBlock(index, value);
+        return;
+      }
+
+      await puppet.clickOverlayPlusMinusOfBlock(index, valuePercent);
       await sleep(2000);
     }
   }

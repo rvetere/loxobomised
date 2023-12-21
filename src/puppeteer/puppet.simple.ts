@@ -11,5 +11,15 @@ export class PuppetSimple extends PuppetBase {
     query: Record<string, any>
   ) {
     super(controller, page, category, room, query);
+    this.getStateOfBlock = this.getStateOfBlock.bind(this);
   }
+
+  getStateOfBlock = async (blockIndex: number) => {
+    const container = await this.getContainer(blockIndex);
+    const greenButtons = await container?.$x(
+      "//div[contains(@style,'background-color: rgb(105, 195, 80);')]"
+    );
+    console.log({ check: greenButtons?.length });
+    return Boolean(greenButtons?.length);
+  };
 }
