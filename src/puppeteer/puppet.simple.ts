@@ -12,6 +12,7 @@ export class PuppetSimple extends PuppetBase {
   ) {
     super(controller, page, category, room, query);
     this.getStateOfBlock = this.getStateOfBlock.bind(this);
+    this.getVentStateOfBlock = this.getVentStateOfBlock.bind(this);
   }
 
   getStateOfBlock = async (blockIndex: number) => {
@@ -20,5 +21,12 @@ export class PuppetSimple extends PuppetBase {
       "//div[contains(@style,'background-color: rgb(105, 195, 80);')]"
     );
     return Boolean(greenButtons?.length);
+  };
+
+  getVentStateOfBlock = async (blockIndex: number) => {
+    const container = await this.getContainer(blockIndex);
+    const texts = await container?.$$eval("div", (divs) => divs.map((div) => div.innerText));
+    const lastOne = texts?.filter((t) => t !== "")?.pop();
+    return lastOne === "Aus" ? false : true;
   };
 }

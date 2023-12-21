@@ -118,11 +118,82 @@
     },
     {
       "accessory": "HTTP-SWITCH",
-      "name": "Kitchen Light On",
+      "name": "Kitchen Spot Switch",
       "switchType": "stateful",
-      "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Küche/2/100",
+      "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Küche/2/Switch On",
       "offUrl": "http://192.168.1.12:9000/loxone/execute/light/Küche/2/Switch Off",
       "statusUrl": "http://192.168.1.12:9000/loxone/state/light/Küche/2"
+    },
+    {
+      "accessory": "HTTP-SWITCH",
+      "name": "Kitchen Spot 100%",
+      "switchType": "stateless",
+      "timeout": 1000,
+      "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Küche/2/100"
+    },
+    {
+      "accessory": "HTTP-SWITCH",
+      "name": "Kitchen Headlight Switch",
+      "switchType": "stateful",
+      "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Küche/1/Switch On",
+      "offUrl": "http://192.168.1.12:9000/loxone/execute/light/Küche/1/Switch Off",
+      "statusUrl": "http://192.168.1.12:9000/loxone/state/light/Küche/1"
+    },
+    {
+      "accessory": "HTTP-SWITCH",
+      "name": "Entrance Spot Switch",
+      "switchType": "stateful",
+      "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Entrée/1/Switch On",
+      "offUrl": "http://192.168.1.12:9000/loxone/execute/light/Entrée/1/Switch Off",
+      "statusUrl": "http://192.168.1.12:9000/loxone/state/light/Entrée/1"
+    },
+    {
+      "accessory": "HTTP-SWITCH",
+      "name": "Bathroom Spot Switch",
+      "switchType": "stateful",
+      "onUrl": "http://192.168.1.12:9000/loxone/execute/light/WC-Dusche/1/Switch On",
+      "offUrl": "http://192.168.1.12:9000/loxone/execute/light/WC-Dusche/1/Switch Off",
+      "statusUrl": "http://192.168.1.12:9000/loxone/state/light/WC-Dusche/1"
+    },
+    {
+      "accessory": "HTTP-SWITCH",
+      "name": "Bathroom Spot 100%",
+      "switchType": "stateless",
+      "timeout": 1000,
+      "onUrl": "http://192.168.1.12:9000/loxone/execute/light/WC-Dusche/1/100"
+    },
+    {
+      "accessory": "HTTP-SWITCH",
+      "name": "Bathroom Headlight Switch",
+      "switchType": "stateful",
+      "onUrl": "http://192.168.1.12:9000/loxone/execute/light/WC-Dusche/2/Switch On",
+      "offUrl": "http://192.168.1.12:9000/loxone/execute/light/WC-Dusche/2/Switch Off",
+      "statusUrl": "http://192.168.1.12:9000/loxone/state/light/WC-Dusche/2"
+    },
+    {
+      "accessory": "HTTP-SWITCH",
+      "name": "Recover HUE",
+      "switchType": "stateless",
+      "timeout": 1000,
+      "onUrl": [
+        "http://192.168.1.12:9000/loxone/execute/light/Wohnzimmer/1/Switch On",
+        "http://192.168.1.12:9000/loxone/execute/light/Wohnzimmer/2/Switch On"
+      ]
+    },
+    {
+      "accessory": "HTTP-SWITCH",
+      "name": "Bathroom Headlight Switch",
+      "switchType": "stateful",
+      "onUrl": "http://192.168.1.12:9002/loxone/execute/ventilation/Zimmer 1/1/Stufe 1",
+      "offUrl": "http://192.168.1.12:9002/loxone/execute/ventilation/Zimmer 1/1/Aus",
+      "statusUrl": "http://192.168.1.12:9002/loxone/state/ventilation/Zimmer 1/1"
+    },
+    {
+      "accessory": "HTTP-SWITCH",
+      "name": "Bedroom Vent Two",
+      "switchType": "stateless",
+      "timeout": 1000,
+      "onUrl": "http://192.168.1.12:9002/loxone/execute/ventilation/Zimmer 1/1/Stufe 2"
     },
     {
       "accessory": "HTTP-SWITCH",
@@ -237,6 +308,27 @@
           }
         }
       ]
+    },
+    {
+      "mediaTypes": ["music", "video"],
+      "deviceStates": ["idle", "paused", "playing"],
+      "remoteKeysAsSwitch": ["turn_off", "turn_on"],
+      "customInputURIs": [],
+      "discover": {
+        "unicast": ["192.168.1.186"],
+        "blacklist": [],
+        "multicast": true
+      },
+      "name": "Apple TV Enhanced",
+      "avadaKedavraAppAmount": 15,
+      "disableVolumeControlRemote": false,
+      "forceVenvRecreate": false,
+      "logLevel": 3,
+      "platform": "AppleTVEnhanced",
+      "_bridge": {
+        "username": "0E:D7:3D:19:19:C9",
+        "port": 33259
+      }
     }
   ]
 }

@@ -100,6 +100,8 @@ export class LoxoneController {
   }
 
   getCommander(device: string, type: ControllerType = "direct") {
+    console.log({ device, type });
+
     switch (device) {
       case "jalousie":
         return type === "direct" ? this.jalousieCommander : this.jalousieCommanderOverlay;
@@ -120,7 +122,7 @@ export class LoxoneController {
     }
 
     const { room, device, blockIndex } = req.params;
-    const commander = this.getCommander(device, "direct");
+    const commander = this.getCommander(device, device === "ventilation" ? "overlay" : "direct");
     if (commander) {
       const isOn = await commander.getState(room, blockIndex);
       return res.send(isOn ? "1" : "0");

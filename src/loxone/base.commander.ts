@@ -18,12 +18,16 @@ export class BaseCommander {
       return;
     }
 
-    console.log(`🤖 Get state for room: ${room} [${blockIndex}]`);
+    console.log(`🤖 Get state for room: ${room} [${blockIndex}] - ${this.category}`);
 
     const puppet = new PuppetSimple(this.controller, page, this.category, room, {});
     const index = parseInt(blockIndex, 10);
-    const state = await puppet.getStateOfBlock(index);
+    if (this.category === "Lüftung") {
+      const state = await puppet.getVentStateOfBlock(index);
+      return state;
+    }
 
+    const state = await puppet.getStateOfBlock(index);
     return state;
   }
 }
