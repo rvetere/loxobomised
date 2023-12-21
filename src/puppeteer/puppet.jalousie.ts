@@ -217,7 +217,7 @@ export class PuppetJalousie extends PuppetBase {
         return;
       } else if (tilt === 1) {
         console.log(`🕹️ Double click "up" button with delay of 400ms (tilt=${tilt})})`);
-        await clickElement(upButton, 280, true);
+        await clickElement(upButton, 300, true);
       } else if (tilt === 2) {
         console.log(`🕹️ Double click "up" button with delay of 900ms (tilt=${tilt})})`);
         await clickElement(upButton, 900, true);
@@ -228,13 +228,13 @@ export class PuppetJalousie extends PuppetBase {
       }
       if (tilt === 0) {
         console.log(`🕹️ Double click "down" button with delay of 1200ms (tilt=${tilt})})`);
-        await clickElement(downButton, 1200, true);
+        await clickElement(downButton, 1000, true);
       } else if (tilt === 1) {
         console.log(`🕹️ Double click "down" button with delay of 850ms (tilt=${tilt})})`);
-        await clickElement(downButton, 850, true);
+        await clickElement(downButton, 500, true);
       } else if (tilt === 2) {
         console.log(`🕹️ Double click "down" button with delay of 400ms (tilt=${tilt})})`);
-        await clickElement(downButton, 400, true);
+        await clickElement(downButton, 280, true);
       }
     }
     await sleep(1500);
