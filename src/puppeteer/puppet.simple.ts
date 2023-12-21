@@ -19,7 +19,6 @@ export class PuppetSimple extends PuppetBase {
     const greenButtons = await container?.$x(
       "//div[contains(@style,'background-color: rgb(105, 195, 80);')]"
     );
-    console.log({ check: greenButtons?.length });
     return Boolean(greenButtons?.length);
   };
 }
