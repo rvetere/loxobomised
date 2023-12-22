@@ -1,4 +1,5 @@
 import { PuppeteerController } from "src/puppeteer/puppeteer.controller";
+import { LoxoneCategoryEnum } from "src/types";
 
 const categoriesRaw = process.env.CATEGORIES || "Beleuchtung,Beschattung,Lüftung";
 
@@ -20,10 +21,13 @@ export async function initPool() {
   const instances = [];
 
   for (let category of categories) {
-    let instanceForDirectControls = new PuppeteerController(category);
-    let instanceForOverlayControls = new PuppeteerController(category, "overlay");
+    let instanceForDirectControls = new PuppeteerController(category as LoxoneCategoryEnum);
+    let instanceForOverlayControls = new PuppeteerController(
+      category as LoxoneCategoryEnum,
+      "overlay"
+    );
 
-    if (category !== "Lüftung") {
+    if (category !== LoxoneCategoryEnum.ventilation) {
       await instanceForOverlayControls.init();
       instances.push(instanceForOverlayControls);
     }

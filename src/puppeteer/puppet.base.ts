@@ -3,51 +3,25 @@ import { Logger } from "src/utils/logger";
 import { sleep } from "src/utils/sleep";
 import { toPositive } from "src/utils/toPositive";
 import { PuppeteerController } from "./puppeteer.controller";
-import { clickButtonByText } from "./utils/clickButtonByText";
 import { clickElement } from "./utils/clickElement";
-import { getButtonElementByText } from "./utils/getButtonElementByText";
 import { getButtonInElement } from "./utils/getButtonInElement";
 import { getDataPercent } from "./utils/getDataPercent";
 import { getPlusOrMinusElementInPage } from "./utils/getPlusOrMinusElement";
 import { getToggleButton } from "./utils/getToggleButton";
-import { getUpDownElement } from "./utils/getUpDownElement";
-import { isJalousieActive } from "./utils/isJalousieActive";
 import { navigate } from "./utils/navigate";
-import type { JalousieType } from "src/types";
-
-interface ClickUpDownOfTitleProps {
-  blockIndex: number;
-  device?: string;
-  action?: string;
-  doubleClick?: boolean;
-  delay?: number;
-  reTryCounter?: number;
-  callback?: (
-    afterDoubleClick: boolean,
-    upButton: ElementHandle<Element> | null,
-    downButton: ElementHandle<Element> | null,
-    container: ElementHandle<Element> | null
-  ) => void;
-}
-
-const dummyCallback = (
-  _afterDoubleClick: boolean,
-  _upButton: ElementHandle<Element> | null,
-  _downButton: ElementHandle<Element> | null,
-  _container: ElementHandle<Element> | null
-) => {};
+import type { LoxoneCategoryEnum } from "src/types";
 
 export class PuppetBase {
   page: Page;
   room: string;
   query: Record<string, any>;
-  category: string;
+  category: LoxoneCategoryEnum;
   controller: PuppeteerController;
 
   constructor(
     controller: PuppeteerController,
     page: Page,
-    category: string,
+    category: LoxoneCategoryEnum,
     room: string,
     query: Record<string, any>
   ) {
@@ -59,7 +33,6 @@ export class PuppetBase {
 
     this.getContainer = this.getContainer.bind(this);
     this.clickOverlayPlusMinusOfBlock = this.clickOverlayPlusMinusOfBlock.bind(this);
-    this.clickUpDownOfBlock = this.clickUpDownOfBlock.bind(this);
   }
 
   getContainer = async (blockIndex: number): Promise<ElementHandle<Element> | null> => {
@@ -70,7 +43,7 @@ export class PuppetBase {
     if (!container) {
       // this happens when we somehow landed on the wrong page (probably by pressing one time "Escape" too much)")
       console.error("Container not found!", { containerXPath });
-      await navigate(this.page, this.category, "Kategorien");
+      await navigate(this.page, this.category.toString(), "Kategorien");
       let containerTurnover = await this.getContainer(blockIndex);
       if (!containerTurnover) {
         // refresh page and login again
@@ -96,7 +69,7 @@ export class PuppetBase {
     if (!container) {
       // if not found, we navigated back to the overview page and need to move back to the category!
       console.error(`🚨 Landed on wrong page after closing overlay!`);
-      await navigate(this.page, this.category, "Kategorien");
+      await navigate(this.page, this.category.toString(), "Kategorien");
       const [containerTurnover] = await this.page.$x(containerXPath);
       if (!containerTurnover) {
         // refresh page and login again
@@ -134,56 +107,6 @@ export class PuppetBase {
 
       await this.closeOverlay();
     }
-  };
-
-  clickUpDownOfBlock = async ({
-    blockIndex,
-    action = "down", // "up", "down"
-    doubleClick = false,
-    delay = 200,
-    reTryCounter = 0,
-    callback = dummyCallback,
-  }: ClickUpDownOfTitleProps): Promise<NodeJS.Timeout | null> => {
-    let timer: NodeJS.Timeout | null = null;
-    const container = await this.getContainer(blockIndex);
-    const { upButton, downButton } = await getUpDownElement(container);
-    const button = action === "up" ? upButton : downButton;
-
-    if (button) {
-      // click action
-      Logger.log(`   Click action of clickUpDownOfBlock...`);
-      await clickElement(button, 400);
-      const isActiveNow = await isJalousieActive(container);
-      console.log(`   isActiveNow: ${isActiveNow ? "✅" : "❌"}`);
-
-      if (doubleClick && isActiveNow) {
-        // double click action by starting a timer with a delay of at least 200ms
-        timer = setTimeout(async () => {
-          Logger.log(`   Click double click after timeout to stop motion...`);
-          await clickElement(button);
-          callback(true, upButton, downButton, container);
-        }, delay);
-        return timer;
-      } else if (doubleClick && !isActiveNow) {
-        if (reTryCounter < 2) {
-          console.error(
-            `   Initial action did not happen ❌, abort doubleClick and try again! - retry counter is ${reTryCounter}`
-          );
-          const randomDelay = Math.floor(Math.random() * 5000) + 800;
-          await sleep(randomDelay);
-          return this.clickUpDownOfBlock({
-            blockIndex,
-            action,
-            doubleClick,
-            delay,
-            reTryCounter: reTryCounter + 1,
-            callback,
-          });
-        }
-      }
-    }
-    callback(false, upButton, downButton, container);
-    return timer;
   };
 
   clickToggleOfBlock = async (

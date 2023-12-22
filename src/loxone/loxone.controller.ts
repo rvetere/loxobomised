@@ -1,10 +1,10 @@
 import type { Request, Response } from "express";
-import { JalousieCommander } from "./jalousie.commander";
-import { ControllerType, PuppeteerController } from "src/puppeteer/puppeteer.controller";
-import { VentilationCommander } from "./ventilation.commander";
-import { LightCommander } from "./light.commander";
+import { PuppeteerController } from "src/puppeteer/puppeteer.controller";
+import { CommandType, ControllerType, LoxoneCategoryEnum } from "src/types";
 import { sleep } from "src/utils/sleep";
-import { CommandType } from "src/types";
+import { JalousieCommander } from "./jalousie.commander";
+import { LightCommander } from "./light.commander";
+import { VentilationCommander } from "./ventilation.commander";
 
 export class LoxoneController {
   initialized = false;
@@ -64,7 +64,7 @@ export class LoxoneController {
     };
   }
 
-  getController = (category: string, type: ControllerType = "direct") => {
+  getController = (category: LoxoneCategoryEnum, type: ControllerType = "direct") => {
     const instance = this.pool.find((p) => p.category === category && p.type === type);
     if (instance) {
       return instance;
@@ -76,25 +76,32 @@ export class LoxoneController {
   setPool(pool: PuppeteerController[]) {
     this.pool = pool;
 
-    const ventilationController = this.getController("Lüftung");
-    const lightController = this.getController("Beleuchtung");
-    const shadesController = this.getController("Beschattung");
-    const ventilationControllerOverlay = this.getController("Lüftung", "overlay");
-    const lightControllerOverlay = this.getController("Beleuchtung", "overlay");
-    const shadesControllerOverlay = this.getController("Beschattung", "overlay");
+    const ventilationController = this.getController(LoxoneCategoryEnum.ventilation);
+    const lightController = this.getController(LoxoneCategoryEnum.light);
+    const shadesController = this.getController(LoxoneCategoryEnum.jalousie);
+    const ventilationControllerOverlay = this.getController(
+      LoxoneCategoryEnum.ventilation,
+      "overlay"
+    );
+    const lightControllerOverlay = this.getController(LoxoneCategoryEnum.light, "overlay");
+    const jalousieControllerOverlay = this.getController(LoxoneCategoryEnum.jalousie, "overlay");
 
-    this.lightCommander = lightController && new LightCommander(lightController, "Beleuchtung");
+    this.lightCommander =
+      lightController && new LightCommander(lightController, LoxoneCategoryEnum.light);
     this.ventilationCommander =
-      ventilationController && new VentilationCommander(ventilationController, "Lüftung");
+      ventilationController &&
+      new VentilationCommander(ventilationController, LoxoneCategoryEnum.ventilation);
     this.jalousieCommander =
-      shadesController && new JalousieCommander(shadesController, "Beschattung");
+      shadesController && new JalousieCommander(shadesController, LoxoneCategoryEnum.jalousie);
     this.lightCommanderOverlay =
-      lightControllerOverlay && new LightCommander(lightControllerOverlay, "Beleuchtung");
+      lightControllerOverlay &&
+      new LightCommander(lightControllerOverlay, LoxoneCategoryEnum.light);
     this.ventilationCommanderOverlay =
       ventilationControllerOverlay &&
-      new VentilationCommander(ventilationControllerOverlay, "Lüftung");
+      new VentilationCommander(ventilationControllerOverlay, LoxoneCategoryEnum.ventilation);
     this.jalousieCommanderOverlay =
-      shadesControllerOverlay && new JalousieCommander(shadesControllerOverlay, "Beschattung");
+      jalousieControllerOverlay &&
+      new JalousieCommander(jalousieControllerOverlay, LoxoneCategoryEnum.jalousie);
 
     this.initialized = true;
     console.log("🤖 All commanders initialized");
@@ -121,10 +128,15 @@ export class LoxoneController {
     }
 
     const { room, device, blockIndex } = req.params;
-    const commander = this.getCommander(device, "direct");
+    const commander = this.getCommander(device as CommandType, "direct");
     if (commander) {
-      const isOn = await commander.getState(room, blockIndex);
-      return res.send(isOn ? "1" : "0");
+      try {
+        const isOn = await commander.getState(room, blockIndex);
+        return res.send(isOn ? "1" : "0");
+      } catch (e: any) {
+        console.error(e);
+        return res.status(500).send("Server error!");
+      }
     }
     const message = `🚨 Commander not found for device "${device}", active pool: ${this.pool
       .map((p) => p.category)

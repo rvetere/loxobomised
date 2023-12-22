@@ -1,30 +1,58 @@
 import type { ElementHandle, Page } from "puppeteer";
-import { getJalousieTiming } from "./utils/getJalousieTiming";
-import { getDataPercent } from "./utils/getDataPercent";
-import { toPositive } from "src/utils/toPositive";
-import { sleep } from "src/utils/sleep";
-import { PuppetBase } from "./puppet.base";
-import { clickElement } from "./utils/clickElement";
 import { isJalousieActive } from "src/puppeteer/utils/isJalousieActive";
-import { PuppeteerController } from "./puppeteer.controller";
-import { getBlindTiltPosition } from "./utils/getBlindTiltPosition";
-import { getUpDownElement } from "./utils/getUpDownElement";
-import type { JalousieTilt, JalousieTimingVariant, JalousieType } from "src/types";
+import type {
+  JalousieTilt,
+  JalousieTimingVariant,
+  JalousieType,
+  LoxoneCategoryEnum,
+} from "src/types";
 import { Logger } from "src/utils/logger";
+import { sleep } from "src/utils/sleep";
+import { toPositive } from "src/utils/toPositive";
+import { PuppetBase } from "./puppet.base";
+import { PuppeteerController } from "./puppeteer.controller";
 import { clickButtonByText } from "./utils/clickButtonByText";
+import { clickElement } from "./utils/clickElement";
+import { getBlindTiltPosition } from "./utils/getBlindTiltPosition";
 import { getButtonElementByText } from "./utils/getButtonElementByText";
+import { getDataPercent } from "./utils/getDataPercent";
+import { getJalousieTiming } from "./utils/getJalousieTiming";
+import { getUpDownElement } from "./utils/getUpDownElement";
+
+interface ClickUpDownOfTitleProps {
+  blockIndex: number;
+  device?: string;
+  action?: string;
+  doubleClick?: boolean;
+  delay?: number;
+  reTryCounter?: number;
+  callback?: (
+    afterDoubleClick: boolean,
+    upButton: ElementHandle<Element> | null,
+    downButton: ElementHandle<Element> | null,
+    container: ElementHandle<Element> | null
+  ) => void;
+}
+
+const dummyCallback = (
+  _afterDoubleClick: boolean,
+  _upButton: ElementHandle<Element> | null,
+  _downButton: ElementHandle<Element> | null,
+  _container: ElementHandle<Element> | null
+) => {};
 
 export class PuppetJalousie extends PuppetBase {
   constructor(
     controller: PuppeteerController,
     page: Page,
-    category: string,
+    category: LoxoneCategoryEnum,
     room: string,
     query: Record<string, any>
   ) {
     super(controller, page, category, room, query);
     this.controlJalousie = this.controlJalousie.bind(this);
     this.moveJalousieToFinalPosition = this.moveJalousieToFinalPosition.bind(this);
+    this.clickUpDownOfBlock = this.clickUpDownOfBlock.bind(this);
     this.clickOverlayActionOfBlock = this.clickOverlayActionOfBlock.bind(this);
     this.controlAwningWithOverlayAction = this.controlAwningWithOverlayAction.bind(this);
     this.stopIfStillMoving = this.stopIfStillMoving.bind(this);
@@ -35,7 +63,7 @@ export class PuppetJalousie extends PuppetBase {
   clickOverlayActionOfBlock = async (blockIndex: number, action: string, doubleClick = false) => {
     const container = await this.getContainer(blockIndex);
     if (!container) {
-      return;
+      return false;
     }
     await clickButtonByText(this.page, `Markise ${blockIndex}`);
 
@@ -47,6 +75,61 @@ export class PuppetJalousie extends PuppetBase {
     await this.closeOverlay();
     const isActiveNow = await isJalousieActive(container);
     return isActiveNow;
+  };
+
+  logActivity = (isActiveNow: boolean, key = "isActiveNow") => {
+    return;
+    console.log(`   ${key}: ${isActiveNow ? "✅" : "❌"}`);
+  };
+
+  clickUpDownOfBlock = async ({
+    blockIndex,
+    action = "down", // "up", "down"
+    doubleClick = false,
+    delay = 200,
+    reTryCounter = 0,
+    callback = dummyCallback,
+  }: ClickUpDownOfTitleProps): Promise<NodeJS.Timeout | null> => {
+    let timer: NodeJS.Timeout | null = null;
+    const container = await this.getContainer(blockIndex);
+    const { upButton, downButton } = await getUpDownElement(container);
+    const button = action === "up" ? upButton : downButton;
+
+    if (button) {
+      // click action
+      Logger.log(`   Click action of clickUpDownOfBlock...`);
+      await clickElement(button, 400);
+      const isActiveNow = await isJalousieActive(container);
+      this.logActivity(isActiveNow);
+
+      if (doubleClick && isActiveNow) {
+        // double click action by starting a timer with a delay of at least 200ms
+        timer = setTimeout(async () => {
+          Logger.log(`   Click double click after timeout to stop motion...`);
+          await clickElement(button);
+          callback(true, upButton, downButton, container);
+        }, delay);
+        return timer;
+      } else if (doubleClick && !isActiveNow) {
+        if (reTryCounter < 2) {
+          console.error(
+            `   Initial action did not happen ❌, abort doubleClick and try again! - retry counter is ${reTryCounter}`
+          );
+          const randomDelay = Math.floor(Math.random() * 5000) + 800;
+          await sleep(randomDelay);
+          return this.clickUpDownOfBlock({
+            blockIndex,
+            action,
+            doubleClick,
+            delay,
+            reTryCounter: reTryCounter + 1,
+            callback,
+          });
+        }
+      }
+    }
+    callback(false, upButton, downButton, container);
+    return timer;
   };
 
   controlJalousie = async (
@@ -172,19 +255,19 @@ export class PuppetJalousie extends PuppetBase {
         `🕹️ Control awning "${this.room}:${blockIndex}" ${currentPercent}% -> ${percentToSet}%, no stop timer needed`
       );
       let isActiveNow = await this.clickOverlayActionOfBlock(blockIndex, action);
-      console.log(`   isActiveNow: ${isActiveNow ? "✅" : "❌"}`);
+      this.logActivity(isActiveNow);
       if (!isActiveNow) {
         await sleep(1500);
         isActiveNow = await this.clickOverlayActionOfBlock(blockIndex, action);
-        console.log(`   isActiveNow: ${isActiveNow ? "✅" : "❌"}`);
+        this.logActivity(isActiveNow);
       }
     } else if (toPositive(steps) > 3) {
       let isActiveNow = await this.clickOverlayActionOfBlock(blockIndex, action);
-      console.log(`   isActiveNow: ${isActiveNow ? "✅" : "❌"}`);
+      this.logActivity(isActiveNow);
       if (!isActiveNow) {
         await sleep(1500);
         isActiveNow = await this.clickOverlayActionOfBlock(blockIndex, action);
-        console.log(`   isActiveNow: ${isActiveNow ? "✅" : "❌"}`);
+        this.logActivity(isActiveNow);
       }
 
       // calculate exact delay to reach "percentToSet"
@@ -197,7 +280,7 @@ export class PuppetJalousie extends PuppetBase {
       timer = setTimeout(async () => {
         console.log(`🕹️ Stop awning at exact position "${this.room}:${blockIndex}"`);
         const isActiveNow = await this.clickOverlayActionOfBlock(blockIndex, action);
-        console.log(`   hasStopped: ${!isActiveNow ? "✅" : "❌"}`);
+        this.logActivity(isActiveNow, "hasStopped");
         callback(this.room, blockIndex);
       }, delay);
 

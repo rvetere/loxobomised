@@ -1,4 +1,5 @@
 import type { Page } from "puppeteer";
+import type { LoxoneCategoryEnum } from "src/types";
 import { Logger } from "src/utils/logger";
 import { sleep } from "src/utils/sleep";
 import { PuppetBase } from "./puppet.base";
@@ -11,7 +12,7 @@ export class PuppetVentilation extends PuppetBase {
   constructor(
     controller: PuppeteerController,
     page: Page,
-    category: string,
+    category: LoxoneCategoryEnum,
     room: string,
     query: Record<string, any>
   ) {

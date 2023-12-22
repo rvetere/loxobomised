@@ -1,10 +1,11 @@
 import { PuppetSimple } from "src/puppeteer/puppet.simple";
 import { PuppeteerController } from "src/puppeteer/puppeteer.controller";
+import type { LoxoneCategoryEnum } from "src/types";
 import { sleep } from "src/utils/sleep";
 import { BaseCommander } from "./base.commander";
 
 export class LightCommander extends BaseCommander {
-  constructor(controller: PuppeteerController, category: string) {
+  constructor(controller: PuppeteerController, category: LoxoneCategoryEnum) {
     super(controller, category);
   }
 

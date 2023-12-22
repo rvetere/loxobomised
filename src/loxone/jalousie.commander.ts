@@ -1,8 +1,9 @@
 import { PuppetJalousie } from "src/puppeteer/puppet.jalousie";
 import { PuppeteerController } from "src/puppeteer/puppeteer.controller";
+import type { LoxoneCategoryEnum } from "src/types";
+import { getJalousieTilt } from "src/utils/getJalousieTilt";
 import { sleep } from "src/utils/sleep";
 import { BaseCommander } from "./base.commander";
-import { getJalousieTilt } from "src/utils/getJalousieTilt";
 
 type ActiveTimer = {
   timer: NodeJS.Timeout;
@@ -14,7 +15,7 @@ export class JalousieCommander extends BaseCommander {
   jobsRunning: string[] = [];
   activeTimers: ActiveTimer[] = [];
 
-  constructor(controller: PuppeteerController, category: string) {
+  constructor(controller: PuppeteerController, category: LoxoneCategoryEnum) {
     super(controller, category);
     this.removeActiveTimer = this.removeActiveTimer.bind(this);
     this.run = this.run.bind(this);

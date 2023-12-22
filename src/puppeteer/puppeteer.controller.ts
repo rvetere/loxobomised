@@ -1,6 +1,6 @@
 import "dotenv/config";
 import puppeteer, { type Browser, type Page } from "puppeteer";
-import type { ControllerType } from "src/types";
+import type { ControllerType, LoxoneCategoryEnum } from "src/types";
 import { sleep } from "src/utils/sleep";
 import { navigate } from "./utils/navigate";
 
@@ -14,13 +14,13 @@ const loginDelay = parseInt(process.env.LOGIN_DELAY_SECONDS || "0", 10);
 export class PuppeteerController {
   initialized: boolean;
   type: ControllerType;
-  category: string;
+  category: LoxoneCategoryEnum;
   page: Page | null | undefined;
   browser: Browser | null | undefined;
   interval: NodeJS.Timeout | undefined;
   preventStandbyInterval: NodeJS.Timeout | undefined;
 
-  constructor(category: string, type: ControllerType = "direct") {
+  constructor(category: LoxoneCategoryEnum, type: ControllerType = "direct") {
     this.category = category;
     this.initialized = false;
     this.type = type;
@@ -68,7 +68,7 @@ export class PuppeteerController {
       );
       await sleep(1000 * 2);
 
-      await navigate(this.page, this.category, "Kategorien");
+      await navigate(this.page, this.category.toString(), "Kategorien");
       this.initialized = true;
 
       // random number between 0 and 60 seconds
@@ -111,7 +111,7 @@ export class PuppeteerController {
       );
 
       if (this.page) {
-        await navigate(this.page, this.category, "Kategorien");
+        await navigate(this.page, this.category.toString(), "Kategorien");
       }
       const timeElapsed = new Date().getTime() - timestamp;
       // log success with time elapsed in seconds

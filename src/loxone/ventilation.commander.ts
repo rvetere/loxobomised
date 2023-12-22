@@ -1,10 +1,11 @@
+import { PuppetVentilation } from "src/puppeteer/puppet.ventilation";
 import { PuppeteerController } from "src/puppeteer/puppeteer.controller";
+import type { LoxoneCategoryEnum } from "src/types";
 import { sleep } from "src/utils/sleep";
 import { BaseCommander } from "./base.commander";
-import { PuppetVentilation } from "src/puppeteer/puppet.ventilation";
 
 export class VentilationCommander extends BaseCommander {
-  constructor(controller: PuppeteerController, category: string) {
+  constructor(controller: PuppeteerController, category: LoxoneCategoryEnum) {
     super(controller, category);
   }
 
