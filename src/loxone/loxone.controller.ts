@@ -160,7 +160,7 @@ export class LoxoneController {
       await sleep(delay);
       await commander.run(room, blockIndex, value, req.query);
 
-      return res.json({ message: `✅ Command executed successful!` });
+      return res.status(200).send("OK");
     }
     const message = `🚨 Commander not found for device "${device}", active pool: ${this.pool
       .map((p) => p.category)
