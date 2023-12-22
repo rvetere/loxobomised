@@ -54,9 +54,9 @@ export class PuppetJalousie extends PuppetBase {
 
     const stepsToTarget = toPositive(steps);
 
-    if (stepsToTarget > 0 && percentToSet === 0) {
+    if (stepsToTarget > 0 && (percentToSet === 0 || (percentToSet === 100 && tilt === 0))) {
       console.log(
-        `🕹️ Move jalousie "${this.room}:${blockIndex}" fully up from ${currentPercent}% -> ${percentToSet}%, no stop timer needed`
+        `🕹️ Move jalousie "${this.room}:${blockIndex}" fully up/down from ${currentPercent}% -> ${percentToSet}% (${tilt}), no stop timer needed`
       );
       await this.clickUpDownOfBlock(props);
     } else if (stepsToTarget > 3) {

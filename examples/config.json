@@ -46,10 +46,10 @@
       "switchType": "stateless",
       "timeout": 1000,
       "onUrl": [
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2/60?tilt=1",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/3/100?tilt=0",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/100?tilt=0&type=Loggia",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/100?tilt=0",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2/80?tilt=1",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/100,100"
       ]
     },
@@ -218,7 +218,8 @@
       "onUrl": [
         "http://192.168.1.12:9000/loxone/execute/light/Küche/1/Switch Off",
         "http://192.168.1.12:9000/loxone/execute/light/Küche/2/Switch Off",
-        "http://192.168.1.12:9000/loxone/execute/light/Entrée/1/Switch Off"
+        "http://192.168.1.12:9000/loxone/execute/light/Entrée/1/Switch Off",
+        "http://192.168.1.12:9000/loxone/execute/light/Loggia/1/Switch Off"
       ]
     },
     {
