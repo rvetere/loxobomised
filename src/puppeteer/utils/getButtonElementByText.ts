@@ -1,4 +1,4 @@
-import { ElementHandle, Page } from "puppeteer";
+import type { ElementHandle, Page } from "puppeteer";
 
 export const getButtonElementByText = async (page: Page, text: string) => {
   const elements = await page.$x(`//div[@role='button']/div[contains(text(),'${text}')]`);

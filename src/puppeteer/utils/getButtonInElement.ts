@@ -1,4 +1,4 @@
-import { ElementHandle } from "puppeteer";
+import type { ElementHandle } from "puppeteer";
 
 export const getButtonInElement = async (container: ElementHandle<Node>, index = 0) => {
   const elements = await container.$$("div[role=button]");

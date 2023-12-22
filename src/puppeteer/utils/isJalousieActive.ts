@@ -1,4 +1,4 @@
-import { ElementHandle } from "puppeteer";
+import type { ElementHandle } from "puppeteer";
 
 export const isJalousieActive = async (container: ElementHandle<Node> | null) => {
   const stopIcons = await container?.$$(

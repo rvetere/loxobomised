@@ -1,4 +1,4 @@
-import { Page } from "puppeteer";
+import type { Page } from "puppeteer";
 import { Logger } from "src/utils/logger";
 import { sleep } from "src/utils/sleep";
 import { PuppetBase } from "./puppet.base";

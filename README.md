@@ -67,7 +67,7 @@ Additional to the default route params, a `jalousie` device supports an addition
 
 This can be used to control the final position of the jalousie blinds: a tilt of 0 means "closed", 1 would be "tilted" and 2 is "open".
 
-CAUTION! The parameter is also used to determine if it is a jalousie with blinds or just a "Markise". This means, if you want to control the markise on your balcony, never use `tilt`! The markise cannot be controlled in the way we control normal jalousie with blinds and just won't work if you pass the tilt parameter.
+CAUTION! The parameter is also used to determine if it is a jalousie with blinds or just an awning. This means, if you want to control the awning on your balcony, never use `tilt`! The awning cannot be controlled in the way we control normal jalousie with blinds and just won't work if you pass the tilt parameter.
 
 ### Type
 
@@ -76,7 +76,7 @@ As we cannot set a percent value directly, we just move the jalousie and wait fo
 ### Examples
 
 ```yaml
-# Set balcony markise to 100% (fully down)
+# Set balcony awning to 100% (fully down)
 http://localhost:4000/exec/jalousie/Loggia/1/100
 
 # Set livingroom first jalousie to 30% and tilt it to "open"

@@ -1,7 +1,8 @@
-import puppeteer, { Browser, Page } from "puppeteer";
+import "dotenv/config";
+import puppeteer, { type Browser, type Page } from "puppeteer";
+import type { ControllerType } from "src/types";
 import { sleep } from "src/utils/sleep";
 import { navigate } from "./utils/navigate";
-import "dotenv/config";
 
 const miniServerId = process.env.MINI_SERVER_ID;
 const login = process.env.LOGIN;
@@ -10,7 +11,6 @@ const apartment = process.env.APARTMENT || "05.18";
 const serverUrl = `https://dns.loxonecloud.com/${miniServerId}`;
 const loginDelay = parseInt(process.env.LOGIN_DELAY_SECONDS || "0", 10);
 
-export type ControllerType = "direct" | "overlay";
 export class PuppeteerController {
   initialized: boolean;
   type: ControllerType;

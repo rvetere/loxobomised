@@ -1,4 +1,4 @@
-import { ElementHandle, Page } from "puppeteer";
+import type { ElementHandle, Page } from "puppeteer";
 import { Logger } from "src/utils/logger";
 import { sleep } from "src/utils/sleep";
 import { toPositive } from "src/utils/toPositive";
@@ -13,6 +13,7 @@ import { getToggleButton } from "./utils/getToggleButton";
 import { getUpDownElement } from "./utils/getUpDownElement";
 import { isJalousieActive } from "./utils/isJalousieActive";
 import { navigate } from "./utils/navigate";
+import type { JalousieType } from "src/types";
 
 interface ClickUpDownOfTitleProps {
   blockIndex: number;
@@ -57,7 +58,6 @@ export class PuppetBase {
     this.query = query;
 
     this.getContainer = this.getContainer.bind(this);
-    this.clickOverlayActionOfBlock = this.clickOverlayActionOfBlock.bind(this);
     this.clickOverlayPlusMinusOfBlock = this.clickOverlayPlusMinusOfBlock.bind(this);
     this.clickUpDownOfBlock = this.clickUpDownOfBlock.bind(this);
   }
@@ -109,28 +109,6 @@ export class PuppetBase {
     }
   };
 
-  clickOverlayActionOfBlock = async (
-    blockIndex: number,
-    action: string,
-    doubleClick = false,
-    device = "jalousie"
-  ) => {
-    const container = await this.getContainer(blockIndex);
-    if (!container) {
-      return;
-    }
-    await clickButtonByText(this.page, device === "jalousie" ? `Markise ${blockIndex}` : device);
-
-    // click action
-    const actionButton = await getButtonElementByText(this.page, action);
-    Logger.log(`   Click action of clickOverlayActionOfBlock...`);
-    await clickElement(actionButton, 500, doubleClick);
-
-    await this.closeOverlay();
-    const isActiveNow = device === "jalousie" ? await isJalousieActive(container) : true;
-    return isActiveNow;
-  };
-
   clickOverlayPlusMinusOfBlock = async (blockIndex: number, percentToSet: number) => {
     const container = await this.getContainer(blockIndex);
     if (!container) {
@@ -160,7 +138,6 @@ export class PuppetBase {
 
   clickUpDownOfBlock = async ({
     blockIndex,
-    device = "jalousie",
     action = "down", // "up", "down"
     doubleClick = false,
     delay = 200,
@@ -176,7 +153,7 @@ export class PuppetBase {
       // click action
       Logger.log(`   Click action of clickUpDownOfBlock...`);
       await clickElement(button, 400);
-      const isActiveNow = device === "jalousie" ? await isJalousieActive(container) : true;
+      const isActiveNow = await isJalousieActive(container);
       console.log(`   isActiveNow: ${isActiveNow ? "✅" : "❌"}`);
 
       if (doubleClick && isActiveNow) {
@@ -196,7 +173,6 @@ export class PuppetBase {
           await sleep(randomDelay);
           return this.clickUpDownOfBlock({
             blockIndex,
-            device,
             action,
             doubleClick,
             delay,

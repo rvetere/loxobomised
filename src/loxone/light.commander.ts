@@ -11,8 +11,7 @@ export class LightCommander extends BaseCommander {
   async run(room: string, blockIndex: string, givenValue: string, query: Record<string, any>) {
     const page = this.controller.getPage();
     if (!page) {
-      console.log(`   🚨 Puppeteer page not available! 🚨`);
-      return;
+      throw new Error(`🚨 Puppeteer page not available! 🚨`);
     }
 
     console.log(

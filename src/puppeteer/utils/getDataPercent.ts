@@ -1,4 +1,4 @@
-import { ElementHandle } from "puppeteer";
+import type { ElementHandle } from "puppeteer";
 
 const percentToInt = (percent: string) =>
   parseInt(

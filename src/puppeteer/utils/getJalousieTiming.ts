@@ -1,14 +1,14 @@
+import type { JalousieTimingVariant } from "src/types";
+
 export const LoggiaRolloTiming = 64 / 100;
 export const WindowRolloTiming = 40 / 100;
 export const MarkiseTiming = 19 / 100;
 
-export type JalousieType = "Loggia" | "Window" | "Markise";
-
-export const getJalousieTiming = (rolloType: JalousieType) => {
+export const getJalousieTiming = (rolloType: JalousieTimingVariant) => {
   switch (rolloType) {
-    case "Loggia":
+    case "window-big":
       return LoggiaRolloTiming;
-    case "Markise":
+    case "awning":
       return MarkiseTiming;
     default:
       return WindowRolloTiming;

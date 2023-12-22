@@ -1,4 +1,4 @@
-import { ElementHandle } from "puppeteer";
+import type { ElementHandle } from "puppeteer";
 import { sleep } from "src/utils/sleep";
 
 export const clickElement = async (

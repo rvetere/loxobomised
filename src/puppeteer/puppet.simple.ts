@@ -1,4 +1,4 @@
-import { Page } from "puppeteer";
+import type { Page } from "puppeteer";
 import { PuppetBase } from "./puppet.base";
 import { PuppeteerController } from "./puppeteer.controller";
 

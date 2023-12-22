@@ -1,4 +1,4 @@
-import { ElementHandle } from "puppeteer";
+import type { ElementHandle } from "puppeteer";
 
 export const getToggleButton = async (container: ElementHandle<Node> | null) => {
   if (!container) {

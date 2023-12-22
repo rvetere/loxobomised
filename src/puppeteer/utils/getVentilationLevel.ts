@@ -1,22 +1,22 @@
-import { ElementHandle } from "puppeteer";
+import type { ElementHandle } from "puppeteer";
 
 export const getVentilationLevelOfString = (text: string) => {
   switch (text) {
-    case "Aus":
+    case "aus":
       return 0;
-    case "Stufe 1":
+    case "stufe 1":
       return 1;
-    case "Stufe 2":
+    case "stufe 2":
       return 2;
-    case "Stufe 3":
+    case "stufe 3":
       return 3;
-    case "Stufe 4":
+    case "stufe 4":
       return 4;
-    case "Hyper Speed":
+    case "hyper speed":
       return 5;
-    case "Nacht":
+    case "nacht":
       return 6;
-    case "Freecooling":
+    case "freecooling":
       return 7;
     default:
       return -1;

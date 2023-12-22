@@ -6,11 +6,11 @@
       "switchType": "stateless",
       "timeout": 1000,
       "onUrl": [
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2,3/0,0?tilt=0",
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/0?tilt=0&type=Loggia",
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/0?tilt=0",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2,3/0,0?tilt=closed",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/0?tilt=closed&type=window-big",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/0?tilt=closed",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/0,0",
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Zimmer 1/1/0?tilt=0"
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Zimmer 1/1/0?tilt=closed"
       ]
     },
     {
@@ -19,11 +19,11 @@
       "switchType": "stateless",
       "timeout": 1000,
       "onUrl": [
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2,3/100,100?tilt=0",
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/100?tilt=0&type=Loggia",
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/100?tilt=0",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2,3/100,100?tilt=closed",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/100?tilt=closed&type=window-big",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/100?tilt=closed",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/100,100",
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Zimmer 1/1/100?tilt=0"
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Zimmer 1/1/100?tilt=closed"
       ]
     },
     {
@@ -46,10 +46,10 @@
       "switchType": "stateless",
       "timeout": 1000,
       "onUrl": [
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/3/100?tilt=0",
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/100?tilt=0&type=Loggia",
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/100?tilt=0",
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2/80?tilt=1",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/3/100?tilt=closed",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/100?tilt=closed&type=window-big",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/100?tilt=closed",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2/80?tilt=tilted",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/100,100"
       ]
     },
@@ -59,9 +59,9 @@
       "switchType": "stateless",
       "timeout": 1000,
       "onUrl": [
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2,3/0,0?tilt=0",
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/0?tilt=0&type=Loggia",
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/0?tilt=0",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2,3/0,0?tilt=closed",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/0?tilt=closed&type=window-big",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/0?tilt=closed",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/0,0"
       ]
     },
@@ -71,11 +71,11 @@
       "switchType": "stateless",
       "timeout": 1000,
       "onUrl": [
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2/66?tilt=1",
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/3/100?tilt=0",
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/100?tilt=1&type=Loggia",
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/100?tilt=0",
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Zimmer 1/1/100?tilt=1",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2/66?tilt=tilted",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/3/100?tilt=closed",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/100?tilt=tilted&type=window-big",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/100?tilt=closed",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Zimmer 1/1/100?tilt=tilted",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/100,60"
       ]
     },
@@ -85,10 +85,10 @@
       "switchType": "stateless",
       "timeout": 1000,
       "onUrl": [
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2,3/50,66?tilt=1",
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/100?tilt=2&type=Loggia",
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/50?tilt=1",
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Zimmer 1/1/33?tilt=2",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2,3/50,66?tilt=tilted",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/100?tilt=open&type=window-big",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/50?tilt=tilted",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Zimmer 1/1/33?tilt=open",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/20,40"
       ]
     },
@@ -98,7 +98,7 @@
       "switchType": "stateless",
       "timeout": 1000,
       "onUrl": [
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2/60?tilt=1",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2/60?tilt=tilted",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1/50"
       ]
     },
@@ -107,14 +107,14 @@
       "name": "Office Blinds 60%",
       "switchType": "stateless",
       "timeout": 1000,
-      "onUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2/60?tilt=1"
+      "onUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2/60?tilt=tilted"
     },
     {
       "accessory": "HTTP-SWITCH",
       "name": "Office Blinds Up",
       "switchType": "stateless",
       "timeout": 1000,
-      "onUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2/0?tilt=0"
+      "onUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2/0?tilt=closed"
     },
     {
       "accessory": "HTTP-SWITCH",
@@ -317,7 +317,7 @@
           "data": [
             {
               "data": "2600c60027102810281127110f27112711261127112728110f271226112629110f2728102810281028110f2728102810281110272810281010271127281010271127280003ce2a102610271127111127112612261127112627130f27102712262711102727112810271127130f2727112711271110272711271111271027271111271027270003d127102810281028110f27112710271226112728110f271127112629110f27281028102810281010272711281027111127271127120f27112727111027112727000d05",
-              "pause": 35
+              "pause": 34.5
             },
             {
               "data": "2600c60026112711271127110f2810280f290e290e2a0f28102827110f28281010282711271127110f29102727112711102810271028271127112711271110270e2a100003e62711271127112711102711271027112710281027112727111027271111272711271127111027102827112711102711271028271127102810271110281027100003e7271127112711271011271028102710281027112710282710112727130e28271127112710112710282711271110271028102727112711271127111028102710000d05"

@@ -1,4 +1,4 @@
-import { ElementHandle, Page } from "puppeteer";
+import type { ElementHandle, Page } from "puppeteer";
 
 type PlurOrMinus = "plus" | "minus";
 

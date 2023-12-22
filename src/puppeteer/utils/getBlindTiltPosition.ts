@@ -1,4 +1,5 @@
-import { ElementHandle } from "puppeteer";
+import type { ElementHandle } from "puppeteer";
+import type { JalousieTilt } from "src/types";
 import { toPositive } from "src/utils/toPositive";
 
 const getStatsTransform = async (container: ElementHandle<Node>, id: string) => {
@@ -15,14 +16,14 @@ export const getBlindTiltPosition = async (container: ElementHandle<Node>) => {
 
   if (jalStatsVertical === 0) {
     console.log("ℹ️ Jalousie is closed");
-    return 0;
+    return "closed" as JalousieTilt;
   } else if (jalStatsShading !== 20) {
     console.log("ℹ️ Jalousie is tilted");
-    return 1;
+    return "tilted" as JalousieTilt;
   } else if (jalStatsHorizontal !== 20) {
     console.log("ℹ️ Jalousie is open");
-    return 2;
+    return "open" as JalousieTilt;
   }
 
-  return -1;
+  return "closed" as JalousieTilt;
 };

@@ -1,4 +1,4 @@
-import { Page } from "puppeteer";
+import type { Page } from "puppeteer";
 import { sleep } from "src/utils/sleep";
 import { clickButtonByText } from "./clickButtonByText";
 

@@ -1,4 +1,3 @@
-import { PuppetSimple } from "src/puppeteer/puppet.simple";
 import { PuppeteerController } from "src/puppeteer/puppeteer.controller";
 import { sleep } from "src/utils/sleep";
 import { BaseCommander } from "./base.commander";
@@ -12,13 +11,13 @@ export class VentilationCommander extends BaseCommander {
   async run(room: string, blockIndex: string, givenValue: string, query: Record<string, any>) {
     const page = this.controller.getPage();
     if (!page) {
-      console.log(`   🚨 Puppeteer page not available! 🚨`);
-      return;
+      throw new Error(`🚨 Puppeteer page not available! 🚨`);
     }
 
     console.log(
       `🤖 VentilationCommander.run(${room}, ${blockIndex}, ${givenValue}, ${JSON.stringify(query)})`
     );
+
     const puppet = new PuppetVentilation(this.controller, page, this.category, room, query);
     const blockIndexes = blockIndex.includes(",") ? blockIndex.split(",") : [blockIndex];
     const values = givenValue.includes(",") ? givenValue.split(",") : [givenValue];

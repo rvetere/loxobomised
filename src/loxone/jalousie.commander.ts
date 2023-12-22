@@ -2,6 +2,7 @@ import { PuppetJalousie } from "src/puppeteer/puppet.jalousie";
 import { PuppeteerController } from "src/puppeteer/puppeteer.controller";
 import { sleep } from "src/utils/sleep";
 import { BaseCommander } from "./base.commander";
+import { getJalousieTilt } from "src/utils/getJalousieTilt";
 
 type ActiveTimer = {
   timer: NodeJS.Timeout;
@@ -29,8 +30,7 @@ export class JalousieCommander extends BaseCommander {
   async run(room: string, blockIndex: string, givenValue: string, query: Record<string, any>) {
     const page = this.controller.getPage();
     if (!page) {
-      console.log(`   🚨 Puppeteer page not available! 🚨`);
-      return;
+      throw new Error(`🚨 Puppeteer page not available! 🚨`);
     }
 
     console.log(
@@ -50,11 +50,15 @@ export class JalousieCommander extends BaseCommander {
       const { timer } = !!query.tilt
         ? await puppet.controlJalousie(
             index,
-            { percentToSet: parseInt(value, 10), tilt: query.tilt, jalousieType: query.type },
+            {
+              percentToSet: parseInt(value, 10),
+              tilt: getJalousieTilt(query.tilt),
+              jalousieType: query.type,
+            },
             activeTimer,
             this.removeActiveTimer
           )
-        : await puppet.controlJalousieWithAction(
+        : await puppet.controlAwningWithOverlayAction(
             index,
             parseInt(value, 10),
             activeTimer,

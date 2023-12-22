@@ -1,9 +1,10 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { JalousieCommander } from "./jalousie.commander";
 import { ControllerType, PuppeteerController } from "src/puppeteer/puppeteer.controller";
 import { VentilationCommander } from "./ventilation.commander";
 import { LightCommander } from "./light.commander";
 import { sleep } from "src/utils/sleep";
+import { CommandType } from "src/types";
 
 export class LoxoneController {
   initialized = false;
@@ -99,7 +100,7 @@ export class LoxoneController {
     console.log("🤖 All commanders initialized");
   }
 
-  getCommander(device: string, type: ControllerType = "direct") {
+  getCommander(device: CommandType, type: ControllerType = "direct") {
     switch (device) {
       case "jalousie":
         return type === "direct" ? this.jalousieCommander : this.jalousieCommanderOverlay;
@@ -116,7 +117,7 @@ export class LoxoneController {
 
   state = async (req: Request, res: Response) => {
     if (!this.initialized) {
-      return res.json({ message: "🚨 Not initialized yet!" });
+      return res.status(500).send("🚨 Not initialized yet!");
     }
 
     const { room, device, blockIndex } = req.params;
@@ -136,7 +137,7 @@ export class LoxoneController {
 
   execute = async (req: Request, res: Response) => {
     if (!this.initialized) {
-      return res.json({ message: "🚨 Not initialized yet!" });
+      return res.status(500).send("🚨 Not initialized yet!");
     }
 
     const { room, device, blockIndex, value } = req.params;
@@ -144,21 +145,26 @@ export class LoxoneController {
     // jalousie with blinds and on-off toggles of lights can be controlled trough directly, without opening overlays
     let type: ControllerType = "direct";
     if (device === "jalousie" && !req.query.tilt) {
-      // no "?tilt=n" means it is a "markise" which can only be controlled trough overlay controls
+      // no "?tilt=n" means it is a "awning" which can only be controlled trough overlay controls
       type = "overlay";
     } else if (device === "light" && !isNaN(parseInt(value))) {
       // if value is a number, it is a dimmer which can only be controlled trough overlay controls
       type = "overlay";
     }
 
-    const commander = this.getCommander(device, type);
+    const commander = this.getCommander(device as CommandType, type);
     if (commander) {
       const { formattedDate, delay } = this.rampUp(`${device}-${type}`);
       console.log(
         `🤖 [${formattedDate}] Executing command "${room}(${device}) [${blockIndex}], ${type}" with delay: ${delay}ms`
       );
       await sleep(delay);
-      await commander.run(room, blockIndex, value, req.query);
+      try {
+        await commander.run(room, blockIndex, value, req.query);
+      } catch (e: any) {
+        console.error(e);
+        return res.status(500).send("Server error!");
+      }
 
       return res.status(200).send("OK");
     }
@@ -166,8 +172,6 @@ export class LoxoneController {
       .map((p) => p.category)
       .join(", ")}`;
     console.error(message);
-    return res.json({
-      message,
-    });
+    return res.status(500).send(message);
   };
 }
