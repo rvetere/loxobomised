@@ -42,8 +42,6 @@ export class PuppetVentilation extends PuppetBase {
       await clickElement(actionButton, 500);
       await sleep(500);
       const currentLevel = await getVentilationLevel(container);
-      console.log({ currentLevel, newLevel });
-
       targetReached = currentLevel === newLevel;
     }
   };
