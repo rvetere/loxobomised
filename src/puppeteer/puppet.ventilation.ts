@@ -30,6 +30,7 @@ export class PuppetVentilation extends PuppetBase {
       console.log(`👍 Ventilation already at ${newLevel}!`);
       return;
     }
+    console.log({ currentLevel, newLevel });
 
     let targetReached = false;
     const actionButton = await getPlusOrMinusElement(
@@ -42,6 +43,8 @@ export class PuppetVentilation extends PuppetBase {
       await clickElement(actionButton, 500);
       await sleep(500);
       const currentLevel = await getVentilationLevel(container);
+      console.log({ currentLevel, newLevel });
+
       targetReached = currentLevel === newLevel;
     }
   };
