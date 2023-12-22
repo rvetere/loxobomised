@@ -100,8 +100,6 @@ export class LoxoneController {
   }
 
   getCommander(device: string, type: ControllerType = "direct") {
-    console.log({ device, type });
-
     switch (device) {
       case "jalousie":
         return type === "direct" ? this.jalousieCommander : this.jalousieCommanderOverlay;
