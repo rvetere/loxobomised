@@ -1,5 +1,5 @@
 export const Logger = {
-  active: false,
+  active: true,
   log: (message: string) => {
     Logger.active && console.log(message);
   },

@@ -1,18 +1,18 @@
 import { ElementHandle, Page } from "puppeteer";
+import { Logger } from "src/utils/logger";
 import { sleep } from "src/utils/sleep";
-import { getDataPercent } from "./utils/getDataPercent";
 import { toPositive } from "src/utils/toPositive";
-import { getPlusOrMinusElement } from "./utils/getPlusOrMinusElement";
-import { getUpDownElement } from "./utils/getUpDownElement";
-import { navigate } from "./utils/navigate";
+import { PuppeteerController } from "./puppeteer.controller";
+import { clickButtonByText } from "./utils/clickButtonByText";
 import { clickElement } from "./utils/clickElement";
 import { getButtonElementByText } from "./utils/getButtonElementByText";
 import { getButtonInElement } from "./utils/getButtonInElement";
-import { Logger } from "src/utils/logger";
+import { getDataPercent } from "./utils/getDataPercent";
+import { getPlusOrMinusElementInPage } from "./utils/getPlusOrMinusElement";
 import { getToggleButton } from "./utils/getToggleButton";
+import { getUpDownElement } from "./utils/getUpDownElement";
 import { isJalousieActive } from "./utils/isJalousieActive";
-import { clickButtonByText } from "./utils/clickButtonByText";
-import { PuppeteerController } from "./puppeteer.controller";
+import { navigate } from "./utils/navigate";
 
 interface ClickUpDownOfTitleProps {
   blockIndex: number;
@@ -148,8 +148,8 @@ export class PuppetBase {
       await clickElement(button, 500);
 
       // click "plus" or "minus" button as many times possible to get it to the desired percent (each click moves it by 10%)
-      const actionButton = await getPlusOrMinusElement(container, variant);
       for (let i = 0; i < toPositive(steps); i++) {
+        const actionButton = await getPlusOrMinusElementInPage(this.page, variant);
         Logger.log(`   Click action of clickOverlayPlusMinusOfBlock...`);
         await clickElement(actionButton, 500);
       }
