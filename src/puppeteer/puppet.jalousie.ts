@@ -18,6 +18,7 @@ import { getButtonElementByText } from "./utils/getButtonElementByText";
 import { getDataPercent } from "./utils/getDataPercent";
 import { getJalousieTiming } from "./utils/getJalousieTiming";
 import { getUpDownElement } from "./utils/getUpDownElement";
+import { isSafetyShutdown } from "./utils/isSafetyShutdown";
 
 interface ClickUpDownOfTitleProps {
   blockIndex: number;
@@ -244,6 +245,12 @@ export class PuppetJalousie extends PuppetBase {
     if (!container) {
       return { delay: 0 };
     }
+    const safetyShutdown = await isSafetyShutdown(container);
+    if (safetyShutdown) {
+      console.log(`🚨 Awning is in safety shutdown mode!`);
+      return { delay: 0 };
+    }
+
     await this.stopIfStillMoving(blockIndex, activeTimer, "awning");
 
     const currentPercent = await getDataPercent(container, "Fully extended");
