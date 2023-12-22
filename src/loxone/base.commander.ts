@@ -18,8 +18,6 @@ export class BaseCommander {
       return;
     }
 
-    console.log(`🤖 Get state for room: ${room} [${blockIndex}] - ${this.category}`);
-
     const puppet = new PuppetSimple(this.controller, page, this.category, room, {});
     const index = parseInt(blockIndex, 10);
     if (this.category === "Lüftung") {
