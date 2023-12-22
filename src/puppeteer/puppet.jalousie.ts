@@ -10,13 +10,6 @@ import { PuppeteerController } from "./puppeteer.controller";
 import { getBlindTiltPosition } from "./utils/getBlindTiltPosition";
 import { getUpDownElement } from "./utils/getUpDownElement";
 
-interface ControlJalousieWithActionProps {
-  blockIndex: number;
-  actionUp?: string;
-  actionDown?: string;
-  callback?: (room: string, blockIndex: number) => void;
-}
-
 type JalousieTilt = 0 | 1 | 2;
 
 export class PuppetJalousie extends PuppetBase {

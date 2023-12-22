@@ -148,8 +148,8 @@ export class PuppetBase {
       await clickElement(button, 500);
 
       // click "plus" or "minus" button as many times possible to get it to the desired percent (each click moves it by 10%)
+      const actionButton = await getPlusOrMinusElement(container, variant);
       for (let i = 0; i < toPositive(steps); i++) {
-        const actionButton = await getPlusOrMinusElement(this.page, variant);
         Logger.log(`   Click action of clickOverlayPlusMinusOfBlock...`);
         await clickElement(actionButton, 500);
       }

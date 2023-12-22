@@ -2,6 +2,7 @@ import { PuppetSimple } from "src/puppeteer/puppet.simple";
 import { PuppeteerController } from "src/puppeteer/puppeteer.controller";
 import { sleep } from "src/utils/sleep";
 import { BaseCommander } from "./base.commander";
+import { PuppetVentilation } from "src/puppeteer/puppet.ventilation";
 
 export class VentilationCommander extends BaseCommander {
   constructor(controller: PuppeteerController, category: string) {
@@ -18,13 +19,13 @@ export class VentilationCommander extends BaseCommander {
     console.log(
       `🤖 VentilationCommander.run(${room}, ${blockIndex}, ${givenValue}, ${JSON.stringify(query)})`
     );
-    const puppet = new PuppetSimple(this.controller, page, this.category, room, query);
+    const puppet = new PuppetVentilation(this.controller, page, this.category, room, query);
     const blockIndexes = blockIndex.includes(",") ? blockIndex.split(",") : [blockIndex];
     const values = givenValue.includes(",") ? givenValue.split(",") : [givenValue];
     for (const indexStr of blockIndexes) {
       const index = parseInt(indexStr, 10);
       const value = values[index] ? values[index] : values[0];
-      await puppet.clickOverlayActionOfBlock(index, value, false, "Lüfter");
+      await puppet.controlVentilation(index, parseInt(value, 10));
       await sleep(2000);
     }
   }

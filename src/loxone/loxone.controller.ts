@@ -151,9 +151,6 @@ export class LoxoneController {
     } else if (device === "light" && !isNaN(parseInt(value))) {
       // if value is a number, it is a dimmer which can only be controlled trough overlay controls
       type = "overlay";
-    } else if (device === "ventilation") {
-      // ventilation can only be controlled trough overlay controls
-      type = "overlay";
     }
 
     const commander = this.getCommander(device, type);
