@@ -133,6 +133,20 @@
     },
     {
       "accessory": "HTTP-SWITCH",
+      "name": "Kitchen Spot 40%",
+      "switchType": "stateless",
+      "timeout": 1000,
+      "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Küche/2/40"
+    },
+    {
+      "accessory": "HTTP-SWITCH",
+      "name": "Kitchen Spot 70%",
+      "switchType": "stateless",
+      "timeout": 1000,
+      "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Küche/2/70"
+    },
+    {
+      "accessory": "HTTP-SWITCH",
       "name": "Kitchen Headlight Switch",
       "switchType": "stateful",
       "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Küche/1/Switch On",
@@ -164,11 +178,27 @@
     },
     {
       "accessory": "HTTP-SWITCH",
+      "name": "Bathroom Spot 40%",
+      "switchType": "stateless",
+      "timeout": 1000,
+      "onUrl": "http://192.168.1.12:9000/loxone/execute/light/WC-Dusche/1/40"
+    },
+    {
+      "accessory": "HTTP-SWITCH",
       "name": "Bathroom Headlight Switch",
       "switchType": "stateful",
       "onUrl": "http://192.168.1.12:9000/loxone/execute/light/WC-Dusche/2/Switch On",
       "offUrl": "http://192.168.1.12:9000/loxone/execute/light/WC-Dusche/2/Switch Off",
       "statusUrl": "http://192.168.1.12:9000/loxone/state/light/WC-Dusche/2"
+    },
+    {
+      "accessory": "HTTP-SWITCH",
+      "name": "Loggia Spot Switch",
+      "switchType": "stateful",
+      "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Loggia/1/Switch On",
+      "offUrl": "http://192.168.1.12:9000/loxone/execute/light/Loggia/1/Switch Off",
+      "statusUrl": "http://192.168.1.12:9000/loxone/state/light/Loggia/1",
+      "debug": true
     },
     {
       "accessory": "HTTP-SWITCH",
@@ -182,25 +212,44 @@
     },
     {
       "accessory": "HTTP-SWITCH",
-      "name": "Bathroom Headlight Switch",
+      "name": "All Lights Off",
+      "switchType": "stateless",
+      "timeout": 1000,
+      "onUrl": [
+        "http://192.168.1.12:9000/loxone/execute/light/Küche/1/Switch Off",
+        "http://192.168.1.12:9000/loxone/execute/light/Küche/2/Switch Off",
+        "http://192.168.1.12:9000/loxone/execute/light/Entrée/1/Switch Off"
+      ]
+    },
+    {
+      "accessory": "HTTP-SWITCH",
+      "name": "Bedroom Vent Switch",
       "switchType": "stateful",
-      "onUrl": "http://192.168.1.12:9002/loxone/execute/ventilation/Zimmer 1/1/Stufe 1",
-      "offUrl": "http://192.168.1.12:9002/loxone/execute/ventilation/Zimmer 1/1/Aus",
+      "onUrl": "http://192.168.1.12:9002/loxone/execute/ventilation/Zimmer 1/1/1",
+      "offUrl": "http://192.168.1.12:9002/loxone/execute/ventilation/Zimmer 1/1/0",
       "statusUrl": "http://192.168.1.12:9002/loxone/state/ventilation/Zimmer 1/1"
     },
     {
       "accessory": "HTTP-SWITCH",
-      "name": "Bedroom Vent Two",
+      "name": "Bedroom Vent Level 2",
       "switchType": "stateless",
       "timeout": 1000,
-      "onUrl": "http://192.168.1.12:9002/loxone/execute/ventilation/Zimmer 1/1/Stufe 2"
+      "onUrl": "http://192.168.1.12:9002/loxone/execute/ventilation/Zimmer 1/1/2"
     },
     {
       "accessory": "HTTP-SWITCH",
-      "name": "Livingroom Vent Two",
+      "name": "Livingroom Vent Level 2",
       "switchType": "stateless",
       "timeout": 1000,
-      "onUrl": "http://192.168.1.12:9002/loxone/execute/ventilation/Wohnzimmer/1/Stufe 2"
+      "onUrl": "http://192.168.1.12:9002/loxone/execute/ventilation/Wohnzimmer/1/2"
+    },
+    {
+      "accessory": "HTTP-SWITCH",
+      "name": "Livingroom Vent Switch",
+      "switchType": "stateful",
+      "onUrl": "http://192.168.1.12:9002/loxone/execute/ventilation/Wohnzimmer/1/1",
+      "offUrl": "http://192.168.1.12:9002/loxone/execute/ventilation/Wohnzimmer/1/0",
+      "statusUrl": "http://192.168.1.12:9002/loxone/state/ventilation/Wohnzimmer/1"
     }
   ],
   "bridge": {

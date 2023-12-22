@@ -120,7 +120,7 @@ export class LoxoneController {
     }
 
     const { room, device, blockIndex } = req.params;
-    const commander = this.getCommander(device, device === "ventilation" ? "overlay" : "direct");
+    const commander = this.getCommander(device, "direct");
     if (commander) {
       const isOn = await commander.getState(room, blockIndex);
       return res.send(isOn ? "1" : "0");
