@@ -1,0 +1,440 @@
+{
+  "accessories": [
+    {
+      "timeout": 1000,
+      "switchType": "stateless",
+      "name": "All Blinds Up",
+      "accessory": "HTTP-SWITCH",
+      "onUrl": [
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2,3/0,0?tilt=closed",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/0?tilt=closed&type=window-big",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/0?tilt=closed",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/0,0",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Zimmer 1/1/0?tilt=closed"
+      ]
+    },
+    {
+      "timeout": 1000,
+      "switchType": "stateless",
+      "name": "All Blinds Down",
+      "accessory": "HTTP-SWITCH",
+      "onUrl": [
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2,3/100,100?tilt=closed",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/100?tilt=closed&type=window-big",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/100?tilt=closed",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/100,100",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Zimmer 1/1/100?tilt=closed"
+      ]
+    },
+    {
+      "timeout": 1000,
+      "switchType": "stateless",
+      "name": "Loggia Blinds Down",
+      "accessory": "HTTP-SWITCH",
+      "onUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/100,100"
+    },
+    {
+      "timeout": 1000,
+      "switchType": "stateless",
+      "name": "Loggia Blinds Up",
+      "accessory": "HTTP-SWITCH",
+      "onUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/0,0"
+    },
+    {
+      "timeout": 1000,
+      "switchType": "stateless",
+      "name": "Livingroom All Blinds Down",
+      "accessory": "HTTP-SWITCH",
+      "onUrl": [
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/3/100?tilt=closed",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/100?tilt=closed&type=window-big",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/100?tilt=closed",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2/80?tilt=tilted",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/100,100"
+      ]
+    },
+    {
+      "timeout": 1000,
+      "switchType": "stateless",
+      "name": "Livingroom All Blinds Up",
+      "accessory": "HTTP-SWITCH",
+      "onUrl": [
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2,3/0,0?tilt=closed",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/0?tilt=closed&type=window-big",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/0?tilt=closed",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/0,0"
+      ]
+    },
+    {
+      "statusUrl": "http://192.168.1.12:9001/loxone/state/jalousie/Wohnzimmer/4",
+      "switchType": "stateful",
+      "name": "Livingroom Loggia Blinds",
+      "offUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/0?tilt=closed",
+      "onUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/100?tilt=closed",
+      "accessory": "HTTP-SWITCH"
+    },
+    {
+      "timeout": 1000,
+      "switchType": "stateless",
+      "name": "Privacy On",
+      "accessory": "HTTP-SWITCH",
+      "onUrl": [
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2/66?tilt=tilted",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/3/100?tilt=closed",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/100?tilt=tilted&type=window-big",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/100?tilt=closed",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Zimmer 1/1/100?tilt=tilted",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/100,60"
+      ]
+    },
+    {
+      "timeout": 1000,
+      "switchType": "stateless",
+      "name": "Easy Shades",
+      "accessory": "HTTP-SWITCH",
+      "onUrl": [
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2,3/50,66?tilt=tilted",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/100?tilt=open&type=window-big",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/50?tilt=tilted",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Zimmer 1/1/33?tilt=open",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/20,40"
+      ]
+    },
+    {
+      "statusUrl": "http://192.168.1.12:9001/loxone/state/jalousie/Zimmer 1/1",
+      "switchType": "stateful",
+      "name": "Bedroom Blinds",
+      "offUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Zimmer 1/1/0?tilt=closed",
+      "onUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Zimmer 1/1/100?tilt=closed",
+      "accessory": "HTTP-SWITCH"
+    },
+    {
+      "statusUrl": "http://192.168.1.12:9001/loxone/state/jalousie/Küche/1",
+      "switchType": "stateful",
+      "name": "Kitchen Blinds",
+      "offUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/0?tilt=closed",
+      "onUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/100?tilt=closed",
+      "accessory": "HTTP-SWITCH"
+    },
+    {
+      "statusUrl": "http://192.168.1.12:9001/loxone/state/jalousie/Wohnzimmer/3",
+      "switchType": "stateful",
+      "name": "Livingroom Blinds",
+      "offUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/3/0?tilt=closed",
+      "onUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/3/100?tilt=closed",
+      "accessory": "HTTP-SWITCH"
+    },
+    {
+      "timeout": 1000,
+      "switchType": "stateless",
+      "name": "Office Blinds Easy",
+      "accessory": "HTTP-SWITCH",
+      "onUrl": [
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2/80?tilt=tilted",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/2/50"
+      ]
+    },
+    {
+      "timeout": 1000,
+      "switchType": "stateless",
+      "name": "Office Blinds 60%",
+      "accessory": "HTTP-SWITCH",
+      "onUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2/60?tilt=tilted"
+    },
+    {
+      "statusUrl": "http://192.168.1.12:9001/loxone/state/jalousie/Wohnzimmer/2",
+      "switchType": "stateful",
+      "name": "Office Blinds",
+      "offUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2/0?tilt=closed",
+      "onUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2/100?tilt=closed",
+      "accessory": "HTTP-SWITCH"
+    },
+    {
+      "statusUrl": "http://192.168.1.12:9001/loxone/state/jalousie/Wohnzimmer/5",
+      "switchType": "stateful",
+      "name": "Office Loggia Blinds",
+      "offUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/5/0?tilt=closed&type=window-big",
+      "onUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/5/47?tilt=closed&type=window-big",
+      "accessory": "HTTP-SWITCH"
+    },
+    {
+      "statusUrl": "http://192.168.1.12:9000/loxone/state/light/Küche/2",
+      "switchType": "stateful",
+      "name": "Kitchen Spot Switch",
+      "offUrl": "http://192.168.1.12:9000/loxone/execute/light/Küche/2/Switch Off",
+      "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Küche/2/Switch On",
+      "accessory": "HTTP-SWITCH"
+    },
+    {
+      "timeout": 1000,
+      "switchType": "stateless",
+      "name": "Kitchen Spot 100%",
+      "accessory": "HTTP-SWITCH",
+      "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Küche/2/100"
+    },
+    {
+      "timeout": 1000,
+      "switchType": "stateless",
+      "name": "Kitchen Spot 40%",
+      "accessory": "HTTP-SWITCH",
+      "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Küche/2/40"
+    },
+    {
+      "timeout": 1000,
+      "switchType": "stateless",
+      "name": "Kitchen Spot 60%",
+      "accessory": "HTTP-SWITCH",
+      "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Küche/2/60"
+    },
+    {
+      "timeout": 1000,
+      "switchType": "stateless",
+      "name": "Kitchen Spot 70%",
+      "accessory": "HTTP-SWITCH",
+      "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Küche/2/70"
+    },
+    {
+      "statusUrl": "http://192.168.1.12:9000/loxone/state/light/Küche/1",
+      "switchType": "stateful",
+      "name": "Kitchen Headlight Switch",
+      "offUrl": "http://192.168.1.12:9000/loxone/execute/light/Küche/1/Switch Off",
+      "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Küche/1/Switch On",
+      "accessory": "HTTP-SWITCH"
+    },
+    {
+      "statusUrl": "http://192.168.1.12:9000/loxone/state/light/Entrée/1",
+      "switchType": "stateful",
+      "name": "Entrance Spot Switch",
+      "offUrl": "http://192.168.1.12:9000/loxone/execute/light/Entrée/1/Switch Off",
+      "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Entrée/1/Switch On",
+      "accessory": "HTTP-SWITCH"
+    },
+    {
+      "statusUrl": "http://192.168.1.12:9000/loxone/state/light/WC-Dusche/1",
+      "switchType": "stateful",
+      "name": "Bathroom Spot Switch",
+      "offUrl": "http://192.168.1.12:9000/loxone/execute/light/WC-Dusche/1/Switch Off",
+      "onUrl": "http://192.168.1.12:9000/loxone/execute/light/WC-Dusche/1/Switch On",
+      "accessory": "HTTP-SWITCH"
+    },
+    {
+      "timeout": 1000,
+      "switchType": "stateless",
+      "name": "Bathroom Spot 100%",
+      "accessory": "HTTP-SWITCH",
+      "onUrl": "http://192.168.1.12:9000/loxone/execute/light/WC-Dusche/1/100"
+    },
+    {
+      "timeout": 1000,
+      "switchType": "stateless",
+      "name": "Bathroom Spot 40%",
+      "accessory": "HTTP-SWITCH",
+      "onUrl": "http://192.168.1.12:9000/loxone/execute/light/WC-Dusche/1/40"
+    },
+    {
+      "statusUrl": "http://192.168.1.12:9000/loxone/state/light/WC-Dusche/2",
+      "switchType": "stateful",
+      "name": "Bathroom Headlight Switch",
+      "offUrl": "http://192.168.1.12:9000/loxone/execute/light/WC-Dusche/2/Switch Off",
+      "onUrl": "http://192.168.1.12:9000/loxone/execute/light/WC-Dusche/2/Switch On",
+      "accessory": "HTTP-SWITCH"
+    },
+    {
+      "statusUrl": "http://192.168.1.12:9000/loxone/state/light/Loggia/1",
+      "switchType": "stateful",
+      "name": "Loggia Spot Switch",
+      "accessory": "HTTP-SWITCH",
+      "debug": false,
+      "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Loggia/1/Switch On",
+      "offUrl": "http://192.168.1.12:9000/loxone/execute/light/Loggia/1/Switch Off"
+    },
+    {
+      "timeout": 1000,
+      "switchType": "stateless",
+      "name": "Recover HUE",
+      "accessory": "HTTP-SWITCH",
+      "onUrl": [
+        "http://192.168.1.12:9000/loxone/execute/light/Wohnzimmer/1/Switch On",
+        "http://192.168.1.12:9000/loxone/execute/light/Wohnzimmer/2/Switch On"
+      ]
+    },
+    {
+      "timeout": 1000,
+      "switchType": "stateless",
+      "name": "All Lights Off",
+      "accessory": "HTTP-SWITCH",
+      "onUrl": [
+        "http://192.168.1.12:9000/loxone/execute/light/Küche/1/Switch Off",
+        "http://192.168.1.12:9000/loxone/execute/light/Küche/2/Switch Off",
+        "http://192.168.1.12:9000/loxone/execute/light/Entrée/1/Switch Off",
+        "http://192.168.1.12:9000/loxone/execute/light/Loggia/1/Switch Off"
+      ]
+    },
+    {
+      "statusUrl": "http://192.168.1.12:9002/loxone/state/ventilation/Zimmer 1/1",
+      "switchType": "stateful",
+      "name": "Bedroom Vent Switch",
+      "offUrl": "http://192.168.1.12:9002/loxone/execute/ventilation/Zimmer 1/1/0",
+      "onUrl": "http://192.168.1.12:9002/loxone/execute/ventilation/Zimmer 1/1/1",
+      "accessory": "HTTP-SWITCH"
+    },
+    {
+      "timeout": 1000,
+      "switchType": "stateless",
+      "name": "Bedroom Vent Level 1",
+      "accessory": "HTTP-SWITCH",
+      "onUrl": "http://192.168.1.12:9002/loxone/execute/ventilation/Zimmer 1/1/1"
+    },
+    {
+      "timeout": 1000,
+      "switchType": "stateless",
+      "name": "Livingroom Vent Level 1",
+      "accessory": "HTTP-SWITCH",
+      "onUrl": "http://192.168.1.12:9002/loxone/execute/ventilation/Wohnzimmer/1/1"
+    },
+    {
+      "timeout": 1000,
+      "switchType": "stateless",
+      "name": "Bedroom Vent Level 2",
+      "accessory": "HTTP-SWITCH",
+      "onUrl": "http://192.168.1.12:9002/loxone/execute/ventilation/Zimmer 1/1/2"
+    },
+    {
+      "timeout": 1000,
+      "switchType": "stateless",
+      "name": "Livingroom Vent Level 2",
+      "accessory": "HTTP-SWITCH",
+      "onUrl": "http://192.168.1.12:9002/loxone/execute/ventilation/Wohnzimmer/1/2"
+    },
+    {
+      "statusUrl": "http://192.168.1.12:9002/loxone/state/ventilation/Wohnzimmer/1",
+      "switchType": "stateful",
+      "name": "Livingroom Vent Switch",
+      "offUrl": "http://192.168.1.12:9002/loxone/execute/ventilation/Wohnzimmer/1/0",
+      "onUrl": "http://192.168.1.12:9002/loxone/execute/ventilation/Wohnzimmer/1/1",
+      "accessory": "HTTP-SWITCH"
+    },
+    {
+      "ipaddress": "192.168.1.238",
+      "binContactSensor": true,
+      "dockingContactSensor": true,
+      "dockContactSensor": true,
+      "homeSwitch": true,
+      "accessory": "Roomba2",
+      "model": "Roomba i7+",
+      "blid": "F7C92DAB97714B14A45A2A2D72EF5962",
+      "runningContactSensor": true,
+      "_bridge": {
+        "username": "0E:26:AD:8A:3B:54",
+        "port": 53661
+      },
+      "name": "Roomba",
+      "robotpwd": ":1:1601310401:R9K0eyhH97dQhk39",
+      "stopBehaviour": "home"
+    }
+  ],
+  "platforms": [
+    {
+      "port": 8581,
+      "name": "Config",
+      "platform": "config"
+    },
+    {
+      "hideWelcomeMessage": true,
+      "name": "Broadlink RM",
+      "accessories": [
+        {
+          "type": "switch",
+          "enableAutoOff": true,
+          "data": [
+            {
+              "data": "2600c60026112a0e2a0e2a0e0e2911270e290e2a10280e292a0e0e2a0e2928100e2a27112a0e2a0e0e292a0e2a0e290f0e2a2a0e290f0e29290f0e2a290f0e290e2a290003ce2710290f290f290f0e2a0e290e2a0e2a0e290e2a290f0e290e2a290f0e29290f290f290f0e2a290f290f290f0e29290f290f1028290f0e29290f0e2a0e29290003ce27112711271127110e290f290f280f290e2a0f2827110e2a0e2927110e2a2711271127110e292711271127110e2a271127110e2927110f2927110e290e2a27000d05"
+            }
+          ],
+          "name": "Canvas Rise",
+          "onDuration": 1.5
+        },
+        {
+          "type": "switch",
+          "enableAutoOff": true,
+          "data": [
+            {
+              "pause": 34.5,
+              "data": "2600c60027102810281127110f27112711261127112728110f271226112629110f2728102810281028110f2728102810281110272810281010271127281010271127280003ce2a102610271127111127112612261127112627130f27102712262711102727112810271127130f2727112711271110272711271111271027271111271027270003d127102810281028110f27112710271226112728110f271127112629110f27281028102810281010272711281027111127271127120f27112727111027112727000d05"
+            },
+            {
+              "data": "2600c60026112711271127110f2810280f290e290e2a0f28102827110f28281010282711271127110f29102727112711102810271028271127112711271110270e2a100003e62711271127112711102711271027112710281027112727111027271111272711271127111027102827112711102711271028271127102810271110281027100003e7271127112711271011271028102710281027112710282710112727130e28271127112710112710282711271110271028102727112711271127111028102710000d05"
+            }
+          ],
+          "name": "Canvas Decline",
+          "onDuration": 1.5
+        },
+        {
+          "type": "tv",
+          "name": "Projector",
+          "data": {
+            "remote": {
+              "info": "260058000001269213361312131113111311131113121336133613361311131213111311131113111337123713111336131113121311133613111311133713111336133613361312130005c20001284813000c4f0001274913000d050000000000000000000000000000",
+              "back": "260050000001279114351411131113111311131114111336133613361410141113111311131113111436131113111311131114351436131113111336143613361336131114101436130005c30001274814000d05000000000000",
+              "arrowDown": "260050000001279114351411131114101410141014111336143514351410141113111410141014101435141114351410141014351436141014101435141113361435131113111337130005c20001284813000d05000000000000",
+              "select": "260050000001269213361311131213111311131113111337133613361311131114111311131113111311143613111311131113361436131113361311133614361336131113111336140005c20001284813000d05000000000000",
+              "arrowUp": "260050000001269313361311131113111312131113111336133613371311131113111311131212121336133613111312131113361336131113121212133613361336131213111336130005c40001264913000d05000000000000",
+              "arrowLeft": "260050000001269213361311141113111311131113111435143613361311131114111311131113111311133614361311131113361435141113361311131114351436131113111336140005c20001284813000d05000000000000",
+              "exit": "260050000001279114351411141014101410141014101436143514351410141113111410141014101410141114101410141014351436141014351435143514361435141014101436130005c20001294714000d05000000000000",
+              "playPause": "260050000001269213361311131213111311131113111337133613361311131114111311131113111311143613111311131113361436131113361311133614361336131113111336140005c20001284813000d05000000000000",
+              "arrowRight": "260050000001269214361311131113111311141113111336133613361411131113111311131114111311131113361311141113361336131113361436131113361336131114111336130005c30001274913000d05000000000000"
+            },
+            "on": "260058000001269313361311131114101411131113111336133614361311131113111311141113111311133613111411131113111311133614351411133613361435143613361311130005c30001284813000c4e0001284813000d050000000000000000000000000000",
+            "inputs": [
+              {
+                "data": "HEX...",
+                "name": "INPUT 1",
+                "type": "hdmi"
+              }
+            ],
+            "powerMode": {
+              "show": "260058000001269213361312131113111311131113121336133613361311131213111311131113111337123713111336131113121311133613111311133713111336133613361312130005c20001284813000c4f0001274913000d050000000000000000000000000000"
+            },
+            "volume": {
+              "up": "260050000001269213361311141113111311131113111435143613361311131114111311131113111311141014111311131113361410141113361336133614361336131113361336140005c20001284813000d05000000000000",
+              "down": "260050000001279213361311131114111311131113111336143514361311131113111411131113111336131114101411131113361311131114111336133613361435141113361336130005c30001284813000d05000000000000"
+            },
+            "off": "260058000001269313361311131114101411131113111336133614361311131113111311141113111311133613111411131113111311133614351411133613361435143613361311130005c30001284813000c4e0001284813000d050000000000000000000000000000"
+          }
+        }
+      ],
+      "platform": "BroadlinkRM",
+      "hideLearnButton": true,
+      "hideScanFrequencyButton": true
+    },
+    {
+      "disableVolumeControlRemote": false,
+      "discover": {
+        "multicast": true,
+        "blacklist": [],
+        "unicast": []
+      },
+      "logLevel": 3,
+      "remoteKeysAsSwitch": ["turn_off", "turn_on"],
+      "deviceStateDelay": 0,
+      "avadaKedavraAppAmount": 15,
+      "mediaTypes": ["music", "video"],
+      "deviceStates": ["idle", "paused", "playing"],
+      "_bridge": {
+        "port": 39253,
+        "username": "0E:3C:6D:5A:8D:DB"
+      },
+      "name": "Apple TV Enhanced",
+      "forceVenvRecreate": false,
+      "customInputURIs": [],
+      "platform": "AppleTVEnhanced"
+    }
+  ],
+  "bridge": {
+    "username": "0E:D4:76:4A:AF:7D",
+    "name": "Homebridge AF7D",
+    "port": 51678,
+    "pin": "669-06-645",
+    "advertiser": "avahi"
+  }
+}

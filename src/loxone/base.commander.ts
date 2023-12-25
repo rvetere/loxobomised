@@ -10,16 +10,35 @@ export class BaseCommander {
     this.controller = controller;
     this.category = category;
     this.getState = this.getState.bind(this);
+    this.getStateOfBlock = this.getStateOfBlock.bind(this);
   }
 
-  async getState(room: string, blockIndex: string) {
+  async getState(room: string, blockIndex: string, query: Record<string, any>) {
     const page = this.controller.getPage();
     if (!page) {
       throw new Error(`🚨 Puppeteer page not available! 🚨`);
     }
 
     const puppet = new PuppetSimple(this.controller, page, this.category, room, {});
-    const index = parseInt(blockIndex, 10);
+    const blockIndexes = blockIndex.includes(",") ? blockIndex.split(",") : [blockIndex];
+    const allStates: boolean[] = [];
+    for (const indexStr of blockIndexes) {
+      const index = parseInt(indexStr, 10);
+      const state = await this.getStateOfBlock(puppet, index);
+      allStates.push(state);
+    }
+    if (allStates.length === 1) {
+      return allStates[0];
+    }
+
+    if (!!query.mode && query.mode === "or") {
+      return allStates.some((state) => state);
+    }
+
+    return allStates.every((state) => state);
+  }
+
+  async getStateOfBlock(puppet: PuppetSimple, index: number) {
     switch (this.category) {
       case LoxoneCategoryEnum.light: {
         const state = await puppet.getLightStateOfBlock(index);

@@ -131,7 +131,7 @@ export class LoxoneController {
     const commander = this.getCommander(device as CommandType, "direct");
     if (commander) {
       try {
-        const isOn = await commander.getState(room, blockIndex);
+        const isOn = await commander.getState(room, blockIndex, req.query);
         return res.send(isOn ? "1" : "0");
       } catch (e: any) {
         console.error(e);
