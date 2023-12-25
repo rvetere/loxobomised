@@ -10,10 +10,13 @@ const percentToInt = (percent: string) =>
     10
   );
 
-export const getDataPercent = async (container: ElementHandle<Node>, closedText = "Closed") => {
+export const getDataPercent = async (container: ElementHandle<Node>) => {
   const texts = await container.$$eval("div", (divs) => divs.map((div) => div.innerText));
+
   const textWithPercent = texts.find((text) => text.includes("%"));
-  const textClosed = texts.find((text) => text.includes(closedText));
+  const textClosedJalousie = texts.find((text) => text.includes("Closed"));
+  const textClosedAwning = texts.find((text) => text.includes("Fully extended"));
+  const textClosed = textClosedJalousie || textClosedAwning;
 
   return textWithPercent ? percentToInt(textWithPercent) : textClosed ? 100 : 0;
 };

@@ -253,7 +253,7 @@ export class PuppetJalousie extends PuppetBase {
 
     await this.stopIfStillMoving(blockIndex, activeTimer, "awning");
 
-    const currentPercent = await getDataPercent(container, "Fully extended");
+    const currentPercent = await getDataPercent(container);
     const steps = percentToSet - currentPercent;
     const action = steps > 0 ? "Fully Out" : "Fully In";
 

@@ -131,7 +131,7 @@
       "accessory": "HTTP-SWITCH",
       "onUrl": [
         "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2/80?tilt=tilted",
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/2/50"
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/0,50"
       ]
     },
     {
@@ -142,19 +142,27 @@
       "onUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2/60?tilt=tilted"
     },
     {
-      "statusUrl": "http://192.168.1.12:9001/loxone/state/jalousie/Wohnzimmer/2",
       "switchType": "stateful",
       "name": "Office Blinds",
       "offUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2/0?tilt=closed",
       "onUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2/100?tilt=closed",
+      "statusUrl": "http://192.168.1.12:9001/loxone/state/jalousie/Wohnzimmer/2",
       "accessory": "HTTP-SWITCH"
     },
     {
-      "statusUrl": "http://192.168.1.12:9001/loxone/state/jalousie/Wohnzimmer/5",
       "switchType": "stateful",
       "name": "Office Loggia Blinds",
       "offUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/5/0?tilt=closed&type=window-big",
       "onUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/5/47?tilt=closed&type=window-big",
+      "statusUrl": "http://192.168.1.12:9001/loxone/state/jalousie/Wohnzimmer/5",
+      "accessory": "HTTP-SWITCH"
+    },
+    {
+      "switchType": "stateful",
+      "name": "Loggia Blinds",
+      "offUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/0",
+      "onUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/100",
+      "statusUrl": "http://192.168.1.12:9001/loxone/state/jalousie/Loggia/1,2",
       "accessory": "HTTP-SWITCH"
     },
     {
