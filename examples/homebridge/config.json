@@ -7,7 +7,7 @@
       "accessory": "HTTP-SWITCH",
       "onUrl": [
         "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2,3/0,0?tilt=closed",
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/0?tilt=closed&type=window-big",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4,5/0?tilt=closed&type=window-big",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/0?tilt=closed",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/0,0",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Zimmer 1/1/0?tilt=closed"
@@ -49,7 +49,8 @@
         "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/3/100?tilt=closed",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/100?tilt=closed&type=window-big",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/100?tilt=closed",
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2/80?tilt=tilted",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2/100?tilt=closed",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Zimmer 1/1/0?tilt=closed",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/100,100"
       ]
     },
@@ -62,6 +63,7 @@
         "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2,3/0,0?tilt=closed",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/0?tilt=closed&type=window-big",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/0?tilt=closed",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Zimmer 1/1/0?tilt=closed",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/0,0"
       ]
     },
@@ -76,6 +78,13 @@
     {
       "timeout": 1000,
       "switchType": "stateless",
+      "name": "Livingroom Loggia Blinds Tilted",
+      "onUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/100?tilt=open",
+      "accessory": "HTTP-SWITCH"
+    },
+    {
+      "timeout": 1000,
+      "switchType": "stateless",
       "name": "Privacy On",
       "accessory": "HTTP-SWITCH",
       "onUrl": [
@@ -84,7 +93,8 @@
         "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/100?tilt=tilted&type=window-big",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/100?tilt=closed",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Zimmer 1/1/100?tilt=tilted",
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/100,60"
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1/100",
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/2/60"
       ]
     },
     {
@@ -96,8 +106,7 @@
         "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2,3/50,66?tilt=tilted",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/100?tilt=open&type=window-big",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/50?tilt=tilted",
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Zimmer 1/1/33?tilt=open",
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/20,40"
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Zimmer 1/1/33?tilt=open"
       ]
     },
     {
@@ -210,6 +219,14 @@
       "accessory": "HTTP-SWITCH"
     },
     {
+      "statusUrl": "http://192.168.1.12:9000/loxone/state/light/Wohnzimmer/3",
+      "switchType": "stateful",
+      "name": "Livingroom Plug Switch",
+      "offUrl": "http://192.168.1.12:9000/loxone/execute/light/Wohnzimmer/3/Switch Off",
+      "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Wohnzimmer/3/Switch On",
+      "accessory": "HTTP-SWITCH"
+    },
+    {
       "statusUrl": "http://192.168.1.12:9000/loxone/state/light/Entrée/1",
       "switchType": "stateful",
       "name": "Entrance Spot Switch",
@@ -252,7 +269,6 @@
       "switchType": "stateful",
       "name": "Loggia Spot Switch",
       "accessory": "HTTP-SWITCH",
-      "debug": false,
       "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Loggia/1/Switch On",
       "offUrl": "http://192.168.1.12:9000/loxone/execute/light/Loggia/1/Switch Off"
     },
@@ -343,8 +359,12 @@
   ],
   "platforms": [
     {
-      "port": 8581,
       "name": "Config",
+      "port": 8581,
+      "auth": "form",
+      "theme": "dark-mode",
+      "tempUnits": "c",
+      "lang": "auto",
       "platform": "config"
     },
     {
@@ -359,7 +379,7 @@
               "data": "2600c60026112a0e2a0e2a0e0e2911270e290e2a10280e292a0e0e2a0e2928100e2a27112a0e2a0e0e292a0e2a0e290f0e2a2a0e290f0e29290f0e2a290f0e290e2a290003ce2710290f290f290f0e2a0e290e2a0e2a0e290e2a290f0e290e2a290f0e29290f290f290f0e2a290f290f290f0e29290f290f1028290f0e29290f0e2a0e29290003ce27112711271127110e290f290f280f290e2a0f2827110e2a0e2927110e2a2711271127110e292711271127110e2a271127110e2927110f2927110e290e2a27000d05"
             }
           ],
-          "name": "Canvas Rise",
+          "name": "Projector Rise Canvas",
           "onDuration": 1.5
         },
         {
@@ -367,75 +387,93 @@
           "enableAutoOff": true,
           "data": [
             {
-              "pause": 34.5,
+              "pause": 35,
               "data": "2600c60027102810281127110f27112711261127112728110f271226112629110f2728102810281028110f2728102810281110272810281010271127281010271127280003ce2a102610271127111127112612261127112627130f27102712262711102727112810271127130f2727112711271110272711271111271027271111271027270003d127102810281028110f27112710271226112728110f271127112629110f27281028102810281010272711281027111127271127120f27112727111027112727000d05"
             },
             {
               "data": "2600c60026112711271127110f2810280f290e290e2a0f28102827110f28281010282711271127110f29102727112711102810271028271127112711271110270e2a100003e62711271127112711102711271027112710281027112727111027271111272711271127111027102827112711102711271028271127102810271110281027100003e7271127112711271011271028102710281027112710282710112727130e28271127112710112710282711271110271028102727112711271127111028102710000d05"
             }
           ],
-          "name": "Canvas Decline",
+          "name": "Projector Decline Canvas",
           "onDuration": 1.5
         },
         {
-          "type": "tv",
-          "name": "Projector",
-          "data": {
-            "remote": {
-              "info": "260058000001269213361312131113111311131113121336133613361311131213111311131113111337123713111336131113121311133613111311133713111336133613361312130005c20001284813000c4f0001274913000d050000000000000000000000000000",
-              "back": "260050000001279114351411131113111311131114111336133613361410141113111311131113111436131113111311131114351436131113111336143613361336131114101436130005c30001274814000d05000000000000",
-              "arrowDown": "260050000001279114351411131114101410141014111336143514351410141113111410141014101435141114351410141014351436141014101435141113361435131113111337130005c20001284813000d05000000000000",
-              "select": "260050000001269213361311131213111311131113111337133613361311131114111311131113111311143613111311131113361436131113361311133614361336131113111336140005c20001284813000d05000000000000",
-              "arrowUp": "260050000001269313361311131113111312131113111336133613371311131113111311131212121336133613111312131113361336131113121212133613361336131213111336130005c40001264913000d05000000000000",
-              "arrowLeft": "260050000001269213361311141113111311131113111435143613361311131114111311131113111311133614361311131113361435141113361311131114351436131113111336140005c20001284813000d05000000000000",
-              "exit": "260050000001279114351411141014101410141014101436143514351410141113111410141014101410141114101410141014351436141014351435143514361435141014101436130005c20001294714000d05000000000000",
-              "playPause": "260050000001269213361311131213111311131113111337133613361311131114111311131113111311143613111311131113361436131113361311133614361336131113111336140005c20001284813000d05000000000000",
-              "arrowRight": "260050000001269214361311131113111311141113111336133613361411131113111311131114111311131113361311141113361336131113361436131113361336131114111336130005c30001274913000d05000000000000"
-            },
-            "on": "260058000001269313361311131114101411131113111336133614361311131113111311141113111311133613111411131113111311133614351411133613361435143613361311130005c30001284813000c4e0001284813000d050000000000000000000000000000",
-            "inputs": [
-              {
-                "data": "HEX...",
-                "name": "INPUT 1",
-                "type": "hdmi"
-              }
-            ],
-            "powerMode": {
-              "show": "260058000001269213361312131113111311131113121336133613361311131213111311131113111337123713111336131113121311133613111311133713111336133613361312130005c20001284813000c4f0001274913000d050000000000000000000000000000"
-            },
-            "volume": {
-              "up": "260050000001269213361311141113111311131113111435143613361311131114111311131113111311141014111311131113361410141113361336133614361336131113361336140005c20001284813000d05000000000000",
-              "down": "260050000001279213361311131114111311131113111336143514361311131113111411131113111336131114101411131113361311131114111336133613361435141113361336130005c30001284813000d05000000000000"
-            },
-            "off": "260058000001269313361311131114101411131113111336133614361311131113111311141113111311133613111411131113111311133614351411133613361435143613361311130005c30001284813000c4e0001284813000d050000000000000000000000000000"
-          }
+          "type": "switch",
+          "enableAutoOff": true,
+          "data": [
+            {
+              "data": "260050000001269213361311141113111311131113111435143613361311131114111311131113111311141014111311131113361410141113361336133614361336131113361336140005c20001284813000d05000000000000",
+              "sendCount": 50,
+              "interval": 0.2
+            }
+          ],
+          "name": "Projector Light Restore",
+          "onDuration": 1.5
+        },
+        {
+          "type": "switch",
+          "enableAutoOff": true,
+          "data": [
+            {
+              "data": "260050000001269213361311141113111311131113111435143613361311131114111311131113111311141014111311131113361410141113361336133614361336131113361336140005c20001284813000d05000000000000",
+              "sendCount": 25,
+              "interval": 0.2
+            }
+          ],
+          "name": "Projector Raise Light",
+          "onDuration": 1.5
+        },
+        {
+          "type": "switch",
+          "enableAutoOff": true,
+          "data": [
+            {
+              "data": "260050000001279213361311131114111311131113111336143514361311131113111411131113111336131114101411131113361311131114111336133613361435141113361336130005c30001284813000d05000000000000",
+              "sendCount": 25,
+              "interval": 0.2
+            }
+          ],
+          "name": "Projector Lower Light",
+          "onDuration": 1.5
         }
       ],
       "platform": "BroadlinkRM",
       "hideLearnButton": true,
-      "hideScanFrequencyButton": true
+      "hideScanFrequencyButton": true,
+      "_bridge": {
+        "username": "0E:15:6E:B4:33:45",
+        "port": 38589
+      }
     },
     {
-      "disableVolumeControlRemote": false,
-      "discover": {
-        "multicast": true,
-        "blacklist": [],
-        "unicast": []
-      },
-      "logLevel": 3,
-      "remoteKeysAsSwitch": ["turn_off", "turn_on"],
-      "deviceStateDelay": 0,
-      "avadaKedavraAppAmount": 15,
       "mediaTypes": ["music", "video"],
       "deviceStates": ["idle", "paused", "playing"],
-      "_bridge": {
-        "port": 39253,
-        "username": "0E:3C:6D:5A:8D:DB"
+      "remoteKeysAsSwitch": ["turn_off", "turn_on"],
+      "customInputURIs": [],
+      "discover": {
+        "unicast": ["192.168.1.186"],
+        "blacklist": [],
+        "multicast": true
       },
       "name": "Apple TV Enhanced",
+      "deviceStateDelay": 0,
+      "avadaKedavraAppAmount": 15,
+      "disableVolumeControlRemote": false,
       "forceVenvRecreate": false,
-      "customInputURIs": [],
+      "logLevel": 3,
+      "_bridge": {
+        "username": "0E:3C:6D:5A:8D:DB",
+        "port": 39253
+      },
       "platform": "AppleTVEnhanced"
+    },
+    {
+      "port": 8182,
+      "_bridge": {
+        "username": "0E:C0:05:53:77:36",
+        "port": 44376
+      },
+      "platform": "HomebridgeAndroidTV"
     }
   ],
   "bridge": {

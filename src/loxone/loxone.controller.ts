@@ -57,7 +57,7 @@ export class LoxoneController {
     this.resetTimer = setTimeout(this.resetRequestCounter, 1000 * 4);
 
     const counter = this.requestCounter[category] || 0;
-    const delay = counter * (category === "shades" ? 1800 : 350);
+    const delay = counter * (category === "jalousie-overlay" ? 1800 : 350);
     return {
       delay: delay,
       formattedDate: `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}.${now.getMilliseconds()}`,
