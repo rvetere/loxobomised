@@ -106,8 +106,7 @@
         "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/100?tilt=open&type=window-big",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/50?tilt=tilted",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Zimmer 1/1/33?tilt=open",
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1/20",
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/2/40"
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/20,40"
       ]
     },
     {

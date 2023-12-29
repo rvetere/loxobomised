@@ -61,7 +61,7 @@ export class PuppetBase {
   closeOverlay = async () => {
     // close overlay controls
     await this.page.keyboard.press("Escape");
-    await sleep(500);
+    await sleep(800);
 
     // check if we still can find the "category-room" combo on the page
     const containerXPath = `//div[contains(text(),'${decodeURIComponent(this.room)}')]`;
