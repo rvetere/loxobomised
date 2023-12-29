@@ -93,6 +93,7 @@
         "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/100?tilt=tilted&type=window-big",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/100?tilt=closed",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Zimmer 1/1/100?tilt=tilted",
+        "delay(3000)",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/100,60"
       ]
     },
@@ -105,6 +106,7 @@
         "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/100?tilt=open&type=window-big",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/50?tilt=tilted",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Zimmer 1/1/33?tilt=open",
+        "delay(3000)",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/20,40"
       ]
     },
