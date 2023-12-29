@@ -252,12 +252,12 @@ export class PuppetJalousie extends PuppetBase {
     let timer: NodeJS.Timeout | null = null;
     const container = await this.getContainer(blockIndex);
     if (!container) {
-      return { delay: 0 };
+      return { delay: 0, timer };
     }
     const safetyShutdown = await isSafetyShutdown(container);
     if (safetyShutdown) {
       console.log(`🚨 Awning is in safety shutdown mode!`);
-      return { delay: 0 };
+      return { delay: 0, timer };
     }
 
     await this.stopIfStillMoving(blockIndex, activeTimer, "awning");

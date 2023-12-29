@@ -97,10 +97,9 @@
       ]
     },
     {
-      "timeout": 1000,
-      "switchType": "stateless",
-      "name": "Easy Shades",
       "accessory": "HTTP-SWITCH",
+      "name": "Easy Shades",
+      "switchType": "stateless",
       "onUrl": [
         "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2,3/50,66?tilt=tilted",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/100?tilt=open&type=window-big",

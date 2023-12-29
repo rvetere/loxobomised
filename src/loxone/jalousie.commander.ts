@@ -41,6 +41,7 @@ export class JalousieCommander extends BaseCommander {
     const puppet = new PuppetJalousie(this.controller, page, this.category, room, query);
     const blockIndexes = blockIndex.includes(",") ? blockIndex.split(",") : [blockIndex];
     const values = givenValue.includes(",") ? givenValue.split(",") : [givenValue];
+    const delays: number[] = [];
     for (const indexStr of blockIndexes) {
       const index = parseInt(indexStr, 10);
       const value = values[index] ? values[index] : values[0];
@@ -48,7 +49,7 @@ export class JalousieCommander extends BaseCommander {
       const activeTimer = this.activeTimers.find(
         (at) => at.room === room && at.blockIndex === index
       )?.timer;
-      const { timer } = !!query.tilt
+      const { delay, timer } = !!query.tilt
         ? await puppet.controlJalousie(
             index,
             {
@@ -66,6 +67,7 @@ export class JalousieCommander extends BaseCommander {
             this.removeActiveTimer
           );
 
+      delays.push(delay);
       if (timer) {
         this.activeTimers.push({
           timer,
@@ -73,8 +75,9 @@ export class JalousieCommander extends BaseCommander {
           blockIndex: index,
         });
       }
-
       await sleep(2000);
     }
+    // sleep for the longest delay
+    await sleep(Math.max(...delays));
   }
 }
