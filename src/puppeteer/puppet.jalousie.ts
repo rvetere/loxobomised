@@ -157,7 +157,12 @@ export class PuppetJalousie extends PuppetBase {
     if (!container) {
       return { delay: 0, timer };
     }
-    await this.stopIfStillMoving(blockIndex, activeTimer);
+    const isActiveNow = await isJalousieActive(container);
+    if (isActiveNow) {
+      console.log(`🚨 Jalousie still moving, return!"${this.room}:${blockIndex}"`);
+      return { delay: 0, timer };
+    }
+    // await this.stopIfStillMoving(blockIndex, activeTimer);
 
     const currentPercent = await getDataPercent(container);
 
