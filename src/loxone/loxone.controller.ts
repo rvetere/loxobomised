@@ -58,7 +58,7 @@ export class LoxoneController {
     this.resetTimer = setTimeout(this.resetRequestCounter, 1000 * 4);
 
     const counter = this.requestCounter[key] || 0;
-    const additionalDelay = device === "jalousie" && type === "overlay" ? 3000 : 700;
+    const additionalDelay = device === "jalousie" && type === "overlay" ? 1800 : 700;
     const delay = counter * additionalDelay;
     return {
       delay: delay,
