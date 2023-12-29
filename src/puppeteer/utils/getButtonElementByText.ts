@@ -5,8 +5,10 @@ export const getButtonElementByText = async (page: Page, text: string) => {
   if (elements.length) {
     if (elements.length === 1) {
       return elements[0] as ElementHandle<Element>;
+    } else if (elements.length === 2) {
+      return elements[1] as ElementHandle<Element>;
     }
-    throw new Error(`Found more than one element with text ${text}!`);
+    throw new Error(`Found more than two elements with text ${text}!`);
   }
   return null;
 };
