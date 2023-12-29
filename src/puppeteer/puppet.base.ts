@@ -10,6 +10,7 @@ import { getPlusOrMinusElementInPage } from "./utils/getPlusOrMinusElement";
 import { getToggleButton } from "./utils/getToggleButton";
 import { navigate } from "./utils/navigate";
 import type { LoxoneCategoryEnum } from "src/types";
+import { getCloseElement } from "./utils/getCloseElement";
 
 export class PuppetBase {
   page: Page;
@@ -58,30 +59,6 @@ export class PuppetBase {
     return container as ElementHandle<Element>;
   };
 
-  closeOverlay = async () => {
-    // close overlay controls
-    await this.page.keyboard.press("Escape");
-    await sleep(800);
-
-    // check if we still can find the "category-room" combo on the page
-    const containerXPath = `//div[contains(text(),'${decodeURIComponent(this.room)}')]`;
-    const [container] = await this.page.$x(containerXPath);
-    if (!container) {
-      // if not found, we navigated back to the overview page and need to move back to the category!
-      console.error(`🚨 Landed on wrong page after closing overlay!`);
-      await navigate(this.page, this.category.toString(), "Kategorien");
-      const [containerTurnover] = await this.page.$x(containerXPath);
-      if (!containerTurnover) {
-        // refresh page and login again
-        await this.controller.refreshLogin();
-        const [containerTurnover2] = await this.page.$x(containerXPath);
-        return containerTurnover2;
-      }
-
-      return containerTurnover;
-    }
-  };
-
   clickOverlayPlusMinusOfBlock = async (blockIndex: number, percentToSet: number) => {
     const container = await this.getContainer(blockIndex);
     if (!container) {
@@ -96,16 +73,18 @@ export class PuppetBase {
       // just click on the first button found in the container, this will open the overlay controls
       const button = await getButtonInElement(container, 0);
       Logger.log(`   Click button to open overlay...`);
-      await clickElement(button, 500);
+      await clickElement(button);
+      const closeButton = await getCloseElement(this.page);
+      if (closeButton) {
+        // click "plus" or "minus" button as many times possible to get it to the desired percent (each click moves it by 10%)
+        for (let i = 0; i < toPositive(steps); i++) {
+          const actionButton = await getPlusOrMinusElementInPage(this.page, variant);
+          Logger.log(`   Click action of clickOverlayPlusMinusOfBlock...`);
+          await clickElement(actionButton);
+        }
 
-      // click "plus" or "minus" button as many times possible to get it to the desired percent (each click moves it by 10%)
-      for (let i = 0; i < toPositive(steps); i++) {
-        const actionButton = await getPlusOrMinusElementInPage(this.page, variant);
-        Logger.log(`   Click action of clickOverlayPlusMinusOfBlock...`);
-        await clickElement(actionButton, 500);
+        await clickElement(closeButton);
       }
-
-      await this.closeOverlay();
     }
   };
 
