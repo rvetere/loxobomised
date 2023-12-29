@@ -238,7 +238,7 @@ export class PuppetJalousie extends PuppetBase {
           delay: 800,
         });
       } else {
-        await this.clickAwningOverlayActionOfBlock(blockIndex, "In");
+        await this.clickAwningOverlayActionOfBlock(blockIndex, "Fully In");
       }
     }
   };
