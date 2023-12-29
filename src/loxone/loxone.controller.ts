@@ -41,14 +41,15 @@ export class LoxoneController {
     this.requestCounter = {};
   }
 
-  private rampUp(category: string) {
+  private rampUp(device: CommandType, type: ControllerType) {
+    const key = `${device}-${type}`;
     const now = new Date();
     const time = now.getTime();
     const ellapsedMs = this.requestTstamp ? time - this.requestTstamp : 200;
     this.requestTstamp = time;
 
     if (ellapsedMs < 200) {
-      this.requestCounter[category] = (this.requestCounter[category] || 0) + 1;
+      this.requestCounter[key] = (this.requestCounter[key] || 0) + 1;
     }
 
     if (this.resetTimer) {
@@ -56,8 +57,9 @@ export class LoxoneController {
     }
     this.resetTimer = setTimeout(this.resetRequestCounter, 1000 * 4);
 
-    const counter = this.requestCounter[category] || 0;
-    const delay = counter * (category === "jalousie-overlay" ? 1800 : 350);
+    const counter = this.requestCounter[key] || 0;
+    const additionalDelay = device === "jalousie" && type === "overlay" ? 1800 : 700;
+    const delay = counter * additionalDelay;
     return {
       delay: delay,
       formattedDate: `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}.${now.getMilliseconds()}`,
@@ -164,9 +166,10 @@ export class LoxoneController {
       type = "overlay";
     }
 
-    const commander = this.getCommander(device as CommandType, type);
+    const deviceType = device as CommandType;
+    const commander = this.getCommander(deviceType, type);
     if (commander) {
-      const { formattedDate, delay } = this.rampUp(`${device}-${type}`);
+      const { formattedDate, delay } = this.rampUp(deviceType, type);
       console.log(
         `🤖 [${formattedDate}] Executing command "${room}(${device}) [${blockIndex}], ${type}" with delay: ${delay}ms`
       );
