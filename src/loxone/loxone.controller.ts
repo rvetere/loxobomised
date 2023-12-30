@@ -58,7 +58,7 @@ export class LoxoneController {
     this.resetTimer = setTimeout(this.resetRequestCounter, 1000 * 4);
 
     const counter = this.requestCounter[key] || 0;
-    const additionalDelay = device === "jalousie" && type === "overlay" ? 1800 : 700;
+    const additionalDelay = 800;
     const delay = counter * additionalDelay;
     return {
       delay: delay,
@@ -156,13 +156,11 @@ export class LoxoneController {
 
     const { room, device, blockIndex, value } = req.params;
 
-    // jalousie with blinds and on-off toggles of lights can be controlled trough directly, without opening overlays
+    // we control everything "directly", without opening overlay controls (...acting with overlay controls causes a LOT of issues!)
     let type: ControllerType = "direct";
-    if (device === "jalousie" && !req.query.tilt) {
-      // no "?tilt=n" means it is a "awning" which can only be controlled trough overlay controls
-      type = "overlay";
-    } else if (device === "light" && !isNaN(parseInt(value))) {
-      // if value is a number, it is a dimmer which can only be controlled trough overlay controls
+    if (device === "light" && !isNaN(parseInt(value))) {
+      // if the device is a light and the value is a number (percent)
+      // -> then it's a dimmer which can only be controlled trough overlay controls
       type = "overlay";
     }
 

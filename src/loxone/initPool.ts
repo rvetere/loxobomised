@@ -22,12 +22,13 @@ export async function initPool() {
 
   for (let category of categories) {
     let instanceForDirectControls = new PuppeteerController(category as LoxoneCategoryEnum);
-    let instanceForOverlayControls = new PuppeteerController(
-      category as LoxoneCategoryEnum,
-      "overlay"
-    );
+    let instanceForOverlayControls = null;
 
-    if (category !== LoxoneCategoryEnum.ventilation) {
+    if (category !== LoxoneCategoryEnum.ventilation && category !== LoxoneCategoryEnum.jalousie) {
+      instanceForOverlayControls = new PuppeteerController(
+        category as LoxoneCategoryEnum,
+        "overlay"
+      );
       await instanceForOverlayControls.init();
       instances.push(instanceForOverlayControls);
     }

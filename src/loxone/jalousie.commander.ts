@@ -60,7 +60,7 @@ export class JalousieCommander extends BaseCommander {
             activeTimer,
             this.removeActiveTimer
           )
-        : await puppet.controlAwningWithOverlayAction(
+        : await puppet.controlAwning(
             index,
             parseInt(value, 10),
             activeTimer,

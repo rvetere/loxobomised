@@ -74,7 +74,7 @@ export class PuppeteerController {
       // random number between 0 and 60 seconds
       const randomDelay = Math.floor(Math.random() * 1000 * 60);
 
-      this.interval = setInterval(this.refreshLogin.bind(this), 1000 * 60 * 60 * 12 + randomDelay);
+      this.interval = setInterval(this.refreshLogin.bind(this), 1000 * 60 * 60 * 24 + randomDelay);
 
       this.preventStandbyInterval = setInterval(async () => {
         if (this.page) {
