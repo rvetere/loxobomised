@@ -42,6 +42,7 @@ export class JalousieCommander extends BaseCommander {
     const blockIndexes = blockIndex.includes(",") ? blockIndex.split(",") : [blockIndex];
     const values = givenValue.includes(",") ? givenValue.split(",") : [givenValue];
     const delays: number[] = [];
+    let i = 0;
     for (const indexStr of blockIndexes) {
       const index = parseInt(indexStr, 10);
       const value = values[index] ? values[index] : values[0];
@@ -75,7 +76,14 @@ export class JalousieCommander extends BaseCommander {
           blockIndex: index,
         });
       }
-      await sleep(700);
+      // are there more blocks to control?
+      if (i < blockIndexes.length - 1 && timer) {
+        // then wait 2 seconds before controlling the next one
+        console.log("Waiting 2 seconds before controlling the next one");
+
+        await sleep(2000);
+      }
+      i++;
     }
     // sleep for the longest delay
     // await sleep(Math.max(...delays));
