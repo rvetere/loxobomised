@@ -112,7 +112,7 @@ export class PuppetJalousie extends PuppetBase {
       );
 
       // click action to move jalousie
-      timer = await this.clickUpDownOfBlock({
+      const { doubleClickTimer } = await this.clickUpDownOfBlock({
         ...props,
         delay,
         doubleClick: true,
@@ -131,6 +131,7 @@ export class PuppetJalousie extends PuppetBase {
           callback?.(this.room, blockIndex);
         },
       });
+      timer = doubleClickTimer;
       return { delay, timer };
     } else {
       console.log(
@@ -180,7 +181,11 @@ export class PuppetJalousie extends PuppetBase {
       console.log(
         `🕹️ Control awning "${this.room}:${blockIndex}" ${currentPercent}% -> ${percentToSet}%, no stop timer needed`
       );
-      await this.clickUpDownOfBlock(props);
+      const { isActiveNow } = await this.clickUpDownOfBlock(props);
+      if (!isActiveNow) {
+        console.log(`🚨 Action did not happen, try once more!`);
+        await this.clickUpDownOfBlock(props);
+      }
     } else if (toPositive(steps) > 3) {
       // calculate exact delay to reach "percentToSet"
       const delay = Math.floor(toPositive(steps) * getJalousieTiming("awning") * 1000);
@@ -189,7 +194,7 @@ export class PuppetJalousie extends PuppetBase {
       );
 
       // wait until jalousie is in position and stop it by clicking action again
-      timer = await this.clickUpDownOfBlock({
+      const { doubleClickTimer, isActiveNow } = await this.clickUpDownOfBlock({
         ...props,
         delay,
         doubleClick: true,
@@ -198,6 +203,20 @@ export class PuppetJalousie extends PuppetBase {
           callback?.(this.room, blockIndex);
         },
       });
+      timer = doubleClickTimer;
+      if (!isActiveNow) {
+        console.log(`🚨 Action did not happen, try once more!`);
+        const { doubleClickTimer } = await this.clickUpDownOfBlock({
+          ...props,
+          delay,
+          doubleClick: true,
+          callback: async (_afterDoubleClick, _upButton, _downButton, _container) => {
+            await sleep(400);
+            callback?.(this.room, blockIndex);
+          },
+        });
+        timer = doubleClickTimer;
+      }
 
       return { delay, timer };
     }
@@ -214,8 +233,12 @@ export class PuppetJalousie extends PuppetBase {
     reTryCounter = 0,
     callback = dummyCallback,
     jalousieType = "jalousie",
-  }: ClickUpDownOfTitleProps): Promise<NodeJS.Timeout | null> => {
-    let timer: NodeJS.Timeout | null = null;
+  }: ClickUpDownOfTitleProps): Promise<{
+    doubleClickTimer: NodeJS.Timeout | null;
+    isActiveNow: boolean;
+  }> => {
+    let isActiveNow = false;
+    let doubleClickTimer: NodeJS.Timeout | null = null;
     const container = await this.getContainer(blockIndex);
     const { upButton, downButton } = await getUpDownElement(container);
     const button = action === "up" ? upButton : downButton;
@@ -224,17 +247,17 @@ export class PuppetJalousie extends PuppetBase {
       // click action
       Logger.log(`   Click action of clickUpDownOfBlock...`);
       await clickElement(button);
-      const isActiveNow = await isJalousieActive(container);
+      isActiveNow = await isJalousieActive(container);
       this.logActivity(isActiveNow);
 
       if (doubleClick && isActiveNow) {
         // double click action by starting a timer with a delay of at least 200ms
-        timer = setTimeout(async () => {
+        doubleClickTimer = setTimeout(async () => {
           Logger.log(`   Click double click after timeout to stop motion...`);
           await clickElement(button);
           callback(true, upButton, downButton, container);
         }, delay);
-        return timer;
+        return { doubleClickTimer, isActiveNow };
       } else if (doubleClick && !isActiveNow) {
         if (reTryCounter < 2) {
           console.error(
@@ -254,7 +277,7 @@ export class PuppetJalousie extends PuppetBase {
       }
     }
     callback(false, upButton, downButton, container);
-    return timer;
+    return { doubleClickTimer, isActiveNow };
   };
 
   stopIfStillMoving = async (
