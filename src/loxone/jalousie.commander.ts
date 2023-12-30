@@ -75,7 +75,7 @@ export class JalousieCommander extends BaseCommander {
           blockIndex: index,
         });
       }
-      await sleep(2000);
+      await sleep(700);
     }
     // sleep for the longest delay
     // await sleep(Math.max(...delays));

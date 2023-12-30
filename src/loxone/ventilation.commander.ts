@@ -26,7 +26,7 @@ export class VentilationCommander extends BaseCommander {
       const index = parseInt(indexStr, 10);
       const value = values[index] ? values[index] : values[0];
       await puppet.controlVentilation(index, parseInt(value, 10));
-      await sleep(2000);
+      await sleep(700);
     }
   }
 }
