@@ -105,16 +105,16 @@
         "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/100?tilt=open&type=window-big",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Küche/1/50?tilt=tilted",
         "http://192.168.1.12:9001/loxone/execute/jalousie/Zimmer 1/1/33?tilt=open",
-        "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/33,0"
+        "http://192.168.1.12:9001/loxone/execute/jalousie/Loggia/1,2/33,15"
       ]
     },
     {
-      "statusUrl": "http://192.168.1.12:9001/loxone/state/jalousie/Zimmer 1/1",
-      "switchType": "stateful",
+      "accessory": "HTTP-SWITCH",
       "name": "Bedroom Blinds",
+      "switchType": "stateful",
+      "statusUrl": "http://192.168.1.12:9001/loxone/state/jalousie/Zimmer 1/1",
       "offUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Zimmer 1/1/0?tilt=closed",
-      "onUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Zimmer 1/1/100?tilt=closed",
-      "accessory": "HTTP-SWITCH"
+      "onUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Zimmer 1/1/100?tilt=closed"
     },
     {
       "statusUrl": "http://192.168.1.12:9001/loxone/state/jalousie/Küche/1",
@@ -370,6 +370,17 @@
       "hideWelcomeMessage": true,
       "name": "Broadlink RM",
       "accessories": [
+        {
+          "type": "switch",
+          "enableAutoOff": true,
+          "data": [
+            {
+              "data": "260058000001269313361311131114101411131113111336133614361311131113111311141113111311133613111411131113111311133614351411133613361435143613361311130005c30001284813000c4e0001284813000d050000000000000000000000000000"
+            }
+          ],
+          "name": "Projector Power",
+          "onDuration": 1.5
+        },
         {
           "type": "switch",
           "enableAutoOff": true,

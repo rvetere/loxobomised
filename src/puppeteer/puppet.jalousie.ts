@@ -63,7 +63,6 @@ export class PuppetJalousie extends PuppetBase {
   }
 
   logActivity = (isActiveNow: boolean, key = "isActiveNow") => {
-    return;
     console.log(`   ${key}: ${isActiveNow ? "✅" : "❌"}`);
   };
 
