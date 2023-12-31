@@ -27,7 +27,7 @@ export const getUpDownElement = async (container: ElementHandle<Node> | null) =>
     );
     const allButtons = await container.$$("div[role=button]");
     console.log("WTF", {
-      texts,
+      texts: texts.slice(1),
       awningDownButtons,
       awningUpButtons,
     });
