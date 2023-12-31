@@ -1,4 +1,11 @@
 {
+  "bridge": {
+    "name": "Homebridge 6B55",
+    "username": "0E:31:E5:57:6B:55",
+    "port": 51038,
+    "pin": "770-02-137",
+    "advertiser": "avahi"
+  },
   "accessories": [
     {
       "timeout": 1000,
@@ -78,7 +85,7 @@
     {
       "timeout": 1000,
       "switchType": "stateless",
-      "name": "Livingroom Loggia Blinds Tilted",
+      "name": "Livingroom Loggia Tilted",
       "onUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/4/100?tilt=open",
       "accessory": "HTTP-SWITCH"
     },
@@ -145,7 +152,7 @@
     {
       "timeout": 1000,
       "switchType": "stateless",
-      "name": "Office Blinds 60%",
+      "name": "Office Blinds 60",
       "accessory": "HTTP-SWITCH",
       "onUrl": "http://192.168.1.12:9001/loxone/execute/jalousie/Wohnzimmer/2/60?tilt=tilted"
     },
@@ -176,7 +183,7 @@
     {
       "statusUrl": "http://192.168.1.12:9000/loxone/state/light/Küche/2",
       "switchType": "stateful",
-      "name": "Kitchen Spot Switch",
+      "name": "Kitchen Spot",
       "offUrl": "http://192.168.1.12:9000/loxone/execute/light/Küche/2/Switch Off",
       "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Küche/2/Switch On",
       "accessory": "HTTP-SWITCH"
@@ -184,51 +191,43 @@
     {
       "timeout": 1000,
       "switchType": "stateless",
-      "name": "Kitchen Spot 100%",
+      "name": "Kitchen Spot 100",
       "accessory": "HTTP-SWITCH",
       "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Küche/2/100"
     },
     {
       "timeout": 1000,
       "switchType": "stateless",
-      "name": "Kitchen Spot 40%",
+      "name": "Kitchen Spot 40",
       "accessory": "HTTP-SWITCH",
       "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Küche/2/40"
     },
     {
       "timeout": 1000,
       "switchType": "stateless",
-      "name": "Kitchen Spot 60%",
+      "name": "Kitchen Spot 60",
       "accessory": "HTTP-SWITCH",
       "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Küche/2/60"
     },
     {
       "timeout": 1000,
       "switchType": "stateless",
-      "name": "Kitchen Spot 70%",
+      "name": "Kitchen Spot 70",
       "accessory": "HTTP-SWITCH",
       "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Küche/2/70"
     },
     {
       "statusUrl": "http://192.168.1.12:9000/loxone/state/light/Küche/1",
       "switchType": "stateful",
-      "name": "Kitchen Headlight Switch",
+      "name": "Kitchen Headlight",
       "offUrl": "http://192.168.1.12:9000/loxone/execute/light/Küche/1/Switch Off",
       "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Küche/1/Switch On",
       "accessory": "HTTP-SWITCH"
     },
     {
-      "statusUrl": "http://192.168.1.12:9000/loxone/state/light/Wohnzimmer/3",
-      "switchType": "stateful",
-      "name": "Livingroom Plug Switch",
-      "offUrl": "http://192.168.1.12:9000/loxone/execute/light/Wohnzimmer/3/Switch Off",
-      "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Wohnzimmer/3/Switch On",
-      "accessory": "HTTP-SWITCH"
-    },
-    {
       "statusUrl": "http://192.168.1.12:9000/loxone/state/light/Entrée/1",
       "switchType": "stateful",
-      "name": "Entrance Spot Switch",
+      "name": "Entrance Spot",
       "offUrl": "http://192.168.1.12:9000/loxone/execute/light/Entrée/1/Switch Off",
       "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Entrée/1/Switch On",
       "accessory": "HTTP-SWITCH"
@@ -236,7 +235,7 @@
     {
       "statusUrl": "http://192.168.1.12:9000/loxone/state/light/WC-Dusche/1",
       "switchType": "stateful",
-      "name": "Bathroom Spot Switch",
+      "name": "Bathroom Spot",
       "offUrl": "http://192.168.1.12:9000/loxone/execute/light/WC-Dusche/1/Switch Off",
       "onUrl": "http://192.168.1.12:9000/loxone/execute/light/WC-Dusche/1/Switch On",
       "accessory": "HTTP-SWITCH"
@@ -244,21 +243,21 @@
     {
       "timeout": 1000,
       "switchType": "stateless",
-      "name": "Bathroom Spot 100%",
+      "name": "Bathroom Spot 100",
       "accessory": "HTTP-SWITCH",
       "onUrl": "http://192.168.1.12:9000/loxone/execute/light/WC-Dusche/1/100"
     },
     {
       "timeout": 1000,
       "switchType": "stateless",
-      "name": "Bathroom Spot 40%",
+      "name": "Bathroom Spot 40",
       "accessory": "HTTP-SWITCH",
       "onUrl": "http://192.168.1.12:9000/loxone/execute/light/WC-Dusche/1/40"
     },
     {
       "statusUrl": "http://192.168.1.12:9000/loxone/state/light/WC-Dusche/2",
       "switchType": "stateful",
-      "name": "Bathroom Headlight Switch",
+      "name": "Bathroom Headlight",
       "offUrl": "http://192.168.1.12:9000/loxone/execute/light/WC-Dusche/2/Switch Off",
       "onUrl": "http://192.168.1.12:9000/loxone/execute/light/WC-Dusche/2/Switch On",
       "accessory": "HTTP-SWITCH"
@@ -266,7 +265,7 @@
     {
       "statusUrl": "http://192.168.1.12:9000/loxone/state/light/Loggia/1",
       "switchType": "stateful",
-      "name": "Loggia Spot Switch",
+      "name": "Loggia Spot",
       "accessory": "HTTP-SWITCH",
       "onUrl": "http://192.168.1.12:9000/loxone/execute/light/Loggia/1/Switch On",
       "offUrl": "http://192.168.1.12:9000/loxone/execute/light/Loggia/1/Switch Off"
@@ -296,7 +295,7 @@
     {
       "statusUrl": "http://192.168.1.12:9002/loxone/state/ventilation/Zimmer 1/1",
       "switchType": "stateful",
-      "name": "Bedroom Vent Switch",
+      "name": "Bedroom Vent",
       "offUrl": "http://192.168.1.12:9002/loxone/execute/ventilation/Zimmer 1/1/0",
       "onUrl": "http://192.168.1.12:9002/loxone/execute/ventilation/Zimmer 1/1/1",
       "accessory": "HTTP-SWITCH"
@@ -332,7 +331,7 @@
     {
       "statusUrl": "http://192.168.1.12:9002/loxone/state/ventilation/Wohnzimmer/1",
       "switchType": "stateful",
-      "name": "Livingroom Vent Switch",
+      "name": "Livingroom Vent",
       "offUrl": "http://192.168.1.12:9002/loxone/execute/ventilation/Wohnzimmer/1/0",
       "onUrl": "http://192.168.1.12:9002/loxone/execute/ventilation/Wohnzimmer/1/1",
       "accessory": "HTTP-SWITCH"
@@ -360,11 +359,37 @@
     {
       "name": "Config",
       "port": 8581,
-      "auth": "form",
-      "theme": "dark-mode",
-      "tempUnits": "c",
-      "lang": "auto",
       "platform": "config"
+    },
+    {
+      "port": 8182,
+      "platform": "HomebridgeAndroidTV",
+      "_bridge": {
+        "username": "0E:42:31:5E:F5:81",
+        "port": 34254
+      }
+    },
+    {
+      "mediaTypes": ["music", "video"],
+      "deviceStates": ["idle", "paused", "playing", "stopped"],
+      "remoteKeysAsSwitch": ["home", "turn_off", "turn_on", "volume_down", "volume_up"],
+      "customInputURIs": [],
+      "discover": {
+        "unicast": ["192.168.1.186"],
+        "blacklist": [],
+        "multicast": true
+      },
+      "name": "Apple TV Enhanced",
+      "deviceStateDelay": 0,
+      "avadaKedavraAppAmount": 15,
+      "disableVolumeControlRemote": false,
+      "forceVenvRecreate": false,
+      "logLevel": 3,
+      "platform": "AppleTVEnhanced",
+      "_bridge": {
+        "username": "0E:D7:62:1A:E9:BD",
+        "port": 30495
+      }
     },
     {
       "hideWelcomeMessage": true,
@@ -458,43 +483,6 @@
         "username": "0E:15:6E:B4:33:45",
         "port": 38589
       }
-    },
-    {
-      "mediaTypes": ["music", "video"],
-      "deviceStates": ["idle", "paused", "playing"],
-      "remoteKeysAsSwitch": ["turn_off", "turn_on"],
-      "customInputURIs": [],
-      "discover": {
-        "unicast": ["192.168.1.186"],
-        "blacklist": [],
-        "multicast": true
-      },
-      "name": "Apple TV Enhanced",
-      "deviceStateDelay": 0,
-      "avadaKedavraAppAmount": 15,
-      "disableVolumeControlRemote": false,
-      "forceVenvRecreate": false,
-      "logLevel": 3,
-      "_bridge": {
-        "username": "0E:3C:6D:5A:8D:DB",
-        "port": 39253
-      },
-      "platform": "AppleTVEnhanced"
-    },
-    {
-      "port": 8182,
-      "_bridge": {
-        "username": "0E:C0:05:53:77:36",
-        "port": 44376
-      },
-      "platform": "HomebridgeAndroidTV"
     }
-  ],
-  "bridge": {
-    "username": "0E:D4:76:4A:AF:7D",
-    "name": "Homebridge AF7D",
-    "port": 51678,
-    "pin": "669-06-645",
-    "advertiser": "avahi"
-  }
+  ]
 }
