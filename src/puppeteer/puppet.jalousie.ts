@@ -183,6 +183,7 @@ export class PuppetJalousie extends PuppetBase {
       );
       const { isActiveNow } = await this.clickUpDownOfBlock(props);
       if (!isActiveNow) {
+        await this.page.screenshot({ path: `awning-fail-${this.room}-${blockIndex}.png` });
         console.log(`🚨 Action did not happen, try once more!`);
         await this.clickUpDownOfBlock(props);
       }
@@ -205,6 +206,7 @@ export class PuppetJalousie extends PuppetBase {
       });
       timer = doubleClickTimer;
       if (!isActiveNow) {
+        await this.page.screenshot({ path: `awning-fail-${this.room}-${blockIndex}.png` });
         console.log(`🚨 Action did not happen, try once more!`);
         const { doubleClickTimer } = await this.clickUpDownOfBlock({
           ...props,
